@@ -1,30 +1,94 @@
-/* style.css */
+:root {
+  --primary: #FAFAFB;
+  --secondary: #576FCB;
+  --text-color: #212121;
+}
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+  font-family: 'Inter', sans-serif;
+  background-color: white;
+  color: var(--text-color);
 }
 
-header {
-  text-align: center;
-  padding: 1rem;
-  background-color: #333;
-  color: white;
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: white;
+  flex-wrap: wrap; /* erlaubt Umbruch bei kleinerer Breite */
+  gap: 1rem;
 }
 
-main {
-  display: flex;
+.site-header img.logo {
+  height: 40px;
+  width: auto;
+}
+
+/* Suchleiste */
+.search-container {
+  position: relative;
   flex: 1;
-  overflow: hidden;
+  max-width: 600px;
+}
+
+.search-container input[type="search"] {
+  width: 100%;
+  padding: 0.6rem 2.5rem 0.6rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 999px;
+  font-size: 1rem;
+}
+
+.search-container .search-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 20px;
+  width: 20px;
+  pointer-events: none;
+}
+
+/* Icons rechts */
+.header-icons {
+  display: flex;
+  gap: 1rem;
+}
+
+.header-icons .icon {
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+}
+
+
+.logo img {
+  height: 40px; /* oder so groß wie in Figma */
+  width: auto;
+}
+
+.header-icons {
+  display: flex;
+  gap: 1rem;
+}
+
+.header-icons .icon {
+  height: 30px;
+}
+
+.layout {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .sidebar {
-  width: 20%;
-  background-color: #f0f0f0;
+  flex: 1 1 220px;
+  background-color: var(--primary);
   padding: 1rem;
-  box-sizing: border-box;
+  min-width: 200px;
+  box-shadow: 2px 0 4px rgba(0,0,0,0.1);
 }
 
 .sidebar ul {
@@ -32,112 +96,66 @@ main {
   padding: 0;
 }
 
-.sidebar li {
-  margin: 0.5rem 0;
+.sidebar a {
+  display: block;
+  padding: 0.5rem 0;
+  color: var(--text-color);
+  text-decoration: none;
 }
 
-.sidebar a {
-  text-decoration: none;
-  color: #333;
+.sidebar a[aria-current="page"] {
+  font-weight: bold;
 }
 
 .content {
-  flex: 1;
+  flex: 3 1 700px;
   padding: 2rem;
-  overflow-y: auto;
-  background-color: #fff;
-}
-
-footer {
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem;
-  background-color: #eee;
 }
 
 .content-buttons {
   display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 3rem;
+  gap: 1rem;
+  margin: 1rem 0;
 }
 
 .content-button {
-  display: inline-block;
-  padding: 1rem 2rem;
-  background-color: #005f99;
-  color: white;
   text-decoration: none;
-  font-size: 1.2rem;
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
-}
-
-.content-button:hover,
-.content-button:focus {
-  background-color: #003f66;
-  outline: 2px solid #ffd700; /* sichtbarer Fokus */
-}
-
-.feedback {
-  margin-top: 1rem;
-  font-weight: bold;
-}
-
-.nav-buttons {
-  margin-top: 2rem;
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-form {
-  max-width: 600px;
-  margin: 2rem auto;
-  background-color: #fafafa;
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-fieldset {
-  border: none;
-  padding: 0;
-}
-
-legend {
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-form div {
-  margin-bottom: 1rem;
-}
-
-label {
-  margin-left: 0.5rem;
-  cursor: pointer;
-}
-
-input[type="radio"] {
-  cursor: pointer;
-}
-
-button[type="submit"] {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  background-color: #005f99;
+  background: var(--secondary);
   color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
 }
 
-button[type="submit"]:hover,
-button[type="submit"]:focus {
-  background-color: #003f66;
-  outline: 2px solid #ffd700;
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.card {
+  background: var(--primary);
+  box-shadow: 0 4px 4px rgba(0,0,0,0.2);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  flex: 1 1 300px;
+}
+
+.preview-img {
+  width: 100%;
+  border-radius: 0.5rem;
+  object-fit: cover;
+}
+
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: #eee;
+}
+
+button.prev, button.next {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
 }
