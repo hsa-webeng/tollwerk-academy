@@ -204,3 +204,48 @@ body {
     color: white;
   }
   
+  .quiz-submit-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #576FCB;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.feedback {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+}
+
+.nav-button {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  background-color: #576FCB;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.nav-button:hover {
+  background-color: #4055a4;
+}
+
+.nav-button.disabled {
+  background-color: #ccc;
+  pointer-events: none;
+  color: #666;
+  text-decoration: none;
+  cursor: not-allowed;
+}
