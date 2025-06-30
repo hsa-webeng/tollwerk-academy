@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Online-Kurs: Modul 1 – Quiz</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+        <div class="logo">
+            <img src="logos/Tollwerk-Logo_RGB.png" alt="Tollwerk Logo">
+        </div>
+        <input type="search" placeholder="Suche nach Lerninhalten" aria-label="Suche" class="searchbar">
+    </div>
+  </header>
+  
+    <div class="container">
+    <aside class="sidebar">
+      <nav>
+        <h3>Navigation</h3>
+        <h2>Kurs Einführung</h2>
+        <ul>
+          <li>
+            <strong>1. Barrierefreiheit</strong><br>
+            <span>   35min</span>
+            <ul>
+              <li><a href="modul1_allgemeine_definitionen.html">Allgemeine Definitionen</a></li>
+              <li><a href="modul1_gesetzliche_definitionen.html">Gesetzliche Definitionen</a></li>
+              <li class="active"><a href="modul1_quiz.html">Quiz</a></li>
+            </ul>
+          </li>
+          <li class="locked">2. Barrieren </li>
+          <li class="locked">3. Betroffene </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <div class="content-area" style="display: flex; gap: 2rem; align-items: flex-start;"></div>
+  
+      <section class="content" style="flex: 2;">
+        <section>
+        <h2>Modul 1</h2>
+        <h2>Barrierefreiheit</h2>
+        <h2>Quiz - Grundlagen des Internets</h2>
+        <p><em>Bearbeitungszeit ca. 5 Minuten</em></p>
+        <p style="margin-top: 3rem;">Fortschritt: Frage 1 von 10</p>
+  
+        <form id="quiz-form" aria-labelledby="quiz-heading">
+          <fieldset>
+            <legend>Was ist die Hauptaufgabe eines Routers?</legend>
+  
+            <div>
+              <input type="radio" id="option1" name="question1" value="A" required>
+              <label for="option1">A) Webseiten gestalten</label>
+            </div>
+  
+            <div>
+              <input type="radio" id="option2" name="question1" value="B">
+              <label for="option2">B) Datenpakete zwischen Netzwerken weiterleiten</label>
+            </div>
+  
+            <div>
+              <input type="radio" id="option3" name="question1" value="C">
+              <label for="option3">C) Texte in HTML umwandeln</label>
+            </div>
+  
+            <div>
+              <input type="radio" id="option4" name="question1" value="D">
+              <label for="option4">D) Viren im Netzwerk erkennen</label>
+            </div>
+          </fieldset>
+
+          <p style="margin-top: 1rem;"></p>
+          <button type="submit">Antwort absenden</button>
+        </form>
+  
+        <p id="feedback" aria-live="polite" class="feedback"></p>
+  
+        <div class="nav-buttons">
+          <a href="modul1_allgemeine_definitionen.html" class="nav-button">&larr; Zurück zu Modul 1</a>
+          <a href="modul2.html" class="nav-button" id="next-link" style="display: none;">Weiter zu Modul 2 &rarr;</a>
+        </div>
+      </section>
+    </main>
+  </body>
+  
+
+<script>
+  document.getElementById('quiz-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const selected = document.querySelector('input[name="question1"]:checked');
+    const feedback = document.getElementById('feedback');
+    const nextLink = document.getElementById('next-link');
+
+    if (!selected) {
+      feedback.textContent = "Bitte wähle eine Antwort aus.";
+      feedback.style.color = "black";
+      return;
+    }
+
+    if (selected.value === 'B') {
+      feedback.textContent = "✅ Richtig! Ein Router leitet Datenpakete weiter.";
+      feedback.style.color = "green";
+      nextLink.style.display = 'inline-block';
+    } else {
+      feedback.textContent = "❌ Leider falsch. Die richtige Antwort ist: B.";
+      feedback.style.color = "red";
+      nextLink.style.display = 'inline-block';
+    }
+  });
+</script>
+</html>
