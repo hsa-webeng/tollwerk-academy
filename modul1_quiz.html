@@ -6,24 +6,45 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-      <h1>Modul 1 – Quiz</h1>
-    </header>
+  <header>
+    <div class="header-content">
+        <div class="logo">
+            <img src="logos/Tollwerk-Logo_RGB.png" alt="Tollwerk Logo">
+        </div>
+        <input type="search" placeholder="Suche nach Lerninhalten" aria-label="Suche" class="searchbar">
+    </div>
+  </header>
   
-    <main>
-      <nav class="sidebar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container">
+    <aside class="sidebar">
+      <nav>
+        <h3>Navigation</h3>
+        <h2>Kurs Einführung</h2>
         <ul>
-          <li><a href="index.html">Einleitung</a></li>
-          <li><a href="modul1.html">Modul 1</a></li>
-          <li><a href="modul1_quiz.html">Quiz zu Modul 1</a></li>
-          <li><a href="modul2.html">Modul 2</a></li>
-          <li><a href="zusammenfassung.html">Zusammenfassung</a></li>
+          <li>
+            <strong>1. Barrierefreiheit</strong><br>
+            <span>   35min</span>
+            <ul>
+              <li><a href="modul1_allgemeine_definitionen.html">Allgemeine Definitionen</a></li>
+              <li><a href="modul1_gesetzliche_definitionen.html">Gesetzliche Definitionen</a></li>
+              <li class="active"><a href="modul1_quiz.html">Quiz</a></li>
+            </ul>
+          </li>
+          <li class="locked">2. Barrieren </li>
+          <li class="locked">3. Betroffene </li>
         </ul>
       </nav>
+    </aside>
+
+    <div class="content-area" style="display: flex; gap: 2rem; align-items: flex-start;"></div>
   
-      <section class="content">
-        <h2 id="quiz-heading">Test zu Modul 1 – Grundlagen des Internets</h2>
-        <p>Fortschritt: Frage 1 von 1</p>
+      <section class="content" style="flex: 2;">
+        <section>
+        <h2>Modul 1</h2>
+        <h2>Barrierefreiheit</h2>
+        <h2>Quiz - Grundlagen des Internets</h2>
+        <p><em>Bearbeitungszeit ca. 5 Minuten</em></p>
+        <p style="margin-top: 3rem;">Fortschritt: Frage 1 von 10</p>
   
         <form id="quiz-form" aria-labelledby="quiz-heading">
           <fieldset>
@@ -49,14 +70,15 @@
               <label for="option4">D) Viren im Netzwerk erkennen</label>
             </div>
           </fieldset>
-  
+
+          <p style="margin-top: 1rem;"></p>
           <button type="submit">Antwort absenden</button>
         </form>
   
         <p id="feedback" aria-live="polite" class="feedback"></p>
   
         <div class="nav-buttons">
-          <a href="modul1.html" class="nav-button">&larr; Zurück zu Modul 1</a>
+          <a href="modul1_allgemeine_definitionen.html" class="nav-button">&larr; Zurück zu Modul 1</a>
           <a href="modul2.html" class="nav-button" id="next-link" style="display: none;">Weiter zu Modul 2 &rarr;</a>
         </div>
       </section>
