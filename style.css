@@ -1,7 +1,35 @@
+@font-face {
+  font-family: "GraublauDisplay";
+  src: url("fonts/GraublauSansDisplay-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GraublauDisplay";
+  src: url("fonts/GraublauSansDisplay-Light.otf") format("opentype");
+  font-weight: light;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GraublauDisplay";
+  src: url("fonts/GraublauSansDisplay-LightItalic.otf") format("opentype");
+  font-weight: light;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "GraublauDisplay";
+  src: url("fonts/GraublauSansDisplay-Bold.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: "Graublau", sans-serif;
     background: #f0f0f0;
     min-height: 100vh;
   }
@@ -17,13 +45,31 @@ body {
     gap: 8rem;
     }
 
+    .search-wrapper {
+      position: relative;
+      max-width: 400px;
+      width: 100%;
+    }
+    
     .searchbar {
-    flex-grow: 1;              
-    max-width: 500px;          
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 90px;
+      width: 100%;
+      padding-left: 2.5rem; 
+      font-size: 1rem;
+      border: none;
+      border-radius: 1.5rem;
+      height: 2.5rem;
+      box-sizing: border-box;
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;  
+      height: 20px;
+      pointer-events: none; 
+      opacity: 0.3;
     }
   
   header input {
@@ -35,6 +81,16 @@ body {
   
   .logo img {
     height: 60px;
+  }
+
+  .header-nav{
+    margin-left: auto;
+  }
+
+  .header-nav-icon{
+    width: 2rem;
+    height: 2rem;
+    color: white;
   }
 
   .container {
@@ -150,6 +206,12 @@ body {
     margin-top: 0.5rem;
     padding-left: 1rem;
   }
+
+  li a {
+    display: flex;             
+    align-items: center;   
+    gap: 0.5rem
+  }
   
   .active {
     background: #eef1ff;
@@ -159,6 +221,10 @@ body {
   
   .locked {
     color: #aaa;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;            
+    padding: 0.5rem 1rem;
   }
   
   .media {
@@ -204,3 +270,22 @@ body {
     color: white;
   }
   
+  .type-icon{
+    width: 1.5rem;
+    height: 1.5rem;
+    flex-shrink: 0;
+    display: block; 
+    margin-right: 0.5rem;
+  }
+
+  .locked-icon{
+    width: 1.5rem;  
+    height: 1.5rem;
+    max-height: 1.5rem;
+  }
+
+  .with-icon {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }

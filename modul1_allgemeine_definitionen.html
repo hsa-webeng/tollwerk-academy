@@ -12,27 +12,38 @@
         <div class="logo">
             <img src="logos/Tollwerk-Logo_RGB.png" alt="Tollwerk Logo">
         </div>
-        <input type="search" placeholder="Suche nach Lerninhalten" aria-label="Suche" class="searchbar">
+        <div class="search-wrapper">
+          <img src="icons/Search.svg" alt="Suche Icon" class="search-icon">
+          <input type="search" placeholder="Suche nach Lerninhalten" aria-label="Suche" class="searchbar">
+        </div>
+        <div class="header-nav">
+          <img src="icons/Profile.svg" alt="Profil Icon" class="header-nav-icon">
+        </div>
     </div>
   </header>
 
   <div class="container">
     <aside class="sidebar">
       <nav>
-        <h3>Navigation</h3>
+        <h3>  
+          <span class="with-icon">
+            <img src="icons/List.svg" alt="Menu Icon" class="type-icon">
+            Navigation
+          </span>
+        </h3>
         <h2>Kurs Einführung</h2>
         <ul>
           <li>
             <strong>1. Barrierefreiheit</strong><br>
             <span>   35min</span>
             <ul>
-              <li class="active"><a href="modul1_allgemeine_definitionen.html">Allgemeine Definitionen</a></li>
-              <li><a href="modul1_gesetzliche_definitionen.html">Gesetzliche Definitionen</a></li>
-              <li><a href="modul1_quiz.html">Quiz</a></li>
+              <li class="active"><a href="modul1_allgemeine_definitionen.html"><img src="icons/Video.svg" alt="Video Icon" class="type-icon">Allgemeine Definitionen</a></li>
+              <li><a href="modul1_gesetzliche_definitionen.html"><img src="icons/Text.svg" alt="Text Icon" class="type-icon">Gesetzliche Definitionen</a></li>
+              <li><a href="modul1_quiz.html"><img src="icons/Quiz.svg" alt="Quiz Icon" class="type-icon">Quiz</a></li>
             </ul>
           </li>
-          <li class="locked">2. Barrieren </li>
-          <li class="locked">3. Betroffene </li>
+          <li class="locked">2. Barrieren <img src="icons/Locked.svg" alt="Locked Icon" class="locked-icon"></li>
+          <li class="locked">3. Betroffene <img src="icons/Locked.svg" alt="Locked Icon" class="locked-icon"></li>
         </ul>
       </nav>
     </aside>
