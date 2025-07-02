@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lernplattform - Modul 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <img src="logos/Tollwerk-Logo_RGB.png" alt="Tollwerk Logo">
+            </div>
+            <input type="search" placeholder="Suche nach Lerninhalten" aria-label="Suche" class="searchbar">
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <h3>Navigation</h3>
+                <h2>Kurs Einführung</h2>
+                <ul>
+                    <li>
+                        <strong>1. Barrierefreiheit</strong><br>
+                        <span> 35min</span>
+                        <ul>
+                            <li><a href="modul1_allgemeine_definitionen.html">Allgemeine Definitionen</a></li>
+                            <li class="active"><a href="modul1_gesetzliche_definitionen.html">Gesetzliche
+                                    Definitionen</a></li>
+                            <li class="active"><a href="modul1_lückentext.html">Lückentext</a></li>
+                            <li><a href="modul1_quiz.html">Quiz</a></li>
+                        </ul>
+                    </li>
+                    <li class="locked">2. Barrieren </li>
+                    <li class="locked">3. Betroffene </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <section aria-labelledby="section-title" class="fill-in-the-blanks">
+                <h2 id="section-title">Lückentext: Barrierefreiheit im digitalen Raum</h2>
+
+                <p id="intro">Barrierefreiheit bedeutet, dass digitale Inhalte von allen Menschen unabhängig von ihren
+                    Fähigkeiten genutzt werden können. Dies betrifft insbesondere Menschen mit Behinderungen, aber auch
+                    ältere Personen oder Menschen mit temporären Einschränkungen.</p>
+
+                <p>
+                    <span id="sentence-1-1">Um Webseiten zugänglich zu gestalten, müssen Entwicklerinnen und Entwickler
+                        bestimmte </span>
+                    <label for="blank-1" class="sr-only">Lücke A1</label>
+                    <select id="blank-1" data-solution="c" aria-labelledby="sentence-1-1 blank-1-label"
+                        aria-label="Wähle die passende Option zu 'bestimmte ___ einhalten'">
+                        <option value="" hidden selected disabled>Bitte wählen</option>
+                        <option value="a">a: Vorschriften</option>
+                        <option value="b">b: Bedingungen</option>
+                        <option value="c">c: Richtlinien</option>
+                        <option value="d">d: Werkzeuge</option>
+                    </select>
+                    <span id="blank-1-label" class="sr-only">Lücke A1</span>
+                    <span id="sentence-1-2"> wie die WCAG einhalten.</span>
+                </p>
+
+                <p>
+                    <span id="sentence-2-1">Ein zentrales Ziel ist es, Inhalte für Screenreader </span>
+                    <label for="blank-2" class="sr-only">Lücke A2</label>
+                    <select id="blank-2" data-solution="b" aria-labelledby="sentence-2-1 blank-2-label"
+                        aria-label="Wähle die passende Option zu 'für Screenreader ___'">
+                        <option value="" hidden selected disabled>Bitte wählen</option>
+                        <option value="a">a: lesbar</option>
+                        <option value="b">b: zugänglich</option>
+                        <option value="c">c: erfassbar</option>
+                        <option value="d">d: interpretierbar</option>
+                    </select>
+                    <span id="blank-2-label" class="sr-only">Lücke A2</span>
+                    <span id="sentence-2-2"> zu machen.</span>
+                </p>
+
+                <p>
+                    <span id="sentence-3-1">Alternativtexte für Bilder sind notwendig, </span>
+                    <label for="blank-3" class="sr-only">Lücke A3</label>
+                    <select id="blank-3" data-solution="a" aria-labelledby="sentence-3-1 blank-3-label"
+                        aria-label="Wähle die passende Option zu 'notwendig, ___ auch ohne Bild erkannt werden kann'">
+                        <option value="" hidden selected disabled>Bitte wählen</option>
+                        <option value="a">a: damit deren Inhalt</option>
+                        <option value="b">b: falls Benutzer</option>
+                        <option value="c">c: wodurch alles</option>
+                        <option value="d">d: um Benutzer</option>
+                    </select>
+                    <span id="blank-3-label" class="sr-only">Lücke A3</span>
+                    <span id="sentence-3-2"> auch ohne Bild erkannt werden kann.</span>
+                </p>
+
+                <p>
+                    <span id="sentence-4-1">Außerdem sollten interaktive Elemente wie Formulare mit </span>
+                    <label for="blank-4" class="sr-only">Lücke A4</label>
+                    <select id="blank-4" data-solution="c" aria-labelledby="sentence-4-1 blank-4-label"
+                        aria-label="Wähle die passende Option zu 'Formulare mit ___ versehen'">
+                        <option value="" hidden selected disabled>Bitte wählen</option>
+                        <option value="a">a: Farben</option>
+                        <option value="b">b: Untertiteln</option>
+                        <option value="c">c: Beschriftungen</option>
+                        <option value="d">d: Symbolen</option>
+                    </select>
+                    <span id="blank-4-label" class="sr-only">Lücke A4</span>
+                    <span id="sentence-4-2"> versehen sein.</span>
+                </p>
+
+                <p>
+                    <span id="sentence-5-1">Ein guter Kontrast zwischen Vordergrund und Hintergrund </span>
+                    <label for="blank-5" class="sr-only">Lücke A5</label>
+                    <select id="blank-5" data-solution="b" aria-labelledby="sentence-5-1 blank-5-label"
+                        aria-label="Wähle die passende Option zu 'Kontrast ___ die Lesbarkeit'">
+                        <option value="" hidden selected disabled>Bitte wählen</option>
+                        <option value="a">a: verhindert</option>
+                        <option value="b">b: unterstützt</option>
+                        <option value="c">c: schwächt</option>
+                        <option value="d">d: erschwert</option>
+                    </select>
+                    <span id="blank-5-label" class="sr-only">Lücke A5</span>
+                    <span id="sentence-5-2"> die Lesbarkeit von Texten.</span>
+                </p>
+
+                <button id="validate-button" class="nav-button">Antworten überprüfen</button>
+                <p id="feedback" role="status" aria-live="polite"></p>
+
+
+
+
+                <div class="nav-buttons">
+                    <a href="modul1_gesetzliche_definitionen.html" class="nav-button">&larr; Zurück</a>
+                    <a href="modul1_quiz.html" class="nav-button">Weiter &rarr;</a>
+                </div>
+
+            </section>
+
+        </main>
+
+        <aside class="notes">
+            <h3>Notizen</h3>
+            <button id="add-note">Neue Notiz erstellen</button>
+            <div id="notes-container"></div>
+        </aside>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
