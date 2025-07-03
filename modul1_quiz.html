@@ -47,39 +47,40 @@
         <p><em>Bearbeitungszeit ca. 5 Minuten</em></p>
         <p style="margin-top: 3rem;">Fortschritt: Frage 1 von 1</p>
 
-        <form id="quiz-form" aria-labelledby="quiz-heading">
+        <form class="quiz-multiple" aria-labelledby="quiz-heading" id="quiz-form">
           <fieldset>
-            <legend id="quiz-heading">Was bedeutet der Begriff „digitale Barrierefreiheit“?</legend>
-
-            <div>
-              <input type="radio" id="option1" name="question1" value="A" required />
-              <label for="option1">A) Websites, die nur mit spezieller Software angezeigt werden können.</label>
-            </div>
-
-            <div>
-              <input type="radio" id="option2" name="question1" value="B" />
-              <label for="option2">B) Die uneingeschränkte Nutzbarkeit digitaler Inhalte für alle Menschen.</label>
-            </div>
-
-            <div>
-              <input type="radio" id="option3" name="question1" value="C" />
-              <label for="option3">C) Maßnahmen gegen Cyberangriffe im Internet.</label>
-            </div>
-
-            <div>
-              <input type="radio" id="option4" name="question1" value="D" />
-              <label for="option4">D) Die Möglichkeit, Webseiten offline zu speichern.</label>
-            </div>
+            <legend>Was ist die Hauptaufgabe eines Routers?</legend>
+        
+            <label class="quiz-option">
+              <input type="radio" name="question1" value="A" required />
+              A) Webseiten gestalten
+            </label>
+        
+            <label class="quiz-option">
+              <input type="radio" name="question1" value="B" />
+              B) Datenpakete zwischen Netzwerken weiterleiten
+            </label>
+        
+            <label class="quiz-option">
+              <input type="radio" name="question1" value="C" />
+              C) Texte in HTML umwandeln
+            </label>
+        
+            <label class="quiz-option">
+              <input type="radio" name="question1" value="D" />
+              D) Viren im Netzwerk erkennen
+            </label>
           </fieldset>
-
-          <button type="submit" class="quiz-submit-button">Antwort absenden</button>
+        
+          <p id="feedback" style="margin-top: 1rem;"></p>
+          <button type="submit">Antwort absenden</button>
         </form>
 
         <p id="feedback" aria-live="polite" class="feedback"></p>
 
         <div class="nav-buttons">
-          <a href="modul1_lückentext.html" class="nav-button">&larr; Zurück</a>
-          <a href="modul2.html" class="nav-button" id="next-link" style="display: none;">Weiter zu Modul 2 &rarr;</a>
+          <a href="modul1_lückentext.html" class="button-secondary">&larr; Zurück</a>
+          <a href="modul2.html" class="button-secondary" id="next-link" style="display: none;">Weiter zu Modul 2 &rarr;</a>
         </div>
       </section>
     </main>
