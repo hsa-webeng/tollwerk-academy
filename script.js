@@ -1,3 +1,27 @@
+//Media Button Funktion
+document.addEventListener("DOMContentLoaded", () => {
+  const buttons = document.querySelectorAll(".tabs button");
+  const mediaItems = {
+    "Video": document.getElementById("video-content"),
+    "Audio": document.getElementById("audio-content"),
+    "Text": document.getElementById("text-content"),
+  };
+
+  buttons.forEach(button => {
+    button.addEventListener("click", () => {
+      buttons.forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+
+      Object.values(mediaItems).forEach(item => item.classList.add("hidden"));
+
+      const label = button.textContent.trim();
+      if (mediaItems[label]) {
+        mediaItems[label].classList.remove("hidden");
+      }
+    });
+  });
+});
+
 //Note Funktion
 document.addEventListener("DOMContentLoaded", function() {
       const addNoteBtn = document.getElementById("add-note");
