@@ -18,6 +18,33 @@
     .dragdrop-table { width: 100%; border-collapse: collapse; margin: 1em 0; }
     .dragdrop-table th, .dragdrop-table td { border: 1px solid #ccc; padding: 0.5em; }
     .reflection { background: #f7f7f7; border-left: 4px solid #888; padding: 1em; margin: 1em 0; }
+    
+    /* Navigation styles */
+    .lesson { display: none; }
+    .lesson.active { display: block; }
+    .navigation-buttons { text-align: center; margin: 2em 0; }
+    .nav-btn { 
+      background: #0074d9; 
+      color: white; 
+      border: none; 
+      padding: 12px 24px; 
+      border-radius: 6px; 
+      cursor: pointer; 
+      font-size: 16px; 
+      margin: 0 10px;
+      transition: background-color 0.3s;
+    }
+    .nav-btn:hover { background: #0056b3; }
+    .nav-btn:disabled { 
+      background: #ccc; 
+      cursor: not-allowed; 
+    }
+    .progress-indicator {
+      text-align: center;
+      margin: 1em 0;
+      color: #666;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -46,17 +73,17 @@
         </h3>
         <h2>Modul 2: Barrieren</h2>
         <ul>
-          <li><a href="#modul2">Modulübersicht</a></li>
-          <li><a href="#lektion2-1">Lektion 2.1</a></li>
-          <li><a href="#lektion2-2">Lektion 2.2</a></li>
-          <li><a href="#lektion2-3">Lektion 2.3</a></li>
-          <li><a href="#lektion2-4">Lektion 2.4</a></li>
-          <li><a href="#quiz">Quiz</a></li>
+          <li><a href="#modul2" class="nav-link" data-section="modul2">Modulübersicht</a></li>
+          <li><a href="#lektion2-1" class="nav-link" data-section="lektion2-1">Lektion 2.1</a></li>
+          <li><a href="#lektion2-2" class="nav-link" data-section="lektion2-2">Lektion 2.2</a></li>
+          <li><a href="#lektion2-3" class="nav-link" data-section="lektion2-3">Lektion 2.3</a></li>
+          <li><a href="#lektion2-4" class="nav-link" data-section="lektion2-4">Lektion 2.4</a></li>
+          <li><a href="#quiz" class="nav-link" data-section="quiz">Quiz</a></li>
         </ul>
       </nav>
     </aside>
     <main class="content">
-      <section id="modul2">
+      <section id="modul2" class="lesson active">
         <h2>Modul 2: Barrieren</h2>
         <div class="infobox"><strong>Lernziel:</strong> Sie erkennen, wo und wie Barrieren im Alltag und in digitalen Medien entstehen – und wie sie verschiedene Menschen in ihrer Teilhabe einschränken können.</div>
         <ul>
@@ -65,7 +92,12 @@
           <li>Lektion 2.3 Digitale Medien</li>
           <li>Lektion 2.4 Auf den Punkt gebracht</li>
         </ul>
+        <div class="progress-indicator">Fortschritt: 1 von 6</div>
+        <div class="navigation-buttons">
+          <button class="nav-btn" onclick="showNextSection()">Weiter zu Lektion 2.1</button>
+        </div>
       </section>
+      
       <section class="lesson" id="lektion2-1">
         <h3>📘 Lektion 2.1 Barrieren-Reflexion</h3>
         <div class="infobox"><strong>Lernziel:</strong> Sie reflektieren, was der Begriff "Barriere" für dich persönlich bedeutet – und wirst dir bewusst, wie unterschiedlich Barrieren wahrgenommen werden können.</div>
@@ -77,7 +109,13 @@
         <div class="exercise">
           <strong>Interaktion:</strong> <br> <em>Für die Animation wird ein Start/Pause Button benötigt: Nach Aktivieren von "Start" werden nacheinander die 3 Wortwolken angezeigt.</em>
         </div>
+        <div class="progress-indicator">Fortschritt: 2 von 6</div>
+        <div class="navigation-buttons">
+          <button class="nav-btn" onclick="showPreviousSection()">Zurück</button>
+          <button class="nav-btn" onclick="showNextSection()">Weiter zu Lektion 2.2</button>
+        </div>
       </section>
+      
       <section class="lesson" id="lektion2-2">
         <h3>📘 Lektion 2.2 Barrieren sind überall</h3>
         <div class="infobox"><strong>Lernziel:</strong> Sie erkennen, in welchen Lebensbereichen Barrieren vorkommen und warum ihre Beseitigung alle Menschen betrifft.</div>
@@ -131,7 +169,13 @@
         <div class="reflection">
           <strong>Fazit:</strong> Barrieren sind keine Ausnahme – sie sind alltäglich. Doch sie sind auch menschengemacht – und damit veränderbar. Wer Barrieren erkennt, kann sie abbauen oder vermeiden. Ein barrierefreies Umfeld nützt nicht nur Menschen mit Behinderung, sondern schafft eine inklusive, komfortable und zugängliche Gesellschaft für alle.
         </div>
+        <div class="progress-indicator">Fortschritt: 3 von 6</div>
+        <div class="navigation-buttons">
+          <button class="nav-btn" onclick="showPreviousSection()">Zurück</button>
+          <button class="nav-btn" onclick="showNextSection()">Weiter zu Lektion 2.3</button>
+        </div>
       </section>
+      
       <section class="lesson" id="lektion2-3">
         <h3>📘 Lektion 2.3 Digitale Medien</h3>
         <div class="infobox"><strong>Lernziel:</strong> Sie verstehen, wie digitale Barrieren entstehen – z.B. in Websites, Apps, Dokumenten oder Kommunikation – und warum digitale Zugänglichkeit für alle relevant ist.</div>
@@ -188,14 +232,26 @@
         </ul>
         <div class="reflection">
           <strong>Fazit:</strong> Barrieren in digitalen Medien sind kein Spezialproblem – sie betreffen zentrale Lebensbereiche wie Arbeit, Bildung, Kommunikation und Freizeit. Eine barrierefreie Gestaltung ist daher nicht nur rechtlich gefordert, sondern auch ein Zeichen von Qualität, Inklusion und Zukunftsfähigkeit.</div>
+        <div class="progress-indicator">Fortschritt: 4 von 6</div>
+        <div class="navigation-buttons">
+          <button class="nav-btn" onclick="showPreviousSection()">Zurück</button>
+          <button class="nav-btn" onclick="showNextSection()">Weiter zu Lektion 2.4</button>
+        </div>
       </section>
+      
       <section class="lesson" id="lektion2-4">
         <h3>📘 Lektion 2.4 Auf den Punkt gebracht</h3>
         <p>Barrieren begegnen uns überall – in Gebäuden, im Verkehr, in der Kommunikation und besonders in der digitalen Welt. Oft sind sie nicht sichtbar, aber dennoch wirksam. Sie entstehen durch Gestaltung, Sprache, Technik oder Strukturen – und sie schließen Menschen aus, wenn ihre Bedürfnisse nicht mitgedacht werden.</p>
         <div class="infobox">Digitale Barrieren können zum Beispiel unzugängliche Websites, unstrukturierte Dokumente oder schwer verständliche Sprache sein. Dabei betreffen Barrieren nicht nur Menschen mit dauerhaften Behinderungen, sondern auch Menschen in temporären oder situativen Einschränkungen.</div>
         <div class="reflection">Barrierefreiheit ist keine Speziallösung, sondern ein Prinzip der Teilhabe und Qualität – für alle. Wer Barrieren erkennt, kann sie vermeiden oder abbauen. Und genau das ist ein wichtiger Schritt zu mehr Inklusion, Gerechtigkeit und digitaler Zugänglichkeit.</div>
+        <div class="progress-indicator">Fortschritt: 5 von 6</div>
+        <div class="navigation-buttons">
+          <button class="nav-btn" onclick="showPreviousSection()">Zurück</button>
+          <button class="nav-btn" onclick="showNextSection()">Weiter zum Quiz</button>
+        </div>
       </section>
-      <section id="quiz">
+      
+      <section class="lesson" id="quiz">
         <h3>Testen Sie Ihr Wissen</h3>
         <div class="quiz">
           <strong>Welche der folgenden Eigenschaften verbessert die Barrierefreiheit eines Geräts?</strong>
@@ -254,6 +310,11 @@
           <strong>Reflexionsfrage:</strong>
           <div class="reflection">Nennen Sie ein Beispiel aus deinem Alltag, in dem du auf eine (digitale, bauliche oder gesellschaftliche) Barriere gestoßen bist – und überlege, wie sie beseitigt werden könnte.</div>
         </div>
+        <div class="progress-indicator">Fortschritt: 6 von 6</div>
+        <div class="navigation-buttons">
+          <button class="nav-btn" onclick="showPreviousSection()">Zurück</button>
+          <button class="nav-btn" onclick="showFirstSection()">Zurück zum Anfang</button>
+        </div>
       </section>
     </main>
     <aside class="notes" id="notes">
@@ -265,6 +326,10 @@
   </div>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
+      // Initialize navigation
+      initializeNavigation();
+      
+      // Notes functionality
       const addNoteBtn = document.getElementById("add-note");
       const notesContainer = document.getElementById("notes-container");
       addNoteBtn.addEventListener("click", () => {
@@ -283,6 +348,7 @@
         note.appendChild(textarea);
         notesContainer.appendChild(note);
       });
+      
       // Notizen-Spalte ein-/ausklappen
       const notes = document.getElementById('notes');
       const notesToggle = document.getElementById('notes-toggle');
@@ -290,6 +356,65 @@
         notes.classList.toggle('expanded');
       });
     });
+
+    // Navigation variables
+    let currentSectionIndex = 0;
+    const sections = ['modul2', 'lektion2-1', 'lektion2-2', 'lektion2-3', 'lektion2-4', 'quiz'];
+    const sectionTitles = ['Modulübersicht', 'Lektion 2.1', 'Lektion 2.2', 'Lektion 2.3', 'Lektion 2.4', 'Quiz'];
+
+    function initializeNavigation() {
+      // Add click handlers to sidebar navigation
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetSection = link.getAttribute('data-section');
+          showSection(targetSection);
+        });
+      });
+    }
+
+    function showSection(sectionId) {
+      // Hide all sections
+      const allSections = document.querySelectorAll('.lesson');
+      allSections.forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Show target section
+      const targetSection = document.getElementById(sectionId);
+      if (targetSection) {
+        targetSection.classList.add('active');
+        currentSectionIndex = sections.indexOf(sectionId);
+        updateProgressIndicator();
+      }
+    }
+
+    function showNextSection() {
+      if (currentSectionIndex < sections.length - 1) {
+        currentSectionIndex++;
+        showSection(sections[currentSectionIndex]);
+      }
+    }
+
+    function showPreviousSection() {
+      if (currentSectionIndex > 0) {
+        currentSectionIndex--;
+        showSection(sections[currentSectionIndex]);
+      }
+    }
+
+    function showFirstSection() {
+      currentSectionIndex = 0;
+      showSection(sections[currentSectionIndex]);
+    }
+
+    function updateProgressIndicator() {
+      const progressIndicators = document.querySelectorAll('.progress-indicator');
+      progressIndicators.forEach(indicator => {
+        indicator.textContent = `Fortschritt: ${currentSectionIndex + 1} von ${sections.length}`;
+      });
+    }
   </script>
 </body>
 </html> 
