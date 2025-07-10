@@ -1,3 +1,27 @@
+//Media Button Funktion
+document.addEventListener("DOMContentLoaded", () => {
+  const buttons = document.querySelectorAll(".tabs button");
+  const mediaItems = {
+    "Video": document.getElementById("video-content"),
+    "Audio": document.getElementById("audio-content"),
+    "Text": document.getElementById("text-content"),
+  };
+
+  buttons.forEach(button => {
+    button.addEventListener("click", () => {
+      buttons.forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+
+      Object.values(mediaItems).forEach(item => item.classList.add("hidden"));
+
+      const label = button.textContent.trim();
+      if (mediaItems[label]) {
+        mediaItems[label].classList.remove("hidden");
+      }
+    });
+  });
+});
+
 //Note Funktion
 document.addEventListener("DOMContentLoaded", function() {
       const addNoteBtn = document.getElementById("add-note");
@@ -25,7 +49,9 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
     // Lückentext-Logik
-      document.getElementById('validate-button').addEventListener('click', function () {
+    const validateButton = document.getElementById('validate-button');
+if (validateButton) {
+  validateButton.addEventListener('click', function () {
     const selects = document.querySelectorAll('section.fill-in-the-blanks select');
 
     let allCorrect = true;
@@ -37,12 +63,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
       if (userAnswer === "") {
         allFilled = false;
-        select.style.borderColor = "#f39c12"; // orange für Hinweis
+        select.style.borderColor = "#f39c12"; // orange
       } else if (userAnswer.toLowerCase() !== correctAnswer.toLowerCase()) {
         allCorrect = false;
-        select.style.borderColor = "#e74c3c"; // rot für falsch
+        select.style.borderColor = "#e74c3c"; // rot
       } else {
-        select.style.borderColor = "#2ecc71"; // grün für richtig
+        select.style.borderColor = "#2ecc71"; // grün
       }
     });
 
@@ -58,6 +84,8 @@ document.addEventListener("DOMContentLoaded", function() {
       feedback.style.color = "#e74c3c";
     }
   });
+}
+
 
    // Quiz-Logik
     document.getElementById("quiz-form").addEventListener("submit", function (e) {

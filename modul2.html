@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lernplattform - Modul 2 (Layout-Test)</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .infobox {
+      background: #e3f6ff;
+      border-left: 4px solid #0074d9;
+      padding: 1em;
+      margin: 1em 0;
+    }
+
+    .quiz {
+      background: #fffbe6;
+      border-left: 4px solid #ffea00;
+      padding: 1em;
+      margin: 1em 0;
+    }
+
+    .exercise {
+      background: #eaffea;
+      border-left: 4px solid #2ecc40;
+      padding: 1em;
+      margin: 1em 0;
+    }
+
+    .lesson {
+      margin-bottom: 2em;
+    }
+
+    .lesson h4 {
+      margin-top: 0.5em;
+    }
+
+    .media-row {
+      display: flex;
+      gap: 1em;
+      flex-wrap: wrap;
+      margin-bottom: 1em;
+    }
+
+    .media-row img,
+    .media-row iframe {
+      max-width: 48%;
+      flex: 1 1 300px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .quiz-answers {
+      margin: 0.5em 0 0 1em;
+    }
+
+    .quiz-answers label {
+      display: block;
+      margin-bottom: 0.3em;
+    }
+
+    .dragdrop-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+    }
+
+    .dragdrop-table th,
+    .dragdrop-table td {
+      border: 1px solid #ccc;
+      padding: 0.5em;
+    }
+
+    .reflection {
+      background: #f7f7f7;
+      border-left: 4px solid #888;
+      padding: 1em;
+      margin: 1em 0;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <img src="logos/Tollwerk-Logo_RGB.png" alt="Tollwerk Logo">
+      </div>
+      <div class="search-wrapper">
+        <img src="icons/Search.svg" alt="Suche Icon" class="search-icon">
+        <input type="search" placeholder="Suche nach Lerninhalten" aria-label="Suche" class="searchbar">
+      </div>
+      <div class="header-nav">
+        <img src="icons/Profile.svg" alt="Profil Icon" class="header-nav-icon">
+      </div>
+    </div>
+  </header>
+  <div class="container">
+    <aside class="sidebar">
+      <nav>
+        <h3>
+          <span class="with-icon">
+            <img src="icons/List.svg" alt="Menu Icon" class="type-icon">
+            Navigation
+          </span>
+        </h3>
+        <h2>Kurs Einführung</h2>
+        <h2>Modul 1: Barrierefreiheit</h2>
+        <ul>
+          <li><a href="modul1_allgemeine_definitionen.html">Allgemeine Definitionen</a></li>
+          <li><a href="modul1_gesetzliche_definitionen.html">Gesetzliche Definitionen</a></li>
+          <li><a href="modul1_lückentext.html">Lückentext</a></li>
+          <li><a href="modul1_quiz.html">Quiz</a></li>
+        </ul>
+        <h2>Modul 2: Barrieren</h2>
+        <ul>
+          <li><a href="modul2.html">Modulübersicht</a></li>
+          <li><a href="#lektion2-1">Lektion 2.1</a></li>
+          <li><a href="#lektion2-2">Lektion 2.2</a></li>
+          <li><a href="#lektion2-3">Lektion 2.3</a></li>
+          <li><a href="#lektion2-4">Lektion 2.4</a></li>
+          <li><a href="#quiz">Quiz</a></li>
+        </ul>
+        </li>
+        <li class="locked">3. Betroffene</li>
+        </ul>
+      </nav>
+    </aside>
+    <main class="content">
+      <section id="modul2">
+        <h2>Modul 2: Barrieren</h2>
+        <div class="infobox"><strong>Lernziel:</strong> Sie erkennen, wo und wie Barrieren im Alltag und in digitalen
+          Medien entstehen – und wie sie verschiedene Menschen in ihrer Teilhabe einschränken können.</div>
+        <ul>
+          <li>Lektion 2.1 Barrieren-Reflexion</li>
+          <li>Lektion 2.2 Barrieren sind überall</li>
+          <li>Lektion 2.3 Digitale Medien</li>
+          <li>Lektion 2.4 Auf den Punkt gebracht</li>
+        </ul>
+      </section>
+      <section class="lesson" id="lektion2-1">
+        <h3>📘 Lektion 2.1 Barrieren-Reflexion</h3>
+        <div class="infobox"><strong>Lernziel:</strong> Sie reflektieren, was der Begriff "Barriere" für dich persönlich
+          bedeutet – und wirst dir bewusst, wie unterschiedlich Barrieren wahrgenommen werden können.</div>
+        <ul>
+          <li>Hebe deine Hand und halte sie gehoben (Präsenz-Workshop: Für E-Learning eine andere Art der Interaktion
+            nötig)</li>
+          <li>Du siehst nacheinander 3 Wortwolken mit Zuständen, die Barrieren darstellen können</li>
+          <li>Senke deine Hand, wenn wenigstens ein Zustand auf dich zutrifft (oder schon einmal zugetroffen hat)</li>
+        </ul>
+        <div class="exercise">
+          <strong>Interaktion:</strong> <br> <em>Für die Animation wird ein Start/Pause Button benötigt: Nach Aktivieren
+            von "Start" werden nacheinander die 3 Wortwolken angezeigt.</em>
+        </div>
+      </section>
+      <section class="lesson" id="lektion2-2">
+        <h3>📘 Lektion 2.2 Barrieren sind überall</h3>
+        <div class="infobox"><strong>Lernziel:</strong> Sie erkennen, in welchen Lebensbereichen Barrieren vorkommen und
+          warum ihre Beseitigung alle Menschen betrifft.</div>
+        <p>Barrieren begegnen uns in vielen Lebensbereichen – oft unbemerkt von denjenigen, die nicht direkt betroffen
+          sind. Sie entstehen nicht nur durch bauliche Hindernisse, sondern auch durch Gestaltung, Sprache, Technik oder
+          gesellschaftliche Strukturen. Diese Lektion zeigt exemplarisch, in welchen Bereichen Barrieren besonders
+          häufig auftreten – und warum sie uns alle etwas angehen.</p>
+        <h4>Gebaute Umgebung</h4>
+        <ul>
+          <li>Treppen ohne alternative Zugänge wie Rampen oder Aufzüge</li>
+          <li>Schmale Türen oder enge Flure</li>
+          <li>Fehlende Orientierungshilfen (z.B. tastbare Bodenleitsysteme oder gut lesbare Beschilderungen)</li>
+          <li>Sanitäranlagen, die nicht rollstuhlgerecht sind</li>
+        </ul>
+        <div class="media-row">
+          <img
+            src="inhalte/Kursinhalte/Bilder--Modul 2 Barrieren/Lektion 2.2 Barrieren sind überall/barrieren_überall.jpg"
+            alt="Barrieren überall">
+          <img
+            src="inhalte/Kursinhalte/Bilder--Modul 1 Barrierefreiheit/Lektion 1.3 Soziale und praktische Aspekte/Sozial-praktische-Aspekte_Workshop_TUDO_AS_087_original.jpg"
+            alt="Soziale Aspekte">
+        </div>
+        <div class="infobox">💡 <strong>Wusstest du schon?</strong><br>Menschen mit temporären Einschränkungen – etwa
+          mit einem gebrochenen Bein oder mit Kinderwagen – profitieren ebenfalls von barrierefreien Zugängen.</div>
+        <div class="exercise">
+          <strong>Übung:</strong> Zwei Fotos: eins mit Treppe, eins mit Rampe. Frage: Welche Variante ist für mehr
+          Menschen nutzbar? <br><em>→ Auswahlantwort</em>
+        </div>
+        <h4>Gebrauchsgegenstände</h4>
+        <ul>
+          <li>Kleine oder schlecht beschriftete Tasten</li>
+          <li>Displays ohne Sprachausgabe oder ohne ausreichenden Kontrast</li>
+          <li>Bedienkonzepte, die motorische Präzision oder schnelle Reaktionen erfordern</li>
+        </ul>
+        <div class="infobox">💡 <strong>Merksatz:</strong> Ein Gerät ist dann barrierefrei, wenn es von möglichst vielen
+          Menschen intuitiv und selbstständig bedient werden kann.</div>
+        <h4>Verkehr & Transport</h4>
+        <ul>
+          <li>Hohe Einstiege in Busse oder Bahnen</li>
+          <li>Fehlende akustische oder visuelle Fahrgastinformationen</li>
+          <li>Komplizierte Ticketautomaten</li>
+          <li>Unübersichtliche Wegführungen in Bahnhöfen oder Flughäfen</li>
+        </ul>
+        <div class="infobox">💡 <strong>Perspektivwechsel:</strong> Stellen Sie sich vor, du bist in einer fremden
+          Stadt, sprichst die Sprache nicht und kannst schlecht sehen – wie ist es für dich zur richtigen Haltestelle zu
+          finden?</div>
+        <h4>Kommunikation & Information</h4>
+        <ul>
+          <li>Texte in schwer verständlicher Sprache oder ohne Leichte Sprache</li>
+          <li>Fehlende Untertitel oder Gebärdensprachdolmetschung in Videos</li>
+          <li>Webseiten, die für Screenreader unzugänglich sind</li>
+          <li>Gedruckte Informationen ohne digitale oder auditiv erfassbare Alternativen</li>
+        </ul>
+        <div class="infobox">💡 <strong>Merksatz:</strong> Barrierefreiheit im Internet bedeutet: Inhalte für möglichst
+          viele Menschen nutzbar zu machen – unabhängig von Technik, Fähigkeiten oder Sprache.</div>
+        <h4>Gesellschaft & Struktur</h4>
+        <ul>
+          <li>Komplexe Verwaltungsverfahren ohne Unterstützungsmöglichkeiten</li>
+          <li>Ausschluss von Betroffenen bei Entscheidungen</li>
+          <li>Fehlendes Bewusstsein in Organisationen, Verwaltungen oder Bildungseinrichtungen</li>
+          <li>Mangelnde Repräsentation von Vielfalt in Medien, Politik oder Arbeitswelt</li>
+        </ul>
+        <div class="infobox">💡 <strong>Merksatz:</strong> Barrieren entstehen nicht nur durch "vergessene" Menschen –
+          sondern oft durch "vergessene Perspektiven". Inklusive Strukturen beginnen mit Bewusstsein.</div>
+        <div class="reflection">
+          <strong>Fazit:</strong> Barrieren sind keine Ausnahme – sie sind alltäglich. Doch sie sind auch
+          menschengemacht – und damit veränderbar. Wer Barrieren erkennt, kann sie abbauen oder vermeiden. Ein
+          barrierefreies Umfeld nützt nicht nur Menschen mit Behinderung, sondern schafft eine inklusive, komfortable
+          und zugängliche Gesellschaft für alle.
+        </div>
+      </section>
+      <section class="lesson" id="lektion2-3">
+        <h3>📘 Lektion 2.3 Digitale Medien</h3>
+        <div class="infobox"><strong>Lernziel:</strong> Sie verstehen, wie digitale Barrieren entstehen – z.B. in
+          Websites, Apps, Dokumenten oder Kommunikation – und warum digitale Zugänglichkeit für alle relevant ist.</div>
+        <p>Digitale Medien begleiten unseren Alltag – beruflich wie privat. Ob beim Lesen von E-Mails, der Nutzung von
+          Apps oder dem Zugriff auf Dokumente im Intranet: Digitale Angebote sind allgegenwärtig. Doch was für viele
+          selbstverständlich ist, stellt für andere eine erhebliche Hürde dar. Denn auch im Digitalen sind Barrieren
+          weit verbreitet – oft unsichtbar, aber wirkungsvoll.</p>
+        <div class="media-row">
+          <iframe src="inhalte/Kursinhalte/04--Modul 1 Barrierefreiheit.pdf" height="300"></iframe>
+          <iframe src="inhalte/Kursinhalte/05--Modul 2 Barrieren.pdf" height="300"></iframe>
+        </div>
+        <h4>Websites, Web- und native Apps</h4>
+        <ul>
+          <li>Bilder haben keine Alternativtexte</li>
+          <li>Formulare sind nicht programmatisch beschriftet</li>
+          <li>Farbkontraste, die für Menschen mit Sehbeeinträchtigung nicht lesbar sind</li>
+        </ul>
+        <div class="infobox">💡 <strong>Denkanstoß:</strong> Könntest du dein Intranet auch ohne Maus bedienen?</div>
+        <h4>Digitale Kommunikation: E-Mail, Messenger, Social Media</h4>
+        <ul>
+          <li>PDF-Anhänge, die von Screenreadern nicht lesbar sind</li>
+          <li>GIFs oder Videos ohne Beschreibung</li>
+          <li>Voice Messages ohne Transkription</li>
+        </ul>
+        <h4>Unterhaltung: Videos, Audio, Spiele</h4>
+        <ul>
+          <li>Untertitel für Videos</li>
+          <li>Audiodeskriptionen für Filme</li>
+          <li>Spielsteuerung ohne Maus oder Touchscreen</li>
+        </ul>
+        <div class="infobox">💡 <strong>Denkanstoß:</strong> Was passiert, wenn ein Video keine Untertitel hat?</div>
+        <h4>Dokumente: Office-Dateien, PDF & Co.</h4>
+        <ul>
+          <li>Keine Überschriftenstruktur</li>
+          <li>Nicht durchsuchbare Scans</li>
+          <li>Fehlende Alternativtexte in eingebetteten Bildern</li>
+        </ul>
+        <div class="infobox">💡 <strong>Wusstest du schon?</strong> Über 90% aller PDFs im Internet sind nicht
+          barrierefrei.</div>
+        <h4>Betriebssysteme & Desktop-Anwendungen</h4>
+        <ul>
+          <li>Bildschirmvergrößerung</li>
+          <li>Tastatursteuerung</li>
+          <li>Sprachsteuerung</li>
+        </ul>
+        <h4>Selbstbedienungs-Terminals</h4>
+        <ul>
+          <li>Sprachausgabe</li>
+          <li>Kontrastreichem Display</li>
+          <li>Taktilem Feedback</li>
+        </ul>
+        <div class="infobox">💡 <strong>Denkanstoß:</strong> Würdest du den Ticketautomaten an deinem Bahnhof im
+          Rollstuhl problemlos bedienen können?</div>
+        <h4>ITK-Services: Informationstechnologie & Kommunikation</h4>
+        <ul>
+          <li>Ist der Support barrierefrei erreichbar?</li>
+          <li>Gibt es Anleitungen in Leichter Sprache?</li>
+          <li>Wird auf unterschiedliche Nutzungsbedarfe Rücksicht genommen?</li>
+        </ul>
+        <div class="reflection">
+          <strong>Fazit:</strong> Barrieren in digitalen Medien sind kein Spezialproblem – sie betreffen zentrale
+          Lebensbereiche wie Arbeit, Bildung, Kommunikation und Freizeit. Eine barrierefreie Gestaltung ist daher nicht
+          nur rechtlich gefordert, sondern auch ein Zeichen von Qualität, Inklusion und Zukunftsfähigkeit.
+        </div>
+      </section>
+      <section class="lesson" id="lektion2-4">
+        <h3>📘 Lektion 2.4 Auf den Punkt gebracht</h3>
+        <p>Barrieren begegnen uns überall – in Gebäuden, im Verkehr, in der Kommunikation und besonders in der digitalen
+          Welt. Oft sind sie nicht sichtbar, aber dennoch wirksam. Sie entstehen durch Gestaltung, Sprache, Technik oder
+          Strukturen – und sie schließen Menschen aus, wenn ihre Bedürfnisse nicht mitgedacht werden.</p>
+        <div class="infobox">Digitale Barrieren können zum Beispiel unzugängliche Websites, unstrukturierte Dokumente
+          oder schwer verständliche Sprache sein. Dabei betreffen Barrieren nicht nur Menschen mit dauerhaften
+          Behinderungen, sondern auch Menschen in temporären oder situativen Einschränkungen.</div>
+        <div class="reflection">Barrierefreiheit ist keine Speziallösung, sondern ein Prinzip der Teilhabe und Qualität
+          – für alle. Wer Barrieren erkennt, kann sie vermeiden oder abbauen. Und genau das ist ein wichtiger Schritt zu
+          mehr Inklusion, Gerechtigkeit und digitaler Zugänglichkeit.</div>
+      </section>
+      <section id="quiz">
+        <h3>Testen Sie Ihr Wissen</h3>
+        <div class="quiz">
+          <strong>Welche der folgenden Eigenschaften verbessert die Barrierefreiheit eines Geräts?</strong>
+          <div class="quiz-answers">
+            <label><input type="radio" name="q1"> A) Kleine Schriftgröße</label>
+            <label><input type="radio" name="q1"> B) Nur Touchbedienung</label>
+            <label><input type="radio" name="q1"> <strong>C) Kontrastreiche Beschriftung</strong></label>
+            <label><input type="radio" name="q1"> D) Bedienung nur über App</label>
+          </div>
+        </div>
+        <div class="quiz">
+          <strong>Welche Maßnahmen machen eine Website barrierefreier?</strong>
+          <div class="quiz-answers">
+            <label><input type="checkbox" name="q2a"> <strong>A) Alternativtexte für Bilder</strong></label>
+            <label><input type="checkbox" name="q2b"> <strong>B) Leichte Sprache</strong></label>
+            <label><input type="checkbox" name="q2c"> C) Automatische Videos ohne Pausemöglichkeit</label>
+            <label><input type="checkbox" name="q2d"> <strong>D) Tastaturbedienung</strong></label>
+          </div>
+        </div>
+        <div class="quiz">
+          <strong>Was ist ein Beispiel für eine Barriere in der Kommunikation?</strong>
+          <div class="quiz-answers">
+            <label><input type="radio" name="q3"> A) Eine breite Tür in einem Bürogebäude</label>
+            <label><input type="radio" name="q3"> <strong>B) Ein Video ohne Untertitel</strong></label>
+            <label><input type="radio" name="q3"> C) Eine Rollstuhlrampe an einer Bushaltestelle</label>
+            <label><input type="radio" name="q3"> D) Ein Fahrstuhl mit akustischer Ansage</label>
+          </div>
+        </div>
+        <div class="quiz">
+          <strong>Welche Aussage beschreibt eine strukturelle Barriere?</strong>
+          <div class="quiz-answers">
+            <label><input type="radio" name="q4"> A) Ein Aufzug ist defekt.</label>
+            <label><input type="radio" name="q4"> B) Eine Webseite hat keinen Alternativtext.</label>
+            <label><input type="radio" name="q4"> <strong>C) Menschen mit Behinderungen werden nicht in
+                Entscheidungsprozesse einbezogen.</strong></label>
+            <label><input type="radio" name="q4"> D) Es fehlt eine Rampe am Hauseingang</label>
+          </div>
+        </div>
+        <div class="quiz">
+          <strong>Aufgabe (Lückentext):</strong>
+          <div style="margin-top:0.5em;">
+            Digitale Barrierefreiheit bedeutet, dass <input type="text" size="10" placeholder="Inhalte">, <input
+              type="text" size="15" placeholder="Bedienelemente"> und <input type="text" size="10" placeholder="Medien">
+            so gestaltet sind, dass sie ohne <input type="text" size="18" placeholder="besondere Erschwernis"> oder
+            <input type="text" size="12" placeholder="fremde Hilfe"> nutzbar sind – unabhängig von <input type="text"
+              size="15" placeholder="Einschränkungen"> oder <input type="text" size="18"
+              placeholder="technischen Hilfsmitteln">.
+          </div>
+        </div>
+        <div class="quiz">
+          <strong>Medium & Barriere (Drag & Drop):</strong>
+          <table class="dragdrop-table">
+            <tr>
+              <th>Medium</th>
+              <th>Barriere</th>
+            </tr>
+            <tr>
+              <td>Website</td>
+              <td>Zu geringe Farbkontraste von Texten</td>
+            </tr>
+            <tr>
+              <td>Video</td>
+              <td>Fehlende Untertitel</td>
+            </tr>
+            <tr>
+              <td>App</td>
+              <td>Schaltflächen nicht programmatisch beschriftet</td>
+            </tr>
+            <tr>
+              <td>PDF</td>
+              <td>Nicht getaggtes Dokument</td>
+            </tr>
+            <tr>
+              <td>Selbstbedienungs-Terminal</td>
+              <td>Keine Sprachausgabe</td>
+            </tr>
+          </table>
+        </div>
+        <div class="quiz">
+          <strong>Reflexionsfrage:</strong>
+          <div class="reflection">Nennen Sie ein Beispiel aus deinem Alltag, in dem du auf eine (digitale, bauliche oder
+            gesellschaftliche) Barriere gestoßen bist – und überlege, wie sie beseitigt werden könnte.</div>
+        </div>
+      </section>
+    </main>
+    <aside class="notes" id="notes">
+      <button class="notes-toggle" id="notes-toggle" title="Notizen ein-/ausklappen">📝</button>
+      <h3>Notizen</h3>
+      <button id="add-note">Neue Notiz erstellen</button>
+      <div id="notes-container"></div>
+    </aside>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const addNoteBtn = document.getElementById("add-note");
+      const notesContainer = document.getElementById("notes-container");
+      addNoteBtn.addEventListener("click", () => {
+        const note = document.createElement("div");
+        note.className = "note";
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "delete-note";
+        deleteButton.innerHTML = "✕";
+        deleteButton.title = "Notiz löschen";
+        deleteButton.addEventListener("click", () => {
+          notesContainer.removeChild(note);
+        });
+        const textarea = document.createElement("textarea");
+        textarea.placeholder = "Deine Notiz...";
+        note.appendChild(deleteButton);
+        note.appendChild(textarea);
+        notesContainer.appendChild(note);
+      });
+      // Notizen-Spalte ein-/ausklappen
+      const notes = document.getElementById('notes');
+      const notesToggle = document.getElementById('notes-toggle');
+      notesToggle.addEventListener('click', () => {
+        notes.classList.toggle('expanded');
+      });
+    });
+  </script>
+</body>
+
+</html>
