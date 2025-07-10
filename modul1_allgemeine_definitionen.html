@@ -11,42 +11,44 @@
 <body>
   <header>
     <div class="header-content">
-        <div class="logo">
-            <img src="logos/Tollwerk-Logo_RGB.png" alt="Tollwerk Logo">
-        </div>
-        <div class="search-wrapper">
-          <img src="icons/Search.svg" alt="Suche Icon" class="search-icon">
-          <input type="search" placeholder="Suche nach Lerninhalten" aria-label="Suche" class="searchbar">
-        </div>
-        <div class="header-nav">
-          <img src="icons/Profile.svg" alt="Profil Icon" class="header-nav-icon">
-        </div>
+      <div class="logo">
+        <img src="logos/Tollwerk-Logo_RGB.png" alt="Tollwerk Logo">
+      </div>
+      <div class="search-wrapper">
+        <img src="icons/Search.svg" alt="Suche Icon" class="search-icon">
+        <input type="search" placeholder="Suche nach Lerninhalten" aria-label="Suche" class="searchbar">
+      </div>
+      <div class="header-nav">
+        <img src="icons/Profile.svg" alt="Profil Icon" class="header-nav-icon">
+      </div>
     </div>
   </header>
 
   <div class="container">
     <aside class="sidebar">
       <nav>
-        <h3>  
+        <h3>
           <span class="with-icon">
             <img src="icons/List.svg" alt="Menu Icon" class="type-icon">
             Navigation
           </span>
         </h3>
         <h2>Kurs Einführung</h2>
+        <h2>Modul 1: Barrierefreiheit</h2>
         <ul>
-          <li>
-            <strong>1. Barrierefreiheit</strong><br>
-            <span> 35min</span>
-            <ul>
-              <li class="active"><a href="modul1_allgemeine_definitionen.html"><img src="icons/Video.svg" alt="Video Icon" class="type-icon">Allgemeine Definitionen</a></li>
-              <li><a href="modul1_gesetzliche_definitionen.html"><img src="icons/Text.svg" alt="Text Icon" class="type-icon">Gesetzliche Definitionen</a></li>
-              <li class="active"><a href="modul1_lückentext.html">Lückentext</a></li>
-              <li><a href="modul1_quiz.html"><img src="icons/Quiz.svg" alt="Quiz Icon" class="type-icon">Quiz</a></li>
-            </ul>
-          </li>
-          <li class="locked">2. Barrieren <img src="icons/Locked.svg" alt="Locked Icon" class="locked-icon"></li>
-          <li class="locked">3. Betroffene <img src="icons/Locked.svg" alt="Locked Icon" class="locked-icon"></li>
+          <li><a href="modul1_allgemeine_definitionen.html">Allgemeine Definitionen</a></li>
+          <li><a href="modul1_gesetzliche_definitionen.html">Gesetzliche Definitionen</a></li>
+          <li class="active"><a href="modul1_lückentext.html">Lückentext</a></li>
+          <li class="active"><a href="modul1_quiz.html">Quiz</a></li>
+        </ul>
+        <h2>Modul 2: Barrieren</h2>
+        <ul>
+          <li><a href="#modul2">Modulübersicht</a></li>
+          <li><a href="#lektion2-1">Lektion 2.1</a></li>
+          <li><a href="#lektion2-2">Lektion 2.2</a></li>
+          <li><a href="#lektion2-3">Lektion 2.3</a></li>
+          <li><a href="#lektion2-4">Lektion 2.4</a></li>
+          <li><a href="#quiz">Quiz</a></li>
         </ul>
       </nav>
     </aside>
@@ -65,7 +67,8 @@
 
         <div class="media">
           <div class="media-item" id="video-content">
-            <img src="images/Digitale-Barrierefreiheit Video Thumbnail.jpeg" alt="Video Titelbildschirm" class="modulbild">
+            <img src="images/Digitale-Barrierefreiheit Video Thumbnail.jpeg" alt="Video Titelbildschirm"
+              class="modulbild">
             <div class="play-button" aria-hidden="true">▶</div>
           </div>
 
@@ -73,7 +76,8 @@
             <div class="custom-audio-player">
               <!-- können auch ein standart img nehmen wie hier drunter -->
               <!-- <img src="images/audio-cover.jpg" alt="Audio Cover" class="modulbild"> -->
-              <img src="images/Audio image Allgemeine Definition.png" alt="Audio Cover" class="modulbild" style="width: 400px; height: auto;">
+              <img src="images/Audio image Allgemeine Definition.png" alt="Audio Cover" class="modulbild"
+                style="width: 400px; height: auto;">
             </div>
             <audio id="real-audio" style="display:none">
               <!-- Audio muss noch eingefügt werden wenn wir da eine haben -->
