@@ -103,6 +103,7 @@ body {
     border-bottom: 1px solid #ccc;
     margin-bottom: 10px;
     padding-bottom: 10px;
+    text-decoration: none;
   }
 
   .sidebar nav h2 {
@@ -120,7 +121,7 @@ body {
   .content {
     flex: 1;
     max-width: 100%;
-    padding: 4rem 6rem;
+    padding: 1rem 6rem;
     background: white;
   }
   
@@ -234,8 +235,8 @@ body {
 
   /* Nur Video bekommt Rahmen und Schatten */
   #video-content {
-    border: 1px solid #ddd;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 1.25rem;
+  box-shadow: 0 0.5rem 1.875rem rgba(84, 109, 253, 0.15);
   }
   
   .media img {
@@ -269,7 +270,7 @@ body {
   }
 
   .tabs button.active {
-    background-color: #6a60f4;
+    background-color: #546dfd;
   }
 
   
@@ -278,12 +279,15 @@ body {
   }
   
   .tabs button {
-    background: #d1d8ff;
-    border: none;
-    padding: 0.5rem 1rem;
-    margin-right: 0.3rem;
-    border-radius: 5px;
-    cursor: pointer;
+    background-color: transparent;
+    color: #576FCB;
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #576FCB;
+    border-radius: 0.75rem;
+    font-weight: 700;
+    font-size: 0.7rem;
+    max-height: auto;
   }
   
   .tabs .active {
@@ -342,6 +346,10 @@ body {
   font-weight: bold;
   font-size: 1rem;
   transition: background-color 0.2s ease;
+}
+
+.next-button {
+  margin-left: auto;
 }
 
 .nav-button:hover {
@@ -457,11 +465,10 @@ body {
 
 .quiz-multiple {
   background-color: #ffffff;
-  padding: 2.5rem;
+  padding: 2rem 3rem;
   border-radius: 1.25rem;
   box-shadow: 0 0.5rem 1.875rem rgba(84, 109, 253, 0.15);
-  max-width: 37.5rem;
-  width: 100%;
+  max-width: 800px;
   font-size: 1.125rem; 
   line-height: 1.5;
 }
@@ -567,4 +574,84 @@ body {
   font-weight: 600;
   margin-top: 1.25rem;
   transition: color 0.3s ease;
+}
+
+.infobox {
+  background: #e3f6ff;
+  border-left: 4px solid #576FCB;
+  padding: 1em;
+  margin: 1em 0;
+}
+
+a{
+  text-decoration: none;
+  color: #546dfd;
+}
+
+.information-text {
+  background-color: #ffffff;
+  border-radius: 1.25rem;
+  padding: 2rem 3rem;
+  box-shadow: 0 0.5rem 1.875rem rgba(84, 109, 253, 0.1);
+  max-width: 800px;
+  margin: 2rem auto;
+  font-family: "GraublauDisplay", sans-serif;
+  color: #2c2e4a;
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+.information-text h3 {
+  font-size: 1.25rem;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: #3642a0;
+  border-left: 5px solid #576fcb;
+  padding-left: 0.75rem;
+}
+
+.information-text p {
+  margin-bottom: 1.25rem;
+  text-align: left;
+}
+
+.information-text ul {
+  font-size: 1 rem;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: #000000;
+  border-left: 5px solid #576fcb;
+  padding-left: 1.75rem;
+  list-style: disc inside;
+}
+
+.information-text li {
+  font-size: 1 rem;
+  color: #000000;
+  margin-left: 1rem;
+  padding-left: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .information-text {
+    padding: 1.5rem 1.25rem;
+    font-size: 1rem;
+  }
+
+  .information-text h3 {
+    font-size: 1.15rem;
+  }
+}
+
+h2 + p {
+  margin-top: 0.1rem;
+}
+h2:has(+p){
+  margin-bottom: 0;
+}
+
+a.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
 }

@@ -88,26 +88,28 @@ if (validateButton) {
 
 
    // Quiz-Logik
-    document.getElementById("quiz-form").addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const selected = document.querySelector('input[name="question1"]:checked');
-      const feedback = document.getElementById("feedback");
-      const nextLink = document.getElementById("next-link");
-
-      if (!selected) {
-        feedback.textContent = "Bitte wähle eine Antwort aus.";
-        feedback.style.color = "black";
-        return;
-      }
-
-      if (selected.value === "B") {
-        feedback.textContent = "✅ Richtig! Digitale Barrierefreiheit bedeutet, dass alle Menschen – unabhängig von Behinderungen – digitale Inhalte nutzen können.";
-        feedback.style.color = "green";
-        nextLink.style.display = "inline-block";
-      } else {
-        feedback.textContent = "❌ Leider falsch. Die richtige Antwort ist: B.";
-        feedback.style.color = "red";
-        nextLink.style.display = "inline-block";
-      }
-    });
+   document.getElementById("quiz-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+  
+    const selected = document.querySelector('input[name="question1"]:checked');
+    const feedback = document.getElementById("feedback");
+    const nextLink = document.getElementById("next-link");
+  
+    if (!selected) {
+      feedback.textContent = "Bitte wähle eine Antwort aus.";
+      feedback.style.color = "black";
+      return;
+    }
+  
+    if (selected.value === "B") {
+      feedback.textContent = "✅ Richtig! Die Möglichkeit für alle Menschen, Angebote und Umgebungen ohne Einschränkungen zu nutzen.";
+      feedback.style.color = "green";
+    } else {
+      feedback.textContent = "❌ Leider falsch. Die richtige Antwort ist: B.";
+      feedback.style.color = "red";
+    }
+  
+    // Weiter-Link aktivieren
+    nextLink.classList.remove("disabled");
+    nextLink.setAttribute("aria-disabled", "false");
+  });

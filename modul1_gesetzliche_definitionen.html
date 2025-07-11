@@ -14,7 +14,13 @@
       <div class="logo">
         <img src="logos/Tollwerk-Logo_RGB.png" alt="Tollwerk Logo">
       </div>
-      <input type="search" placeholder="Suche nach Lerninhalten" aria-label="Suche" class="searchbar">
+      <div class="search-wrapper">
+        <img src="icons/Search.svg" alt="Suche Icon" class="search-icon">
+        <input type="search" placeholder="Suche nach Lerninhalten" aria-label="Suche" class="searchbar">
+      </div>
+      <div class="header-nav">
+        <img src="icons/Profile.svg" alt="Profil Icon" class="header-nav-icon">
+      </div>
     </div>
   </header>
 
@@ -54,13 +60,78 @@
       <section>
         <h2>Modul 1</h2>
         <h2>Barrierefreiheit</h2>
-        <p><em>Bearbeitungszeit ca. 35 Minuten</em></p>
-
+        <p class="meta-info"><em>Bearbeitungszeit ca. 35 Minuten</em></p>
+        <div class="tabs">
+          <button class="active">Video</button>
+          <button>Audio</button>
+          <button>Text</button>
+        </div>
         <h2>Gesetzliche Definitionen</h2>
+        <div class="infobox"><strong>Lernziel:</strong> Sie verstehen die gesetzliche Definition von Barrierefreiheit in Deutschland und erkennst ihre
+          verbindlichen Kriterien.</div>
+
+
+        <div class="media">
+          <div class="media-item" id="video-content">
+            <img src="images/Digitale-Barrierefreiheit Video Thumbnail.jpeg" alt="Video Titelbildschirm"
+              class="modulbild">
+            <div class="play-button" aria-hidden="true">▶</div>
+          </div>
+
+          <div class="media-item hidden" id="audio-content">
+            <div class="custom-audio-player">
+              <!-- können auch ein standart img nehmen wie hier drunter -->
+              <!-- <img src="images/audio-cover.jpg" alt="Audio Cover" class="modulbild"> -->
+              <img src="images/Audio image Allgemeine Definition.png" alt="Audio Cover" class="modulbild"
+                style="width: 400px; height: auto;">
+            </div>
+            <audio id="real-audio" style="display:none">
+              <!-- Audio muss noch eingefügt werden wenn wir da eine haben -->
+              <source src="media/audio-barrierefreiheit.mp3" type="audio/mpeg">
+              Dein Browser unterstützt kein Audioelement.
+            </audio>
+          </div>
+
+          <div class="media-item hidden information-text" id="text-content">
+            <p>
+              Die gesetzliche Grundlage für Barrierefreiheit in Deutschland findet sich im
+              Behindertengleichstellungsgesetz (BGG). Dort wird klar definiert, was unter Barrierefreiheit zu
+              verstehen ist. Laut § 4 BGG gilt:
+            </p>
+            <ul>
+              <p>
+                Barrierefrei sind bauliche und sonstige Anlagen, Verkehrsmittel, technische
+                Gebrauchsgegenstände, Systeme der Informationsverarbeitung, akustische und visuelle
+                Informationsquellen und Kommunikationseinrichtungen sowie andere gestaltete
+                Lebensbereiche, wenn sie für Menschen mit Behinderungen:
+              </p>
+              <li>in der allgemein üblichen Weise,</li>
+              <li>ohne besondere Erschwernis und</li>
+              <li>grundsätzlich ohne fremde Hilfe</li>
+              <li>auffindbar, zugänglich und nutzbar sind.</li>
+            </ul>
+            <p>
+              Diese Definition hebt drei zentrale Kriterien hervor:
+            </p>
+            <ol>
+              <li><strong>Allgemein übliche Weise</strong> – Menschen mit Behinderungen sollen Dinge auf die gleiche Art
+                und Weise nutzen können wie alle anderen. Es geht nicht um Sonderlösungen, sondern um
+                gleichwertige Nutzungsmöglichkeiten.,</li>
+              <li><strong>Ohne besondere Erschwernis</strong> – Die Nutzung darf nicht mit zusätzlichen Hindernissen oder
+                übermäßigen Anstrengungen verbunden sein. Barrierefreiheit bedeutet also auch Komfort
+                und einfache Zugänglichkeit.</li>
+              <li><strong>Grundsätzlich ohne fremde Hilfe</strong> – Ziel ist die größtmögliche Selbstständigkeit. Menschen
+                sollen Angebote und Räume eigenständig nutzen können, ohne auf ständige Unterstützung
+                angewiesen zu sein.</li>
+            </ol>
+
+          </div>
+        </div>
+
 
         <div class="nav-buttons">
-          <a href="modul1_allgemeine_definitionen.html" class="button-secondary">&larr; Zurück</a>
-          <a href="modul1_lückentext.html" class="button-secondary">Weiter &rarr;</a>
+          <a href="modul1_quiz.html" class="button-secondary">&larr; Zurück</a>
+          <a href="modul1_lückentext.html" class="nav-button next-button button-secondary">Weiter &rarr;</a>
         </div>
 
       </section>
