@@ -12,7 +12,7 @@
   <header>
     <div class="header-content">
       <div class="logo">
-        <img src="logos/Tollwerk-Logo_RGB.png" alt="Tollwerk Logo">
+        <img src="logos/Tollwerk-Logo_RGB.svg" alt="Tollwerk Logo">
       </div>
       <div class="search-wrapper">
         <img src="icons/Search.svg" alt="Suche Icon" class="search-icon">
@@ -33,26 +33,37 @@
             Navigation
           </span>
         </h3>
-        <h2>Kurs Einführung</h2>
-        <h2>Modul 1: Barrierefreiheit</h2>
-        <ul>
-          <li><a href="modul1_allgemeine_definitionen.html">Allgemeine Definitionen</a></li>
-          <li><a href="modul1_gesetzliche_definitionen.html">Gesetzliche Definitionen</a></li>
-          <li><a href="modul1_lückentext.html">Lückentext</a></li>
-          <li><a href="modul1_quiz.html">Quiz</a></li>
-        </ul>
-        <h2>Modul 2: Barrieren</h2>
-        <ul>
-          <li><a href="modul2.html">Modulübersicht</a></li>
-          <li><a href="#lektion2-1">Lektion 2.1</a></li>
-          <li><a href="#lektion2-2">Lektion 2.2</a></li>
-          <li><a href="#lektion2-3">Lektion 2.3</a></li>
-          <li><a href="#lektion2-4">Lektion 2.4</a></li>
-          <li><a href="#quiz">Quiz</a></li>
-        </ul>
-        </li>
-        <li class="locked">3. Betroffene</li>
-        </ul>
+    
+        <details open>
+          <summary>Kurs Einführung</summary>
+          <ul>
+            <li><a href="einleitung.html">Einleitung</a></li>
+          </ul>
+        </details>
+    
+        <details open>
+          <summary>Modul 1: Barrierefreiheit</summary>
+          <ul>
+            <li><a href="modul1_allgemeine_definitionen.html">Allgemeine Definitionen</a></li>
+            <li><a href="modul1_gesetzliche_definitionen.html" aria-current="page">Gesetzliche Definitionen</a></li>
+            <li><a href="modul1_lückentext.html">Lückentext</a></li>
+            <li><a href="modul1_quiz.html">Quiz</a></li>
+          </ul>
+        </details>
+    
+        <details>
+          <summary>Modul 2: Barrieren</summary>
+          <ul>
+            <li><a href="modul2.html">Modulübersicht</a></li>
+            <li><a href="#lektion2-1">Lektion 2.1</a></li>
+            <li><a href="#lektion2-2">Lektion 2.2</a></li>
+            <li><a href="#lektion2-3">Lektion 2.3</a></li>
+            <li><a href="#lektion2-4">Lektion 2.4</a></li>
+            <li><a href="#quiz">Quiz</a></li>
+          </ul>
+        </details>
+    
+        <div class="locked">3. Betroffene</div>
       </nav>
     </aside>
 
