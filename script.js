@@ -22,32 +22,68 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-//Note Funktion
-document.addEventListener("DOMContentLoaded", function() {
-      const addNoteBtn = document.getElementById("add-note");
-      const notesContainer = document.getElementById("notes-container");
+// Note Funktion
+document.addEventListener("DOMContentLoaded", function () {
+  const addNoteBtn = document.getElementById("add-note");
+  const notesContainer = document.getElementById("notes-container");
+  // Kann man dann noch auf die einzelnen Module anwenden
+  const storageKey = "global_notes";
 
-      addNoteBtn.addEventListener("click", () => {
-        const note = document.createElement("div");
-        note.className = "note";
-
-        const deleteButton = document.createElement("button");
-        deleteButton.className = "delete-note";
-        deleteButton.innerHTML = "✕";
-        deleteButton.title = "Notiz löschen";
-
-        deleteButton.addEventListener("click", () => {
-          notesContainer.removeChild(note);
-        });
-
-        const textarea = document.createElement("textarea");
-        textarea.placeholder = "Deine Notiz...";
-
-        note.appendChild(deleteButton);
-        note.appendChild(textarea);
-        notesContainer.appendChild(note);
-      });
+  // speichern
+  function saveNotes() {
+    const notes = [];
+    notesContainer.querySelectorAll("textarea").forEach(textarea => {
+      const text = textarea.value.trim();
+      if (text !== "") { 
+        notes.push(text);
+      }
     });
+    localStorage.setItem(storageKey, JSON.stringify(notes));
+  }
+
+  // Notiz erstellen
+  function createNote(content = "") {
+    const note = document.createElement("div");
+    note.className = "note";
+
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "delete-note";
+    deleteButton.innerHTML = "✕";
+    deleteButton.title = "Notiz löschen";
+
+    deleteButton.addEventListener("click", () => {
+      notesContainer.removeChild(note);
+      saveNotes();
+    });
+
+    const textarea = document.createElement("textarea");
+    textarea.placeholder = "Deine Notiz...";
+    textarea.value = content;
+
+    textarea.addEventListener("input", saveNotes);
+
+    note.appendChild(deleteButton);
+    note.appendChild(textarea);
+    notesContainer.appendChild(note);
+  }
+
+  function loadNotes() {
+    const saved = localStorage.getItem(storageKey);
+    if (saved) {
+      JSON.parse(saved).forEach(text => createNote(text));
+    }
+  }
+
+  addNoteBtn.addEventListener("click", () => {
+    createNote();
+    saveNotes();
+  });
+
+  // Notiz Laden 
+  loadNotes();
+});
+
+    
     // Lückentext-Logik
     const validateButton = document.getElementById('validate-button');
 if (validateButton) {
