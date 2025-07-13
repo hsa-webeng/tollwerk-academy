@@ -112,33 +112,91 @@ header {
   height: 100vh;
   overflow-y: auto;
   box-sizing: border-box;
-}
-
-.sidebar nav > ul > li {
-  border-bottom: 1px solid #ccc;
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-  text-decoration: none;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .sidebar nav h1 {
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
-  margin-bottom: 15px;
   font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  word-wrap: break-word; /* Zeilenumbruch bei langen Wörtern */
+  line-height: 1.4;
 }
 
 .sidebar nav h2 {
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
-  margin-bottom: 15px;
   font-size: 1rem;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
 }
 
 .sidebar nav h3 {
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
+  font-size: 1rem;
+  color: #576fcb;
   margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+/* KLAPPBARE BEREICHE */
+.sidebar details {
+  margin-bottom: 1rem;
+}
+
+.sidebar summary {
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #576fcb;
+  padding-bottom: 10px;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.sidebar details[open] summary {
+  color: #576fcb;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding-left: 1rem;
+  margin: 0.5rem 0 1rem 0;
+}
+
+.sidebar li {
+  margin-bottom: 0.5rem;
+}
+
+.sidebar a {
+  color: #333;
+  text-decoration: none;
+  display: block;
+  padding: 0.25rem 0;
+  transition: color 0.2s ease;
+}
+
+.sidebar a:hover {
+  color: #576fcb;
+  font-weight: 500;
+}
+
+/* Aktive Seite hervorheben */
+.sidebar a[aria-current="page"] {
+  background-color: #e9edfd;
+  color: #576fcb;
+  font-weight: bold;
+  border-left: 4px solid #576fcb;
+  padding-left: 0.75rem;
+  border-radius: 0.25rem;
+}
+
+/* Gesperrte Abschnitte */
+.sidebar .locked {
+  color: #aaa;
+  pointer-events: none;
 }
 
 /* Content */
@@ -193,13 +251,6 @@ li a {
   border-radius: 5px;
 }
 
-.locked {
-  color: #aaa;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 1rem;
-}
 
 /* Icons */
 .type-icon {
