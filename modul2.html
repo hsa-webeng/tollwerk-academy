@@ -4,81 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lernplattform - Modul 2 (Layout-Test)</title>
+  <title>Lernplattform - Modul 2</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    .infobox {
-      background: #e3f6ff;
-      border-left: 4px solid #0074d9;
-      padding: 1em;
-      margin: 1em 0;
-    }
-
-    .quiz {
-      background: #fffbe6;
-      border-left: 4px solid #ffea00;
-      padding: 1em;
-      margin: 1em 0;
-    }
-
-    .exercise {
-      background: #eaffea;
-      border-left: 4px solid #2ecc40;
-      padding: 1em;
-      margin: 1em 0;
-    }
-
-    .lesson {
-      margin-bottom: 2em;
-    }
-
-    .lesson h4 {
-      margin-top: 0.5em;
-    }
-
-    .media-row {
-      display: flex;
-      gap: 1em;
-      flex-wrap: wrap;
-      margin-bottom: 1em;
-    }
-
-    .media-row img,
-    .media-row iframe {
-      max-width: 48%;
-      flex: 1 1 300px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    .quiz-answers {
-      margin: 0.5em 0 0 1em;
-    }
-
-    .quiz-answers label {
-      display: block;
-      margin-bottom: 0.3em;
-    }
-
-    .dragdrop-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1em 0;
-    }
-
-    .dragdrop-table th,
-    .dragdrop-table td {
-      border: 1px solid #ccc;
-      padding: 0.5em;
-    }
-
-    .reflection {
-      background: #f7f7f7;
-      border-left: 4px solid #888;
-      padding: 1em;
-      margin: 1em 0;
-    }
-  </style>
 </head>
 
 <body>
@@ -105,13 +32,15 @@
             Navigation
           </span>
         </h3>
-        <h2>Kurs Einführung</h2>
+        <h2><a href="index.html">Kurseinführung</a></h2>
+        <h2><a href="hinweise.html">Hinweise</a></h2>
+        <h1>Kurs: Grundlagensensibilisierung</h1>
         <h2>Modul 1: Barrierefreiheit</h2>
         <ul>
           <li><a href="modul1_allgemeine_definitionen.html">Allgemeine Definitionen</a></li>
           <li><a href="modul1_gesetzliche_definitionen.html">Gesetzliche Definitionen</a></li>
           <li><a href="modul1_lückentext.html">Lückentext</a></li>
-          <li><a href="modul1_quiz.html">Quiz</a></li>
+          <li><a href="modul1_quiz.html">Modul 1: Quiz</a></li>
         </ul>
         <h2>Modul 2: Barrieren</h2>
         <ul>
@@ -120,13 +49,17 @@
           <li><a href="#lektion2-2">Lektion 2.2</a></li>
           <li><a href="#lektion2-3">Lektion 2.3</a></li>
           <li><a href="#lektion2-4">Lektion 2.4</a></li>
-          <li><a href="#quiz">Quiz</a></li>
+          <li><a href="modul2_quiz.html">Quiz</a></li>
         </ul>
-        </li>
-        <li class="locked">3. Betroffene</li>
+        <h2>Modul 3: Betroffene</h2>
+        <ul>
+          <li class="locked">3. Betroffene</li>
         </ul>
       </nav>
     </aside>
+
+
+
     <main class="content">
       <section id="modul2">
         <h2>Modul 2: Barrieren</h2>
@@ -389,42 +322,21 @@
             gesellschaftliche) Barriere gestoßen bist – und überlege, wie sie beseitigt werden könnte.</div>
         </div>
       </section>
+
+      <div class="nav-buttons">
+        <a href="modul1_quiz.html" class="nav-button button-secondary">&larr; Zurück</a>
+        <a href="modul2_quiz.html" class="nav-button next-button button-secondary">Weiter &rarr;</a>
+      </div>
     </main>
-    <aside class="notes" id="notes">
-      <button class="notes-toggle" id="notes-toggle" title="Notizen ein-/ausklappen">📝</button>
+
+    <aside class="notes">
       <h3>Notizen</h3>
       <button id="add-note">Neue Notiz erstellen</button>
       <div id="notes-container"></div>
     </aside>
   </div>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const addNoteBtn = document.getElementById("add-note");
-      const notesContainer = document.getElementById("notes-container");
-      addNoteBtn.addEventListener("click", () => {
-        const note = document.createElement("div");
-        note.className = "note";
-        const deleteButton = document.createElement("button");
-        deleteButton.className = "delete-note";
-        deleteButton.innerHTML = "✕";
-        deleteButton.title = "Notiz löschen";
-        deleteButton.addEventListener("click", () => {
-          notesContainer.removeChild(note);
-        });
-        const textarea = document.createElement("textarea");
-        textarea.placeholder = "Deine Notiz...";
-        note.appendChild(deleteButton);
-        note.appendChild(textarea);
-        notesContainer.appendChild(note);
-      });
-      // Notizen-Spalte ein-/ausklappen
-      const notes = document.getElementById('notes');
-      const notesToggle = document.getElementById('notes-toggle');
-      notesToggle.addEventListener('click', () => {
-        notes.classList.toggle('expanded');
-      });
-    });
-  </script>
+
+  <script src="script.js"></script>
 </body>
 
 </html>
