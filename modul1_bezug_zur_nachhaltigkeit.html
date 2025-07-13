@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lernplattform - Modul 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <img src="logos/Tollwerk-Logo_RGB.png" alt="Tollwerk Logo">
+            </div>
+            <div class="search-wrapper">
+                <img src="icons/Search.svg" alt="Suche Icon" class="search-icon">
+                <input type="search" placeholder="Suche nach Lerninhalten" aria-label="Suche" class="searchbar">
+            </div>
+            <div class="header-nav">
+                <img src="icons/Profile.svg" alt="Profil Icon" class="header-nav-icon">
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <h3>
+                    <span class="with-icon">
+                        <img src="icons/List.svg" alt="Menu Icon" class="type-icon">
+                        Navigation
+                    </span>
+                </h3>
+                <h2><a href="index.html">Kurseinführung</a></h2>
+                <h2><a href="hinweise.html">Hinweise</a></h2>
+                <h1>Kurs: Grundlagensensibilisierung</h1>
+                <h2>Modul 1: Barrierefreiheit</h2>
+                <ul>
+                    <li>Allgemeine Definition</li>
+                    <li><a href="modul1_gesetzliche_definition.html">Gesetzliche Definition</a></li>
+                    <li><a href="modul1_soziale_praktische_aspekte.html">Soziale & praktische Aspekte</a></li>
+                    <li>Bezug zur Nachhaltigkeit</li>
+                    <li><a href="modul1_teste_dein_wissen.html">Teste dein Wissen</a></li>
+                    <li><a href="modul1_lückentext.html">Modul 1: Lückentext</a></li>
+                    <li><a href="modul1_quiz.html">Modul 1: Quiz</a></li>
+                    <li><a href="modul1_testergebnis.html">Testergebnis</a></li>
+                <h1>Modul 2: Barrieren</h1>
+                <ul>
+                    <li><a href="modul2.html">Modulübersicht</a></li>
+                    <li><a href="#lektion2-1">Lektion 2.1</a></li>
+                    <li><a href="#lektion2-2">Lektion 2.2</a></li>
+                    <li><a href="#lektion2-3">Lektion 2.3</a></li>
+                    <li><a href="#lektion2-4">Lektion 2.4</a></li>
+                    <li><a href="modul2_quiz.html">Quiz</a></li>
+                </ul>
+                </li>
+                <li class="locked">3. Betroffene</li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <section>
+                <h2>Barrierefreiheit</h2>
+                <p class="meta-info"><em>Bearbeitungszeit ca. 35 Minuten</em></p>
+                <div class="tabs">
+                    <button class="active">Video</button>
+                    <button>Audio</button>
+                    <button>Text</button>
+                </div>
+                <h2>Bezug zur Nachhaltigkeit</h2>
+                <div class="infobox"><strong>Lernziel:</strong> Sie lernen, den Bezug zur Nachhaltigkeit kennen.</div>
+
+
+                <div class="media">
+                    <div class="media-item" id="video-content">
+                        <img src="images/Digitale-Barrierefreiheit Video Thumbnail.jpeg" alt="Video Titelbildschirm"
+                            class="modulbild">
+                        <div class="play-button" aria-hidden="true">▶</div>
+                    </div>
+
+                    <div class="media-item hidden" id="audio-content">
+                        <div class="custom-audio-player">
+                            <!-- können auch ein standart img nehmen wie hier drunter -->
+                            <!-- <img src="images/audio-cover.jpg" alt="Audio Cover" class="modulbild"> -->
+                            <img src="images/Audio image Allgemeine Definition.png" alt="Audio Cover" class="modulbild"
+                                style="width: 400px; height: auto;">
+                        </div>
+                        <audio id="real-audio" style="display:none">
+                            <!-- Audio muss noch eingefügt werden wenn wir da eine haben -->
+                            <source src="media/audio-barrierefreiheit.mp3" type="audio/mpeg">
+                            Dein Browser unterstützt kein Audioelement.
+                        </audio>
+                    </div>
+
+                    <div class="media-item hidden information-text" id="text-content">
+                        <p>- hier kommt der Textinhalt rein, der den Bezug zur Nachhaltigkeit erklärt -</p>
+
+                    </div>
+                </div>
+
+
+                <div class="nav-buttons">
+                    <a href="modul1_soziale_praktische_aspekte.html" class="button-secondary">&larr; Zurück</a>
+                    <a href="modul1_teste_dein_wissen.html" class="nav-button next-button button-secondary">Weiter &rarr;</a>
+                </div>
+
+
+            </section>
+        </main>
+
+        <aside class="notes">
+            <h3>Notizen</h3>
+            <button id="add-note">Neue Notiz erstellen</button>
+            <div id="notes-container"></div>
+        </aside>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
