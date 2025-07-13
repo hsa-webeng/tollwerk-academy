@@ -292,6 +292,20 @@ class EnhancedProgressTracker {
   }
 }
 
+// Sidebar highlight current page
+
+document.addEventListener("DOMContentLoaded", () => {
+  const currentPath = window.location.pathname.split("/").pop();
+  const links = document.querySelectorAll(".sidebar a");
+
+  links.forEach(link => {
+    const href = link.getAttribute("href");
+    if (href === currentPath) {
+      link.setAttribute("aria-current", "page");
+    }
+  });
+});
+
 // Quiz Evaluation System
 class QuizEvaluator {
   constructor() {
