@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lernplattform - Willkommen</title>
+  <title>Kurs Einführung</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -34,25 +34,26 @@
           </span>
         </h3>
         <h2>Kurs Einführung</h2>
-        <h2>Modul 1: Barrierefreiheit</h2>
+        <h2><a href="hinweise.html">Hinweise</a></h2>
+        <h1>Modul 1: Barrierefreiheit</h1>
         <ul>
           <li><a href="modul1_allgemeine_definitionen.html">Allgemeine Definitionen</a></li>
           <li><a href="modul1_gesetzliche_definitionen.html">Gesetzliche Definitionen</a></li>
           <li><a href="modul1_lückentext.html">Lückentext</a></li>
           <li><a href="modul1_quiz.html">Quiz</a></li>
         </ul>
-        <h2>Modul 2: Barrieren</h2>
+        <h1>Modul 2: Barrieren</h1>
         <ul>
-          <li><a href="modul_2.html">Modulübersicht</a></li>
+          <li><a href="modul2.html">Modulübersicht</a></li>
           <li><a href="#lektion2-1">Lektion 2.1</a></li>
           <li><a href="#lektion2-2">Lektion 2.2</a></li>
           <li><a href="#lektion2-3">Lektion 2.3</a></li>
           <li><a href="#lektion2-4">Lektion 2.4</a></li>
           <li><a href="modul2_quiz.html">Quiz</a></li>
         </ul>
-        <h2>Modul 3: Betroffene</h2>
+        <h1>Modul 3: Betroffene</h1>
         <ul>
-          <li class="locked">3. Betroffene</li>
+          <h2 class="locked">3. Betroffene</h2>
         </ul>
       </nav>
     </aside>
@@ -60,89 +61,121 @@
     <main class="content">
       <section>
         <h1>Willkommen zur Lernplattform</h1>
-        <p class="meta-info"><em>Digitale Barrierefreiheit verstehen und umsetzen</em></p>
-        
-        <div class="infobox">
-          <strong>Über diesen Kurs:</strong> 
-          Lernen Sie die Grundlagen der digitalen Barrierefreiheit kennen und erfahren Sie, 
-          wie Sie Ihre digitalen Angebote für alle Menschen zugänglich gestalten können.
-        </div>
 
-        <h2>Kursübersicht</h2>
-        <p>
-          Diese Lernplattform führt Sie durch die wichtigsten Aspekte der digitalen Barrierefreiheit. 
-          Sie lernen nicht nur die theoretischen Grundlagen, sondern auch praktische Ansätze zur 
-          Umsetzung barrierefreier digitaler Lösungen.
-        </p>
+        <h2>Unsere Kurse im Überblick</h2>
 
-        <div class="course-modules">
-          <div class="module-card">
-            <h3>Modul 1: Barrierefreiheit</h3>
-            <p>Grundlagen und Definitionen der Barrierefreiheit</p>
-            <ul>
-              <li>Allgemeine Definitionen</li>
-              <li>Gesetzliche Grundlagen</li>
-              <li>Interaktive Übungen</li>
-              <li>Abschlussquiz</li>
-            </ul>
-            <div class="module-requirements">
-              <small>Mindestens 80% der Übungen müssen abgeschlossen werden</small>
+        <div class="course-cards">
+          <article class="module-card course-card" id="barrierefreiheit-card">
+            <div class="course-card-content">
+              <h3>Grundlagensensibilisierung</h3>
+              <p>Einführung in digitale Barrierefreiheit</p>
+              <a href="modul1_allgemeine_definitionen.html" class="nav-button button-secondary">Zum Kurs &rarr;</a>
             </div>
-            <a href="modul1_allgemeine_definitionen.html" class="nav-button button-secondary">Zum Modul &rarr;</a>
-          </div>
-
-          <div class="module-card">
-            <h3>Modul 2: Barrieren</h3>
-            <p>Verschiedene Arten von Barrieren und deren Auswirkungen</p>
-            <ul>
-              <li>Barrieren im Alltag</li>
-              <li>Digitale Barrieren</li>
-              <li>Lösungsansätze</li>
-              <li>Praktische Beispiele</li>
-            </ul>
-            <div class="module-requirements">
-              <small>Mindestens 80% der Übungen müssen abgeschlossen werden</small>
+            <div class="course-description">
+              <h4>Überblick & Grundlagensensibilisierung</h4>
+              <p>
+                Barrierefreiheit ist mehr als ein Randthema – sie ist Voraussetzung für Teilhabe,
+                Chancengleichheit und nachhaltige Entwicklung.
+                Dieser Kurs vermittelt grundlegendes Wissen über Barrierefreiheit: Was sie bedeutet, wo Barrieren
+                entstehen, wen sie betreffen und wie sie überwunden werden können.
+                Anhand rechtlicher Grundlagen, praktischer Beispiele und technischer Standards erhalten Sie
+                einen umfassenden Einblick in ein Thema, das für alle Lebens- und Arbeitsbereiche relevant ist.
+              </p>
+              <p><strong>Preis:</strong> 1.000 Euro</p>
             </div>
-            <a href="modul2.html" class="nav-button button-secondary disabled" aria-disabled="true">Zum Modul &rarr;</a>
+          </article>
+
+          <div class="course-card disabled">
+            <h3>Webentwicklung</h3>
+            <p>Barrierefreie Websites entwickeln</p>
+            <a href="#" class="nav-button button-secondary disabled" aria-disabled="true">Noch nicht verfügbar</a>
           </div>
 
-          <div class="module-card locked">
-            <h3>Modul 3: Betroffene</h3>
-            <p>Verständnis für verschiedene Nutzergruppen</p>
-            <ul>
-              <li>Menschen mit Behinderungen</li>
-              <li>Ältere Nutzer</li>
-              <li>Temporäre Einschränkungen</li>
-              <li>Inklusive Gestaltung</li>
-            </ul>
-            <span class="locked-text">Verfügbar in Kürze</span>
+          <div class="course-card disabled">
+            <h3>Design & UX</h3>
+            <p>Inklusive und benutzerfreundliche Gestaltung</p>
+            <a href="#" class="nav-button button-secondary disabled" aria-disabled="true">Noch nicht verfügbar</a>
+          </div>
+
+          <div class="course-card disabled">
+            <h3>Dokumente, PDF & E-Books</h3>
+            <p>Barrierefreie Dokumente erstellen</p>
+            <a href="#" class="nav-button button-secondary disabled" aria-disabled="true">Noch nicht verfügbar</a>
           </div>
         </div>
 
-        <h2>Lernziele</h2>
-        <p>Nach Abschluss dieses Kurses werden Sie:</p>
-        <ul>
-          <li>Die Grundlagen der digitalen Barrierefreiheit verstehen</li>
-          <li>Verschiedene Arten von Barrieren erkennen können</li>
-          <li>Praktische Lösungsansätze kennen</li>
-          <li>Ihre digitalen Angebote barrierefrei gestalten können</li>
-          <li>Die gesetzlichen Anforderungen verstehen</li>
-        </ul>
 
-        <div class="nav-buttons">
-          <a href="modul1_allgemeine_definitionen.html" class="nav-button next-button button-secondary">Kurs starten &rarr;</a>
-        </div>
+  <div class="course-modules">
+    <div class="module-card">
+      <h3>Modul 1: Barrierefreiheit</h3>
+      <p>Grundlagen und Definitionen der Barrierefreiheit</p>
+      <ul>
+        <li>Allgemeine Definitionen</li>
+        <li>Gesetzliche Grundlagen</li>
+        <li>Interaktive Übungen</li>
+        <li>Abschlussquiz</li>
+      </ul>
+      <div class="module-requirements">
+        <small>Mindestens 80% der Übungen müssen abgeschlossen werden</small>
+      </div>
+      <a href="modul1_allgemeine_definitionen.html" class="nav-button button-secondary">Zum Modul &rarr;</a>
+    </div>
 
-      </section>
-    </main>
+    <div class="module-card">
+      <h3>Modul 2: Barrieren</h3>
+      <p>Verschiedene Arten von Barrieren und deren Auswirkungen</p>
+      <ul>
+        <li>Barrieren im Alltag</li>
+        <li>Digitale Barrieren</li>
+        <li>Lösungsansätze</li>
+        <li>Praktische Beispiele</li>
+      </ul>
+      <div class="module-requirements">
+        <small>Mindestens 80% der Übungen müssen abgeschlossen werden</small>
+      </div>
+      <a href="modul2.html" class="nav-button button-secondary disabled" aria-disabled="true">Zum Modul &rarr;</a>
+    </div>
 
-    <aside class="notes">
-      <h3>Notizen</h3>
-      <button id="add-note">Neue Notiz erstellen</button>
-      <div id="notes-container"></div>
-    </aside>
+    <div class="module-card">
+      <h3>Modul 3: Betroffene</h3>
+      <p>Verständnis für verschiedene Nutzergruppen</p>
+      <ul>
+        <li>Menschen mit Behinderungen</li>
+        <li>Ältere Nutzer</li>
+        <li>Temporäre Einschränkungen</li>
+        <li>Inklusive Gestaltung</li>
+      </ul>
+      <div class="module-requirements">
+        <small>Mindestens 80% der Übungen müssen abgeschlossen werden</small>
+      </div>
+      <a href="#" class="nav-button button-secondary disabled" aria-disabled="true">Zum Modul &rarr;</a>
+    </div>
+  </div>
+
+  <h2>Lernziele</h2>
+  <p>Nach Abschluss dieses Kurses werden Sie:</p>
+  <ul>
+    <li>Die Grundlagen der digitalen Barrierefreiheit verstehen</li>
+    <li>Verschiedene Arten von Barrieren erkennen können</li>
+    <li>Praktische Lösungsansätze kennen</li>
+    <li>Ihre digitalen Angebote barrierefrei gestalten können</li>
+    <li>Die gesetzlichen Anforderungen verstehen</li>
+  </ul>
+
+  <div class="nav-buttons">
+    <a href="hinweise.html" class="nav-button next-button button-secondary">Weiter zu Hinweise &rarr;</a>
+  </div>
+
+  </section>
+  </main>
+
+  <aside class="notes">
+    <h3>Notizen</h3>
+    <button id="add-note">Neue Notiz erstellen</button>
+    <div id="notes-container"></div>
+  </aside>
   </div>
   <script src="script.js"></script>
 </body>
 
-</html> 
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hinweise</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <img src="logos/Tollwerk-Logo_RGB.png" alt="Tollwerk Logo">
+      </div>
+      <div class="search-wrapper">
+        <img src="icons/Search.svg" alt="Suche Icon" class="search-icon">
+        <input type="search" placeholder="Suche nach Lerninhalten" aria-label="Suche" class="searchbar">
+      </div>
+      <div class="header-nav">
+        <img src="icons/Profile.svg" alt="Profil Icon" class="header-nav-icon">
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <aside class="sidebar">
+      <nav>
+        <h3>
+          <span class="with-icon">
+            <img src="icons/List.svg" alt="Menu Icon" class="type-icon">
+            Navigation
+          </span>
+        </h3>
+        <h2><a href="index.html">Kurseinführung</a></h2>
+        <h2>Hinweise</h2>
+        <h2>Modul 1: Barrierefreiheit</h2>
+        <ul>
+          <li><a href="modul1_allgemeine_definitionen.html">Allgemeine Definitionen</a></li>
+          <li><a href="modul1_gesetzliche_definitionen.html">Gesetzliche Definitionen</a></li>
+          <li><a href="modul1_lückentext.html">Lückentext</a></li>
+          <li><a href="modul1_quiz.html">Quiz</a></li>
+        </ul>
+        <h2>Modul 2: Barrieren</h2>
+        <ul>
+          <li><a href="modul2.html">Modulübersicht</a></li>
+          <li><a href="#lektion2-1">Lektion 2.1</a></li>
+          <li><a href="#lektion2-2">Lektion 2.2</a></li>
+          <li><a href="#lektion2-3">Lektion 2.3</a></li>
+          <li><a href="#lektion2-4">Lektion 2.4</a></li>
+          <li><a href="modul2_quiz.html">Quiz</a></li>
+        </ul>
+        <h2>Modul 3: Betroffene</h2>
+        <ul>
+          <li class="locked">3. Betroffene</li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <section>
+        <h1>Bedienungshinweise</h1>
+        <p class="meta-info"><em>Fortschrittsverfolgung</em></p>
+        
+        <div class="infobox">
+          <strong>Funktionen:</strong> 
+          <ul>
+            <li>✅ Automatische Markierung von Inhaltsseiten beim Weiterklicken</li>
+            <li>🎯 Quiz und Lückentext erfordern mindestens 80%</li>
+            <li>📊 Visuelle Anzeige des Fortschritts in der Navigation</li>
+            <li>🔒 Modulübergang nur bei erfüllten Anforderungen</li>
+          </ul>
+        </div>
+
+        <h2>Wie es funktioniert:</h2>
+        
+        <h3>1. Inhaltsseiten (Text/Video/Audio)</h3>
+        <p>Diese werden automatisch als abgeschlossen markiert, wenn Sie auf "Weiter" klicken. Sie sehen dann ein 📖 Symbol in der Navigation.</p>
+        
+        <h3>2. Quiz und Lückentext</h3>
+        <p>Diese erfordern mindestens 80% richtige Antworten. Sie sehen dann ein 🎯 Symbol in der Navigation mit der erreichten Punktzahl.</p>
+        
+        <h3>3. Modulübergang</h3>
+        <p>Das nächste Modul wird nur freigeschaltet, wenn mindestens 80% der Übungen im aktuellen Modul abgeschlossen sind.</p>
+
+        <h2>Ihr aktueller Stand:</h2>
+        <div class="course-modules">
+          <div class="module-card">
+            <h3>Modul 1: Barrierefreiheit</h3>
+            <p>Testen Sie die Fortschrittsverfolgung</p>
+            <ul>
+              <li>Allgemeine Definitionen (Inhaltsseite)</li>
+              <li>Gesetzliche Definitionen (Inhaltsseite)</li>
+              <li>Lückentext (80% erforderlich)</li>
+              <li>Quiz (80% erforderlich)</li>
+            </ul>
+            <a href="modul1_allgemeine_definitionen.html" class="nav-button button-secondary">Zum Modul &rarr;</a>
+          </div>
+        </div>
+
+        <div class="nav-buttons">
+          <a href="index.html" class="nav-button button-secondary">&larr; Zurück zur Kurseinführung</a>
+          <a href="modul1_allgemeine_definitionen.html" class="nav-button next-button button-secondary">Kurs starten &rarr;</a>
+        </div>
+
+      </section>
+    </main>
+
+    <aside class="notes">
+      <h3>Notizen</h3>
+      <button id="add-note">Neue Notiz erstellen</button>
+      <div id="notes-container"></div>
+    </aside>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html> 

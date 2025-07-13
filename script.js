@@ -2,6 +2,22 @@
 let completedExercises = JSON.parse(localStorage.getItem('completedExercises') || '{}');
 let moduleProgress = JSON.parse(localStorage.getItem('moduleProgress') || '{}');
 
+// Intro pages that should never be marked as completed
+const INTRO_PAGES = ['index.html', 'hinweise.html'];
+
+// Event listener to handle the accessibility card toggle
+ document.addEventListener('DOMContentLoaded', function () {
+    const card = document.getElementById('barrierefreiheit-card');
+
+    // Verhindere, dass ein Klick auf den Button das Öffnen auslöst
+    const button = card.querySelector('a.nav-button');
+    button.addEventListener('click', (e) => e.stopPropagation());
+
+    card.addEventListener('click', function () {
+      card.classList.toggle('open');
+    });
+  });
+
 // Module configuration - defines what exercises are required for each module
 const MODULE_CONFIG = {
   'modul1': {
@@ -39,60 +55,21 @@ const PAGE_TYPES = {
   'fillInTheBlanks': ['modul1_lückentext.html']
 };
 
-// Media Button Funktion
-document.addEventListener("DOMContentLoaded", () => {
-  const buttons = document.querySelectorAll(".tabs button");
-  const mediaItems = {
-    "Video": document.getElementById("video-content"),
-    "Audio": document.getElementById("audio-content"),
-    "Text": document.getElementById("text-content"),
-  };
-
-  buttons.forEach(button => {
-    button.addEventListener("click", () => {
-      buttons.forEach(btn => btn.classList.remove("active"));
-      button.classList.add("active");
-
-      Object.values(mediaItems).forEach(item => {
-        if (item) item.classList.add("hidden");
-      });
-
-      const label = button.textContent.trim();
-      if (mediaItems[label]) {
-        mediaItems[label].classList.remove("hidden");
-      }
-    });
-  });
-});
-
-// Note Funktion
-document.addEventListener("DOMContentLoaded", function() {
-  const addNoteBtn = document.getElementById("add-note");
-  const notesContainer = document.getElementById("notes-container");
-
-  if (addNoteBtn && notesContainer) {
-    addNoteBtn.addEventListener("click", () => {
-      const note = document.createElement("div");
-      note.className = "note";
-
-      const deleteButton = document.createElement("button");
-      deleteButton.className = "delete-note";
-      deleteButton.innerHTML = "✕";
-      deleteButton.title = "Notiz löschen";
-
-      deleteButton.addEventListener("click", () => {
-        notesContainer.removeChild(note);
-      });
-
-      const textarea = document.createElement("textarea");
-      textarea.placeholder = "Deine Notiz...";
-
-      note.appendChild(deleteButton);
-      note.appendChild(textarea);
-      notesContainer.appendChild(note);
-    });
+// Reset progress on page reload (for prototyping)
+function resetProgressOnReload() {
+  // Check if this is a page reload (not a navigation)
+  if (performance.navigation.type === 1) {
+    // Clear all progress data
+    localStorage.removeItem('completedExercises');
+    localStorage.removeItem('moduleProgress');
+    completedExercises = {};
+    moduleProgress = {};
+    console.log('Progress reset on page reload');
   }
-});
+}
+
+// Call reset function on page load
+resetProgressOnReload();
 
 // Enhanced Progress Tracking System
 class EnhancedProgressTracker {
@@ -133,7 +110,8 @@ class EnhancedProgressTracker {
 
   setupContentPageTracking() {
     // For content pages, mark as completed when user clicks "Weiter"
-    if (this.pageType === 'content') {
+    // But skip intro pages
+    if (this.pageType === 'content' && !INTRO_PAGES.includes(this.currentPage)) {
       const nextButtons = document.querySelectorAll('.nav-button.next-button');
       nextButtons.forEach(button => {
         button.addEventListener('click', (e) => {
@@ -144,21 +122,30 @@ class EnhancedProgressTracker {
   }
 
   markPageAsCompleted(pagePath, score = 100) {
-    const isPassed = score >= 80; // Minimum 80% required for quiz/fill-in-the-blanks
-    
-    completedExercises[pagePath] = {
-      completed: isPassed,
-      score: score,
-      completedAt: new Date().toISOString(),
-      pageType: this.pageType
-    };
+  // Nur Dateiname ohne Query oder Hash extrahieren
+  const cleanPath = pagePath.split('?')[0].split('#')[0];
 
-    localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
-    this.updateModuleProgress();
-    this.controlModuleNavigation();
-    this.displayModuleProgress();
-    this.highlightCompletedExercises();
+  if (INTRO_PAGES.includes(cleanPath)) {
+    console.log(`Skipping completion tracking for intro page: ${cleanPath}`);
+    return;
   }
+
+  const isPassed = score >= 80;
+
+  completedExercises[cleanPath] = {
+    completed: isPassed,
+    score: score,
+    completedAt: new Date().toISOString(),
+    pageType: this.pageType
+  };
+
+  localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
+  this.updateModuleProgress();
+  this.controlModuleNavigation();
+  this.displayModuleProgress();
+  this.highlightCompletedExercises();
+}
+
 
   calculateModuleProgress(moduleName) {
     const moduleConfig = MODULE_CONFIG[moduleName];
@@ -278,6 +265,13 @@ class EnhancedProgressTracker {
     const navLinks = document.querySelectorAll('.sidebar nav a');
     navLinks.forEach(link => {
       const href = link.getAttribute('href');
+      // Skip intro pages
+      if (href && INTRO_PAGES.includes(href)) {
+        // Remove any completion indicators from intro pages
+        link.classList.remove('completed', 'completed-quiz', 'completed-content');
+        return;
+      }
+      
       if (href && completedExercises[href]) {
         const completionData = completedExercises[href];
         
@@ -619,58 +613,62 @@ class FillInTheBlanksEvaluator {
   }
 }
 
-// Progress Tracking System
-class ProgressTracker {
-  constructor() {
-    this.initializeProgressTracking();
-  }
+// Initialize all systems when DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  // Media Button Funktion
+  const buttons = document.querySelectorAll(".tabs button");
+  const mediaItems = {
+    "Video": document.getElementById("video-content"),
+    "Audio": document.getElementById("audio-content"),
+    "Text": document.getElementById("text-content"),
+  };
 
-  initializeProgressTracking() {
-    this.updateNavigationProgress();
-    this.highlightCompletedExercises();
-  }
+  buttons.forEach(button => {
+    button.addEventListener("click", () => {
+      buttons.forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
 
-  updateNavigationProgress() {
-    const navLinks = document.querySelectorAll('.sidebar nav a');
-    
-    navLinks.forEach(link => {
-      const href = link.getAttribute('href');
-      if (href && completedExercises[href]) {
-        link.classList.add('completed');
-        link.innerHTML += ' ✅';
+      Object.values(mediaItems).forEach(item => {
+        if (item) item.classList.add("hidden");
+      });
+
+      const label = button.textContent.trim();
+      if (mediaItems[label]) {
+        mediaItems[label].classList.remove("hidden");
       }
+    });
+  });
+
+  // Note Funktion
+  const addNoteBtn = document.getElementById("add-note");
+  const notesContainer = document.getElementById("notes-container");
+
+  if (addNoteBtn && notesContainer) {
+    addNoteBtn.addEventListener("click", () => {
+      const note = document.createElement("div");
+      note.className = "note";
+
+      const deleteButton = document.createElement("button");
+      deleteButton.className = "delete-note";
+      deleteButton.innerHTML = "✕";
+      deleteButton.title = "Notiz löschen";
+
+      deleteButton.addEventListener("click", () => {
+        notesContainer.removeChild(note);
+      });
+
+      const textarea = document.createElement("textarea");
+      textarea.placeholder = "Deine Notiz...";
+
+      note.appendChild(deleteButton);
+      note.appendChild(textarea);
+      notesContainer.appendChild(note);
     });
   }
 
-  highlightCompletedExercises() {
-    const currentPage = window.location.pathname;
-    if (completedExercises[currentPage]) {
-      const completionIndicator = document.createElement('div');
-      completionIndicator.className = 'completion-indicator';
-      completionIndicator.innerHTML = '✅ Abgeschlossen';
-      completionIndicator.style.cssText = `
-        background: #2ecc71;
-        color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 0.5rem;
-        font-weight: bold;
-        margin: 1rem 0;
-        text-align: center;
-      `;
-      
-      const content = document.querySelector('.content section');
-      if (content) {
-        content.insertBefore(completionIndicator, content.firstChild);
-      }
-    }
-  }
-}
-
-// Initialize all systems when DOM is loaded
-document.addEventListener("DOMContentLoaded", () => {
+  // Initialize evaluation systems
   new QuizEvaluator();
   new FillInTheBlanksEvaluator();
-  new ProgressTracker();
   new EnhancedProgressTracker();
 });
 
