@@ -122,7 +122,7 @@ header {
   margin-bottom: 15px;
   padding-bottom: 10px;
   border-bottom: 1px solid #ccc;
-  word-wrap: break-word; /* Zeilenumbruch bei langen Wörtern */
+  word-wrap: break-word; 
   line-height: 1.4;
 }
 
@@ -190,7 +190,8 @@ header {
   font-weight: bold;
   border-left: 4px solid #576fcb;
   padding-left: 0.75rem;
-  border-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
 }
 
 /* Gesperrte Abschnitte */
@@ -431,7 +432,7 @@ li a {
 }
 
 .button-primary:hover {
-  background-color: #4f6bdb;
+  background-color: #576FCB;
   transform: translateY(-0.125rem);
 }
 
@@ -450,7 +451,7 @@ li a {
 
 .button-secondary:hover,
 .button-secondary:focus {
-  background-color: #4f6bdb;
+  background-color: #576FCB;
   color: white;
   outline: none;
   transform: translateY(-0.125rem);
@@ -587,7 +588,9 @@ a.disabled:hover::before {
 
 /* Tabs */
 .tabs {
-  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .tabs button {
@@ -598,16 +601,36 @@ a.disabled:hover::before {
   border: 2px solid #576FCB;
   border-radius: 0.75rem;
   font-weight: 700;
-  font-size: 0.7rem;
+  font-size: 1rem;
+  font-family: "GraublauDisplay", sans-serif;
   cursor: pointer;
-  margin-right: 0.5rem;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.tabs button.active,
-.tabs .active {
-  background: #546dfd;
+/* Hover & Focus */
+.tabs button:hover:not(.disabled),
+.tabs button:focus-visible:not(.disabled) {
+  background-color: #4f6bdb;
   color: white;
+  outline: none;
+  transform: translateY(-0.125rem);
+}
+
+/* Aktiver Tab */
+.tabs button.active {
+  background-color: #576FCB;
+  color: white;
+}
+
+/* Deaktivierter Button */
+.tabs button.disabled {
+  background-color: transparent;
+  color: #bbb;
+  border-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  pointer-events: none;
+  font-weight: 400;
 }
 
 .hidden {
