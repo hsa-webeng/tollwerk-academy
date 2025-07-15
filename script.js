@@ -24,7 +24,7 @@ const MODULE_CONFIG = {
     exercises: [
       'modul1_allgemeine_definitionen.html',
       'modul1_gesetzliche_definitionen.html', 
-      'modul1_lückentext.html',
+      'modul1_lueckentext.html',
       'modul1_quiz.html'
     ],
     requiredPercentage: 80,
@@ -52,7 +52,7 @@ const MODULE_CONFIG = {
 const PAGE_TYPES = {
   'content': ['modul1_allgemeine_definitionen.html', 'modul1_gesetzliche_definitionen.html', 'modul_2.html'],
   'quiz': ['modul1_quiz.html', 'modul2_quiz.html'],
-  'fillInTheBlanks': ['modul1_lückentext.html']
+  'fillInTheBlanks': ['modul1_lueckentext.html']
 };
 
 // Reset progress on page reload (for prototyping)
@@ -304,6 +304,40 @@ document.addEventListener("DOMContentLoaded", () => {
       link.setAttribute("aria-current", "page");
     }
   });
+});
+
+// Disable Media Tab buttons if content type is missing
+
+document.addEventListener("DOMContentLoaded", function () {
+  const tabs = document.querySelectorAll(".tabs button");
+  const mediaItems = {
+    "Video": document.getElementById("video-content"),
+    "Audio": document.getElementById("audio-content"),
+    "Text": document.getElementById("text-content")
+  };
+
+  let firstAvailable = null;
+
+  tabs.forEach(tab => {
+    const label = tab.textContent.trim();
+    const mediaItem = mediaItems[label];
+
+    // Ist der Inhalt wirklich leer?
+    const isEmpty = !mediaItem || mediaItem.querySelectorAll("img, audio, video, p").length === 0;
+
+    if (isEmpty) {
+      tab.disabled = true;
+      tab.classList.add("disabled");
+    } else if (!firstAvailable) {
+      firstAvailable = { tab, mediaItem };
+    }
+  });
+
+  // Aktiviere den ersten verfügbaren
+  if (firstAvailable) {
+    firstAvailable.tab.classList.add("active");
+    firstAvailable.mediaItem.classList.remove("hidden");
+  }
 });
 
 // Quiz Evaluation System
