@@ -588,7 +588,9 @@ a.disabled:hover::before {
 
 /* Tabs */
 .tabs {
-  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .tabs button {
@@ -599,16 +601,36 @@ a.disabled:hover::before {
   border: 2px solid #576FCB;
   border-radius: 0.75rem;
   font-weight: 700;
-  font-size: 0.7rem;
+  font-size: 1rem;
+  font-family: "GraublauDisplay", sans-serif;
   cursor: pointer;
-  margin-right: 0.5rem;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.tabs button.active,
-.tabs .active {
-  background: #576FCB;
+/* Hover & Focus */
+.tabs button:hover:not(.disabled),
+.tabs button:focus-visible:not(.disabled) {
+  background-color: #4f6bdb;
   color: white;
+  outline: none;
+  transform: translateY(-0.125rem);
+}
+
+/* Aktiver Tab */
+.tabs button.active {
+  background-color: #576FCB;
+  color: white;
+}
+
+/* Deaktivierter Button */
+.tabs button.disabled {
+  background-color: transparent;
+  color: #bbb;
+  border-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  pointer-events: none;
+  font-weight: 400;
 }
 
 .hidden {

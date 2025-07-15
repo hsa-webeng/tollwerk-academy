@@ -306,6 +306,40 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+// Disable Media Tab buttons if content type is missing
+
+document.addEventListener("DOMContentLoaded", function () {
+  const tabs = document.querySelectorAll(".tabs button");
+  const mediaItems = {
+    "Video": document.getElementById("video-content"),
+    "Audio": document.getElementById("audio-content"),
+    "Text": document.getElementById("text-content")
+  };
+
+  let firstAvailable = null;
+
+  tabs.forEach(tab => {
+    const label = tab.textContent.trim();
+    const mediaItem = mediaItems[label];
+
+    // Ist der Inhalt wirklich leer?
+    const isEmpty = !mediaItem || mediaItem.querySelectorAll("img, audio, video, p").length === 0;
+
+    if (isEmpty) {
+      tab.disabled = true;
+      tab.classList.add("disabled");
+    } else if (!firstAvailable) {
+      firstAvailable = { tab, mediaItem };
+    }
+  });
+
+  // Aktiviere den ersten verfügbaren
+  if (firstAvailable) {
+    firstAvailable.tab.classList.add("active");
+    firstAvailable.mediaItem.classList.remove("hidden");
+  }
+});
+
 // Quiz Evaluation System
 class QuizEvaluator {
   constructor() {
