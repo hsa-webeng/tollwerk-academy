@@ -24,7 +24,7 @@ const MODULE_CONFIG = {
     exercises: [
       'modul1_allgemeine_definitionen.html',
       'modul1_gesetzliche_definitionen.html', 
-      'modul1_lückentext.html',
+      'modul1_lueckentext.html',
       'modul1_quiz.html'
     ],
     requiredPercentage: 80,
@@ -52,7 +52,7 @@ const MODULE_CONFIG = {
 const PAGE_TYPES = {
   'content': ['modul1_allgemeine_definitionen.html', 'modul1_gesetzliche_definitionen.html', 'modul_2.html'],
   'quiz': ['modul1_quiz.html', 'modul2_quiz.html'],
-  'fillInTheBlanks': ['modul1_lückentext.html']
+  'fillInTheBlanks': ['modul1_lueckentext.html']
 };
 
 // Reset progress on page reload (for prototyping)

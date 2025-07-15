@@ -190,7 +190,8 @@ header {
   font-weight: bold;
   border-left: 4px solid #576fcb;
   padding-left: 0.75rem;
-  border-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
 }
 
 /* Gesperrte Abschnitte */
@@ -431,7 +432,7 @@ li a {
 }
 
 .button-primary:hover {
-  background-color: #4f6bdb;
+  background-color: #576FCB;
   transform: translateY(-0.125rem);
 }
 
@@ -450,7 +451,7 @@ li a {
 
 .button-secondary:hover,
 .button-secondary:focus {
-  background-color: #4f6bdb;
+  background-color: #576FCB;
   color: white;
   outline: none;
   transform: translateY(-0.125rem);
@@ -606,7 +607,7 @@ a.disabled:hover::before {
 
 .tabs button.active,
 .tabs .active {
-  background: #546dfd;
+  background: #576FCB;
   color: white;
 }
 
