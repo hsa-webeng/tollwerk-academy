@@ -24,7 +24,7 @@ const MODULE_CONFIG = {
     exercises: [
       'modul1_allgemeine_definitionen.html',
       'modul1_gesetzliche_definitionen.html', 
-      'modul1_lückentext.html',
+      'modul1_lueckentext.html',
       'modul1_quiz.html'
     ],
     requiredPercentage: 80,
@@ -52,7 +52,7 @@ const MODULE_CONFIG = {
 const PAGE_TYPES = {
   'content': ['modul1_allgemeine_definitionen.html', 'modul1_gesetzliche_definitionen.html', 'modul_2.html'],
   'quiz': ['modul1_quiz.html', 'modul2_quiz.html'],
-  'fillInTheBlanks': ['modul1_lückentext.html']
+  'fillInTheBlanks': ['modul1_lueckentext.html']
 };
 
 // Reset progress on page reload (for prototyping)
@@ -291,6 +291,54 @@ class EnhancedProgressTracker {
     });
   }
 }
+
+// Sidebar highlight current page
+
+document.addEventListener("DOMContentLoaded", () => {
+  const currentPath = window.location.pathname.split("/").pop();
+  const links = document.querySelectorAll(".sidebar a");
+
+  links.forEach(link => {
+    const href = link.getAttribute("href");
+    if (href === currentPath) {
+      link.setAttribute("aria-current", "page");
+    }
+  });
+});
+
+// Disable Media Tab buttons if content type is missing
+
+document.addEventListener("DOMContentLoaded", function () {
+  const tabs = document.querySelectorAll(".tabs button");
+  const mediaItems = {
+    "Video": document.getElementById("video-content"),
+    "Audio": document.getElementById("audio-content"),
+    "Text": document.getElementById("text-content")
+  };
+
+  let firstAvailable = null;
+
+  tabs.forEach(tab => {
+    const label = tab.textContent.trim();
+    const mediaItem = mediaItems[label];
+
+    // Ist der Inhalt wirklich leer?
+    const isEmpty = !mediaItem || mediaItem.querySelectorAll("img, audio, video, p").length === 0;
+
+    if (isEmpty) {
+      tab.disabled = true;
+      tab.classList.add("disabled");
+    } else if (!firstAvailable) {
+      firstAvailable = { tab, mediaItem };
+    }
+  });
+
+  // Aktiviere den ersten verfügbaren
+  if (firstAvailable) {
+    firstAvailable.tab.classList.add("active");
+    firstAvailable.mediaItem.classList.remove("hidden");
+  }
+});
 
 // Quiz Evaluation System
 class QuizEvaluator {
@@ -639,32 +687,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Note Funktion
-  const addNoteBtn = document.getElementById("add-note");
-  const notesContainer = document.getElementById("notes-container");
-
-  if (addNoteBtn && notesContainer) {
-    addNoteBtn.addEventListener("click", () => {
-      const note = document.createElement("div");
-      note.className = "note";
-
-      const deleteButton = document.createElement("button");
-      deleteButton.className = "delete-note";
-      deleteButton.innerHTML = "✕";
-      deleteButton.title = "Notiz löschen";
-
-      deleteButton.addEventListener("click", () => {
-        notesContainer.removeChild(note);
-      });
-
-      const textarea = document.createElement("textarea");
-      textarea.placeholder = "Deine Notiz...";
-
-      note.appendChild(deleteButton);
-      note.appendChild(textarea);
-      notesContainer.appendChild(note);
-    });
-  }
 
   // Initialize evaluation systems
   new QuizEvaluator();
@@ -693,3 +715,64 @@ function isModuleRequirementsMet(moduleName) {
   const config = MODULE_CONFIG[moduleName];
   return config && progress.percentage >= config.requiredPercentage;
 }
+
+// Note Funktion
+document.addEventListener("DOMContentLoaded", function () {
+  const addNoteBtn = document.getElementById("add-note");
+  const notesContainer = document.getElementById("notes-container");
+  // Kann man dann noch auf die einzelnen Module anwenden
+  const storageKey = "global_notes";
+
+  // speichern
+  function saveNotes() {
+    const notes = [];
+    notesContainer.querySelectorAll("textarea").forEach(textarea => {
+      const text = textarea.value.trim();
+      if (text !== "") { 
+        notes.push(text);
+      }
+    });
+    localStorage.setItem(storageKey, JSON.stringify(notes));
+  }
+
+  // Notiz erstellen
+  function createNote(content = "") {
+    const note = document.createElement("div");
+    note.className = "note";
+
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "delete-note";
+    deleteButton.innerHTML = "✕";
+    deleteButton.title = "Notiz löschen";
+
+    deleteButton.addEventListener("click", () => {
+      notesContainer.removeChild(note);
+      saveNotes();
+    });
+
+    const textarea = document.createElement("textarea");
+    textarea.placeholder = "Deine Notiz...";
+    textarea.value = content;
+
+    textarea.addEventListener("input", saveNotes);
+
+    note.appendChild(deleteButton);
+    note.appendChild(textarea);
+    notesContainer.appendChild(note);
+  }
+
+  function loadNotes() {
+    const saved = localStorage.getItem(storageKey);
+    if (saved) {
+      JSON.parse(saved).forEach(text => createNote(text));
+    }
+  }
+
+  addNoteBtn.addEventListener("click", () => {
+    createNote();
+    saveNotes();
+  });
+
+  // Notiz Laden 
+  loadNotes();
+});
