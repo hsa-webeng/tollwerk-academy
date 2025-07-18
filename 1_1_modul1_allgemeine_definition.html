@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lernplattform - Modul 1</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <img src="logos/Tollwerk-Logo_RGB.svg" alt="Tollwerk Logo">
+      </div>
+      <div class="search-wrapper">
+        <img src="icons/Search.svg" alt="Suche Icon" class="search-icon">
+        <input type="search" placeholder="Suche nach Lerninhalten" aria-label="Suche" class="searchbar">
+      </div>
+      <div class="header-nav">
+        <img src="icons/Profile.svg" alt="Profil Icon" class="header-nav-icon">
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <aside class="sidebar">
+      <nav>
+        <h3>
+          <span class="with-icon">
+            <img src="icons/List.svg" alt="Menü Icon" class="type-icon">
+              Navigation
+          </span>
+        </h3>
+        
+        <h2><a href="index.html">Kurseinführung</a></h2>
+        <h2><a href="hinweise.html">Hinweise</a></h2>
+        
+          <h1>Grundlagensensibilisierung</h1>
+        
+          <details open>
+            <summary>Modul 1: Barrierefreiheit</summary>
+              <ul>
+                <li><a href="1_1_modul1_allgemeine_definition.html">Allgemeine Definition</a></li>
+                <li><a href="1_2_modul1_gesetzliche_definition.html">Gesetzliche Definition</a></li>
+                <li><a href="1_3_modul1_soziale_praktische_aspekte.html">Soziale & praktische Aspekte</a></li>
+                <li><a href="1_4_modul1_bezug_zur_nachhaltigkeit.html">Bezug zur Nachhaltigkeit</a></li>
+                <li><a href="1_5_modul1_teste_dein_wissen.html">Teste dein Wissen</a></li>
+                <li><a href="1_6_modul1_lueckentext.html">Modul 1: Lückentext</a></li>
+                <li><a href="1_7_modul1_quiz.html">Modul 1: Quiz</a></li>
+                <li><a href="1_8_modul1_testergebnis.html">Testergebnis</a></li>
+              </ul>
+          </details>
+        
+          <details>
+            <summary>Modul 2: Barrieren</summary>
+              <ul>
+                <li><a href="2_1_modul2_barrieren_reflexion.html">Barrieren-Reflexion</a></li>
+                <li><a href="2_2_modul2_barrieren_sind_ueberall.html">Barrieren sind überall</a></li>
+                <li><a href="2_3_modul2_digitale_medien.html">Digitale Medien</a></li>
+                <li><a href="2_4_modul2_teste_dein_wissen.html">Teste dein Wissen</a></li>
+                <li><a href="2_5_modul2_quiz.html">Modul 2: Quiz</a></li>
+                <li><a href="2_6_modul2_testergebnis.html">Testergebnis</a></li>
+              </ul>
+          </details>
+            
+          <details>
+            <summary class="locked">Modul 3: Betroffene</summary>
+              <ul>
+                 <!-- Nicht exisent aktuell -->
+              </ul>
+          </details>
+            
+      </nav>
+    </aside>
+
+    <main class="content">
+      <section>
+        <h2>Modul 1: Barrierefreiheit</h2>
+        <p class="meta-info"><em>Bearbeitungszeit ca. 35 Minuten</em></p>
+        <div class="infobox"><strong>Lernziel:</strong> Sie erkennen, was Barrierefreiheit bedeutet, warum sie für eine
+          inklusive Gesellschaft essenziell ist
+          und wie sie in verschiedenen Lebensbereichen wirkt – rechtlich, sozial, praktisch und im Sinne
+          nachhaltiger Entwicklung.
+        </div>
+
+        <div class="tabs">
+          <button>Video</button>
+          <button>Audio</button>
+          <button>Text</button>
+        </div>
+
+        <h2>Allgemeine Definitionen</h2>
+        <div class="infobox"><strong>Lernziel:</strong> Sie lernen, was Barrierefreiheit im Allgemeinen bedeutet und in
+          welchen Lebensbereichen sie eine
+          zentrale Rolle spielt.</div>
+
+        <div class="media">
+          <div class="media-item" id="video-content">
+            <img src="images/Digitale-Barrierefreiheit Video Thumbnail.jpeg" alt="Video Titelbildschirm"
+              class="modulbild">
+            <div class="play-button" aria-hidden="true">▶</div>
+          </div>
+
+          <div class="media-item hidden" id="audio-content">
+            <div class="custom-audio-player">
+              <!-- können auch ein standart img nehmen wie hier drunter -->
+              <!-- <img src="images/audio-cover.jpg" alt="Audio Cover" class="modulbild"> -->
+              <img src="images/Audio image Allgemeine Definition.png" alt="Audio Cover" class="modulbild"
+                style="width: 400px; height: auto;">
+            </div>
+            <audio id="real-audio" style="display:none">
+              <!-- Audio muss noch eingefügt werden wenn wir da eine haben -->
+              <source src="media/audio-barrierefreiheit.mp3" type="audio/mpeg">
+              Dein Browser unterstützt kein Audioelement.
+            </audio>
+          </div>
+
+          <div class="media-item hidden information-text" id="text-content">
+            <p>
+              Barrierefreiheit bedeutet, dass alle Menschen – unabhängig von körperlichen, sensorischen,
+              geistigen oder altersbedingten Einschränkungen – die gebaute Umwelt, technische Systeme und
+              gesellschaftliche Angebote selbstständig, uneingeschränkt und ohne fremde Hilfe nutzen können.
+              Dabei geht es nicht nur um Menschen mit Behinderungen, sondern auch um ältere Menschen,
+              Eltern mit Kinderwagen oder Personen mit temporären Einschränkungen.
+              Barrierefreiheit ist ein zentraler Bestandteil inklusiver Gesellschaften und betrifft viele
+              Lebensbereiche:
+            </p>
+            <h3>Gebäude und öffentliche Plätze</h3>
+            <p>
+              Der Zugang zu öffentlichen und privaten Gebäuden muss ohne Hindernisse möglich sein. Dazu
+              gehören beispielsweise stufenlose Eingänge, Aufzüge, breite Türen, taktile Leitsysteme und gut
+              lesbare Beschilderungen. Auch öffentliche Plätze wie Parks oder Fußgängerzonen sollten für alle
+              zugänglich gestaltet sein.
+            </p>
+            <h3>Arbeitsstätten und Wohnungen</h3>
+            <p>
+              Barrierefreie Arbeitsplätze ermöglichen Menschen mit Behinderung die gleichberechtigte Teilhabe
+              am Berufsleben. Dazu zählen ergonomische Arbeitsplätze, höhenverstellbare Möbel oder visuelle
+              und akustische Assistenzsysteme. Auch Wohnungen sollten so geplant oder angepasst werden,
+              dass sie ohne Barrieren nutzbar sind – etwa durch schwellenlose Zugänge, rutschfeste Böden und
+              geeignete Sanitäreinrichtungen.
+            </p>
+            <h3>Verkehrsmittel</h3>
+            <p>
+              Ob Bus, Bahn, Flugzeug oder Auto – alle Verkehrsmittel müssen für Menschen mit
+              Einschränkungen zugänglich sein. Dazu gehören unter anderem barrierefreie Haltestellen,
+              akustische und visuelle Fahrgastinformationen, Rampen und Aufzüge sowie spezielle Sitzplätze.
+            </p>
+            <h3>Gebrauchsgegenstände</h3>
+            <p>
+              Alltagsgegenstände wie Haushaltsgeräte, Werkzeuge oder digitale Endgeräte sollten intuitiv
+              bedienbar und für alle Nutzergruppen nutzbar sein. Dies kann durch einfache Bedienoberflächen,
+              sprachgesteuerte Systeme oder kontrastreiche Darstellungen erreicht werden.
+            </p>
+            <h3>Informations- und Kommunikationsmittel</h3>
+            <p>
+              Zugang zu Informationen ist ein Grundrecht. Webseiten, Apps, Druckmedien und andere
+              Kommunikationsmittel sollten so gestaltet sein, dass sie von Menschen mit unterschiedlichen
+              Fähigkeiten genutzt werden können. Dies umfasst z. B. Untertitel in Videos, Vorlesefunktionen,
+              einfache Sprache, Braille-Schrift oder kontrastreiche Gestaltung.
+              Barrierefreiheit ist somit kein Sonderfall, sondern ein Qualitätsmerkmal von Produkten,
+              Dienstleistungen und Infrastrukturen – sie nützt allen Menschen und stärkt die Teilhabe und
+              Selbstbestimmung in allen Lebensbereichen.
+            </p>
+
+          </div>
+        </div>
+
+
+        <div class="nav-buttons">
+          <a href="hinweise.html" class="button-secondary">&larr; Zurück zu Hinweise</a>
+          <a href="1_2_modul1_gesetzliche_definition.html" class="next-button button-secondary">Weiter &rarr;</a>
+        </div>
+
+      </section>
+    </main>
+
+    <aside class="notes">
+      <h3>Notizen</h3>
+      <button id="add-note">Neue Notiz erstellen</button>
+      <div id="notes-container"></div>
+    </aside>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
