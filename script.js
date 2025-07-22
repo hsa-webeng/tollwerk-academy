@@ -261,50 +261,45 @@ class EnhancedProgressTracker {
   }
 
   highlightCompletedExercises() {
-    // Add visual indicators for completed exercises in navigation
-    const navLinks = document.querySelectorAll('.sidebar nav a');
-    navLinks.forEach(link => {
-      const href = link.getAttribute('href');
-      // Skip intro pages
-      if (href && INTRO_PAGES.includes(href)) {
-        // Remove any completion indicators from intro pages
-        link.classList.remove('completed', 'completed-quiz', 'completed-content');
-        return;
-      }
-      
-      if (href && completedExercises[href]) {
-        const completionData = completedExercises[href];
-        
-        // Remove existing completion indicators
-        link.classList.remove('completed', 'completed-quiz', 'completed-content');
-        
-        if (completionData.completed) {
-          if (completionData.pageType === 'quiz' || completionData.pageType === 'fillInTheBlanks') {
-            link.classList.add('completed', 'completed-quiz');
-            link.title = `Abgeschlossen - ${completionData.score}% erreicht`;
-          } else {
-            link.classList.add('completed', 'completed-content');
-            link.title = 'Abgeschlossen';
-          }
-        }
-      }
-    });
-  }
-}
-
-// Sidebar highlight current page
-
-document.addEventListener("DOMContentLoaded", () => {
+  const navLinks = document.querySelectorAll('.sidebar nav a');
   const currentPath = window.location.pathname.split("/").pop();
-  const links = document.querySelectorAll(".sidebar a");
 
-  links.forEach(link => {
-    const href = link.getAttribute("href");
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    
+    // Entferne vorherige Zustände
+    link.classList.remove('completed', 'completed-quiz', 'completed-content');
+    link.removeAttribute('aria-current');
+    link.title = "";
+
+    // Markiere aktuelle Seite
     if (href === currentPath) {
       link.setAttribute("aria-current", "page");
     }
+
+    // Intro-Seiten überspringen
+    if (href && INTRO_PAGES.includes(href)) return;
+
+    // Markiere abgeschlossene Seiten
+    if (href && completedExercises[href]) {
+      const completionData = completedExercises[href];
+
+      if (completionData.completed) {
+        if (completionData.pageType === 'quiz' || completionData.pageType === 'fillInTheBlanks') {
+          link.classList.add('completed', 'completed-quiz');
+          link.title = `Abgeschlossen – ${completionData.score}% erreicht`;
+        } else {
+          link.classList.add('completed', 'completed-content');
+          link.title = 'Abgeschlossen';
+        }
+      }
+    }
   });
-});
+}
+
+}
+
+
 
 // Disable Media Tab buttons if content type is missing
 
@@ -775,4 +770,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Notiz Laden 
   loadNotes();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const nextButton = document.querySelector(".next-button");
+  if (nextButton) {
+    nextButton.addEventListener("click", () => {
+      const currentPage = window.location.pathname.split("/").pop();
+
+      // Mark current page as completed (as content)
+      completedExercises[currentPage] = {
+        completed: true,
+        pageType: "content"
+      };
+
+      localStorage.setItem("completedExercises", JSON.stringify(completedExercises));
+
+      // Optional: sofort visuelles Update in Navigation (nützlich falls SPA oder Soft-Reload)
+      if (typeof enhancedProgress !== "undefined") {
+        enhancedProgress.highlightCompletedExercises();
+      }
+    });
+  }
 });

@@ -799,12 +799,6 @@ a.disabled:hover::before {
 /* ==========================================================================
    CONTENT BOXES
    ========================================================================== */
-.infobox {
-  background: #e3f6ff;
-  border-left: 4px solid #576FCB;
-  padding: 1em;
-  margin: 1em 0;
-}
 
 .information-text {
   background-color: #ffffff;
@@ -815,25 +809,33 @@ a.disabled:hover::before {
   margin: 2rem auto;
   font-family: "GraublauDisplay", sans-serif;
   color: #2c2e4a;
-  line-height: 1.7;
+  line-height: 1.6;
   font-size: 1.05rem;
 }
 
 .information-text h3 {
+  position: relative;
   font-size: 1.25rem;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
-  color: #3642a0;
-  border-left: 5px solid #576fcb;
-  padding-left: 0.75rem;
+  color: #000;
+  padding-left: 1.5rem;
+}
+
+.information-text h3::before {
+  content: "#";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #576fcb;
 }
 
 .information-text p {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
   text-align: left;
 }
 
-.information-text ul {
+ul.marked {
   font-size: 1rem;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
@@ -844,10 +846,58 @@ a.disabled:hover::before {
 }
 
 .information-text li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.infobox {
+  background: #e3f6ff;
+  border-left: 4px solid #576FCB;
+  padding: 1rem 1.5rem;
+  margin: 2rem 0;
+  border-top-right-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
   font-size: 1rem;
-  color: #000000;
-  margin-left: 1rem;
-  padding-left: 0.5rem;
+  line-height: 1.6;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.exercise {
+  background-color: #fffde7; /* sehr helles, weiches Gelb */
+  border-left: 4px solid #fdd835; /* etwas kräftigeres Gelb für visuelle Führung */
+  padding: 1.25rem 1.5rem;
+  margin: 2rem 0;
+  border-top-right-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.exercise strong {
+  display: block;
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.exercise p {
+  margin: 0.5rem 0;
+  color: #333;
+}
+
+.information-bild {
+  width: 100%;
+  max-width: 1300px;
+  height: 300px;
+  border-radius: 10px;
+}
+
+.meta-info {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 1rem;
+  font-style: italic;
 }
 
 /* ==========================================================================
@@ -984,16 +1034,24 @@ a.disabled:hover::before {
 /* ==========================================================================
    NOTES
    ========================================================================== */
-#add-note {
-  display: block;
-  margin-bottom: 1rem;
-  padding: 0.5rem 1rem;
-  font-weight: bold;
-  background-color: #ffea00;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
+   #add-note {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1.2rem;
+    background-color: #ffea00; /* dein Gelb */
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-family: inherit;
+  }
+  
+  #add-note:hover {
+    background-color: #ffe000;
+  }
 
 .note {
   position: relative;
@@ -1001,7 +1059,7 @@ a.disabled:hover::before {
   padding: 0.8rem;
   margin-bottom: 1rem;
   border-radius: 8px;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .delete-note {
@@ -1021,8 +1079,11 @@ a.disabled:hover::before {
   border: none;
   background: transparent;
   resize: none;
-  font-family: sans-serif;
+  font-family: inherit;
   font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+  outline: none;
 }
 
 /* ==========================================================================
