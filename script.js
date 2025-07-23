@@ -85,8 +85,8 @@ const MODULE_CONFIG = {
 
 // Page type configuration - defines how each page type should be marked as completed
 const PAGE_TYPES = {
-  'content': ['1_1_modul1_allgemeine_definition.html', '1_2_modul1_gesetzliche_definition.html', '1_3_modul1_soziale_praktische_aspekte.html', 
-  '1_4_modul1_bezug_zur_nachhaltigkeit.html', '2_1_modul2_barrieren_reflexion.html', '2_2_modul2_barrieren_sind_ueberall.html', '2_3_modul2_digitale_medien.html'],
+  'content': ['1_1_modul1_allgemeine_definition.html', '1_2_modul1_gesetzliche_definition.html', '1_3_modul1_soziale_praktische_aspekte.html',
+    '1_4_modul1_bezug_zur_nachhaltigkeit.html', '2_1_modul2_barrieren_reflexion.html', '2_2_modul2_barrieren_sind_ueberall.html', '2_3_modul2_digitale_medien.html'],
   'quiz': ['1_7_modul1_quiz.html', '2_5_modul2_quiz.html'],
   'fillInTheBlanks': ['1_6_modul1_lueckentext.html']
 };
@@ -452,12 +452,22 @@ class QuizEvaluator {
 
     questionGroups.forEach((fieldset, index) => {
       const questionName = `question${index + 1}`;
-      const selectedAnswer = formData.get(questionName);
-      answers[questionName] = selectedAnswer;
+      const inputs = fieldset.querySelectorAll('input');
+
+      // Prüfen, ob es sich um eine Checkbox-Gruppe handelt
+      const isMultiple = Array.from(inputs).some(input => input.type === 'checkbox');
+
+      if (isMultiple) {
+        answers[questionName] = formData.getAll(questionName); // gibt ein Array
+      } else {
+        const singleAnswer = formData.get(questionName);
+        answers[questionName] = singleAnswer ? [singleAnswer] : [];
+      }
     });
 
     return answers;
   }
+
 
   evaluateAnswers(answers) {
     const correctAnswers = this.getCorrectAnswers();
@@ -466,16 +476,23 @@ class QuizEvaluator {
 
     Object.keys(answers).forEach(questionName => {
       const userAnswer = answers[questionName];
-      const correctAnswer = correctAnswers[questionName];
+      const correct = correctAnswers[questionName];
 
-      if (!userAnswer) {
+      if (!userAnswer || userAnswer.length === 0) {
         allCorrect = false;
         feedback.push(`Frage ${questionName.replace('question', '')}: Bitte wähle eine Antwort aus.`);
-      } else if (userAnswer === correctAnswer) {
+        return;
+      }
+
+      // Sortiere für sauberen Vergleich
+      const sortedUser = [...userAnswer].sort().join('');
+      const sortedCorrect = [...correct].sort().join('');
+
+      if (sortedUser === sortedCorrect) {
         feedback.push(`✅ Frage ${questionName.replace('question', '')}: Richtig!`);
       } else {
         allCorrect = false;
-        feedback.push(`❌ Frage ${questionName.replace('question', '')}: Falsch. Die richtige Antwort ist: ${correctAnswer}.`);
+        feedback.push(`❌ Frage ${questionName.replace('question', '')}: Falsch. Richtige Antwort(en): ${correct.join(', ')}`);
       }
     });
 
@@ -486,31 +503,46 @@ class QuizEvaluator {
     };
   }
 
+
   getCorrectAnswers() {
-    // Define correct answers for each quiz
     const currentPage = window.location.pathname;
 
-    if (currentPage.includes('modul1_quiz.html')) {
-      return { question1: 'B' };
-    } else if (currentPage.includes('modul2_quiz.html')) {
-      return { question1: 'A', question2: 'C' };
+    if (currentPage.includes('modul2_quiz.html')) {
+      return {
+        question1: ['C'],           // Single Choice
+        question2: ['A', 'B', 'D'], // Multiple Choice
+        question3: ['B'],           // Single Choice
+        question4: ['C']            // Single Choice
+      };
+    } else if (currentPage.includes('modul1_quiz.html')) {
+      return {
+        question1: ['B']
+      };
     }
 
     return {};
   }
 
-  calculateScore(answers, correctAnswers) {
-    let correct = 0;
-    let total = Object.keys(correctAnswers).length;
 
-    Object.keys(answers).forEach(questionName => {
-      if (answers[questionName] === correctAnswers[questionName]) {
-        correct++;
+  calculateScore(answers, correctAnswers) {
+    let correctCount = 0;
+    const total = Object.keys(correctAnswers).length;
+
+    Object.keys(correctAnswers).forEach(questionName => {
+      const userAnswer = answers[questionName] || [];
+      const correctAnswer = correctAnswers[questionName];
+
+      const sortedUser = [...userAnswer].sort().join('');
+      const sortedCorrect = [...correctAnswer].sort().join('');
+
+      if (sortedUser === sortedCorrect) {
+        correctCount++;
       }
     });
 
-    return Math.round((correct / total) * 100);
+    return Math.round((correctCount / total) * 100);
   }
+
 
   displayFeedback(results) {
     const feedbackElement = document.getElementById("feedback");
@@ -677,7 +709,7 @@ class FillInTheBlanksEvaluator {
   }
 
   updateNavigation(allCorrect) {
-    const nextLink = document.querySelector('.nav-buttons a[href*="quiz.html"]');
+    const nextLink = document.querySelector('.nav-buttons a.button-secondary:last-of-type');
     if (nextLink) {
       // Calculate score to check if 80% threshold is met
       const selects = document.querySelectorAll('section.fill-in-the-blanks select');
@@ -717,9 +749,77 @@ class FillInTheBlanksEvaluator {
   }
 }
 
+// Drag and Drop Functionality
+
+document.addEventListener("DOMContentLoaded", () => {
+  const draggables = document.querySelectorAll(".draggable");
+  const dropzones = document.querySelectorAll(".dropzone");
+  const feedback = document.getElementById("drop-feedback");
+
+  draggables.forEach(draggable => {
+    // Mausbedienung
+    draggable.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("text/plain", draggable.dataset.id);
+    });
+
+    // Tastaturbedienung
+    draggable.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") {
+        draggable.classList.add("dragging");
+        draggable.setAttribute("aria-grabbed", "true");
+      }
+    });
+
+    draggable.addEventListener("keyup", e => {
+      if ((e.key === "Enter" || e.key === " ") && draggable.classList.contains("dragging")) {
+        draggable.classList.remove("dragging");
+        draggable.setAttribute("aria-grabbed", "false");
+      }
+    });
+  });
+
+  dropzones.forEach(dropzone => {
+    // Drag & Drop mit Maus
+    dropzone.addEventListener("dragover", e => e.preventDefault());
+
+    dropzone.addEventListener("drop", e => {
+      e.preventDefault();
+      const draggedId = e.dataTransfer.getData("text/plain");
+      handleDrop(dropzone, draggedId);
+    });
+
+    // Tastatur: per Enter loslassen
+    dropzone.addEventListener("keydown", e => {
+      if ((e.key === "Enter" || e.key === " ") && document.querySelector(".dragging")) {
+        const dragged = document.querySelector(".dragging");
+        handleDrop(dropzone, dragged.dataset.id);
+        dragged.classList.remove("dragging");
+        dragged.setAttribute("aria-grabbed", "false");
+      }
+    });
+  });
+
+  function handleDrop(zone, draggedId) {
+    const correct = zone.dataset.accept === draggedId;
+    zone.textContent = zone.textContent + ` (${draggedId})`;
+    zone.classList.add(correct ? "correct" : "incorrect");
+
+    // Deaktivieren weiterer Drops
+    zone.setAttribute("tabindex", "-1");
+    zone.setAttribute("aria-disabled", "true");
+
+    const remaining = document.querySelectorAll(".dropzone:not(.correct):not(.incorrect)");
+    if (remaining.length === 0) {
+      feedback.textContent = "✅ Alle Zuordnungen abgeschlossen!";
+      feedback.style.color = "#2ecc71";
+      document.getElementById("next-link").classList.remove("disabled");
+      document.getElementById("next-link").removeAttribute("aria-disabled");
+    }
+  }
+});
+
+
 // Initialize Functions
-
-
 
 // Utility function to check if exercise is completed
 function isExerciseCompleted(pagePath) {

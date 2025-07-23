@@ -122,7 +122,7 @@ header {
   margin-bottom: 15px;
   padding-bottom: 10px;
   border-bottom: 1px solid #ccc;
-  word-wrap: break-word; 
+  word-wrap: break-word;
   line-height: 1.4;
 }
 
@@ -386,13 +386,18 @@ li a {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   animation: shimmer 2s infinite;
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .progress-requirements {
@@ -467,7 +472,7 @@ li a {
 
 .nav-button {
   display: inline-block;
-  
+
 }
 
 .next-button {
@@ -488,7 +493,7 @@ li a {
 
 .show-modules-button {
   display: inline-block;
-  
+
 }
 
 .show-modules-button:hover {
@@ -552,7 +557,8 @@ a.disabled:hover::before {
   height: auto;
   object-fit: contain;
   border-radius: 10px;
-  flex: 1 1 300px; /* Flexibles Verhalten bei kleineren Bildschirmen */
+  flex: 1 1 300px;
+  /* Flexibles Verhalten bei kleineren Bildschirmen */
 }
 
 .media-item {
@@ -724,7 +730,7 @@ a.disabled:hover::before {
   display: block;
 }
 
-.quiz-option input[type="radio"]:checked + * {
+.quiz-option input[type="radio"]:checked+* {
   font-weight: bold;
   color: #576FCB;
 }
@@ -800,6 +806,52 @@ a.disabled:hover::before {
 }
 
 /* ==========================================================================
+   Drag and Drop Quiz
+   ========================================================================== */
+
+.drag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.draggables,
+.dropzones {
+  flex: 1;
+  min-width: 250px;
+}
+
+.draggable,
+.dropzone {
+  background-color: #f4f4f4;
+  padding: 1rem;
+  border: 2px dashed #ccc;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  cursor: grab;
+  outline: none;
+}
+
+.draggable:focus,
+.dropzone:focus {
+  border-color: #007acc;
+  background-color: #eef6fb;
+}
+
+.correct {
+  border-color: green;
+  background-color: #e0f8e0;
+}
+
+.incorrect {
+  border-color: red;
+  background-color: #fbe0e0;
+}
+
+
+
+/* ==========================================================================
    CONTENT BOXES
    ========================================================================== */
 
@@ -866,8 +918,10 @@ ul.marked {
 }
 
 .exercise {
-  background-color: #fffde7; /* sehr helles, weiches Gelb */
-  border-left: 4px solid #fdd835; /* etwas kräftigeres Gelb für visuelle Führung */
+  background-color: #fffde7;
+  /* sehr helles, weiches Gelb */
+  border-left: 4px solid #fdd835;
+  /* etwas kräftigeres Gelb für visuelle Führung */
   padding: 1.25rem 1.5rem;
   margin: 2rem 0;
   border-top-right-radius: 0.75rem;
@@ -998,7 +1052,8 @@ ul.marked {
   pointer-events: none;
 
   transition: opacity 0.3s ease;
-  padding-top: 4rem; /* Platz für Zurück-Button */
+  padding-top: 4rem;
+  /* Platz für Zurück-Button */
 }
 
 /* Sichtbar, wenn Wrapper die active-Klasse hat */
@@ -1030,7 +1085,7 @@ ul.marked {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
-  
+
   /* Positionierung oben links */
   position: absolute;
   top: 1rem;
@@ -1072,7 +1127,7 @@ ul.marked {
 }
 
 .module-card:hover,
- .modul-card:focus {
+.modul-card:focus {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   outline: none;
@@ -1095,7 +1150,7 @@ ul.marked {
   color: #6c757d;
   margin-bottom: 1rem;
   font-size: 0.95rem;
-  
+
 }
 
 .module-card ul {
@@ -1154,24 +1209,25 @@ ul.marked {
 /* ==========================================================================
    NOTES
    ========================================================================== */
-   #add-note {
-    display: inline-block;
-    margin-bottom: 1rem;
-    padding: 0.5rem 1.2rem;
-    background-color: #ffea00; /* dein Gelb */
-    color: #333;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    font-family: inherit;
-  }
-  
-  #add-note:hover {
-    background-color: #ffe000;
-  }
+#add-note {
+  display: inline-block;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1.2rem;
+  background-color: #ffea00;
+  /* dein Gelb */
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-family: inherit;
+}
+
+#add-note:hover {
+  background-color: #ffe000;
+}
 
 .note {
   position: relative;
@@ -1253,6 +1309,7 @@ ul.marked {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1281,7 +1338,7 @@ ul.marked {
   .container {
     flex-direction: column;
   }
-  
+
   .sidebar {
     width: 100%;
     position: relative;
@@ -1291,7 +1348,7 @@ ul.marked {
     border-right: none;
     border-bottom: 1px solid #ddd;
   }
-  
+
   .notes {
     width: 100%;
     position: relative;
@@ -1301,42 +1358,42 @@ ul.marked {
     border-left: none;
     border-top: 1px solid #ddd;
   }
-  
+
   .content {
     padding: 1rem 2rem;
   }
-  
+
   .header-content {
     gap: 2rem;
   }
-  
+
   .search-wrapper {
     max-width: 200px;
   }
-  
+
   .information-text {
     padding: 1.5rem 1.25rem;
     font-size: 1rem;
   }
-  
+
   .information-text h3 {
     font-size: 1.15rem;
   }
-  
+
   .module-progress-indicator {
     margin: 0.5rem 0;
     padding: 0.75rem;
     font-size: 0.8rem;
   }
-  
+
   .progress-header h3 {
     font-size: 0.9rem;
   }
-  
+
   .progress-header p {
     font-size: 0.75rem;
   }
-  
+
   .progress-requirements p {
     font-size: 0.7rem;
   }
@@ -1347,45 +1404,46 @@ ul.marked {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .search-wrapper {
     max-width: 100%;
   }
-  
+
   .content {
     padding: 1rem;
   }
-  
+
   .sidebar {
     max-height: 350px;
   }
-  
+
   .notes {
     max-height: 250px;
   }
-  
+
   .module-progress-indicator {
     padding: 0.5rem;
     font-size: 0.75rem;
   }
-  
+
   .progress-header h3 {
     font-size: 0.85rem;
   }
-  
+
   .progress-header p {
     font-size: 0.7rem;
   }
-  
+
   .progress-requirements p {
     font-size: 0.65rem;
   }
 }
 
-h2 + p {
+h2+p {
   margin-top: 0.1rem;
 }
-h2:has(+p){
+
+h2:has(+p) {
   margin-bottom: 0;
 }
 
