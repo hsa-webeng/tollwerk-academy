@@ -90,7 +90,6 @@ header {
   width: 20px;
   height: 20px;
   pointer-events: none;
-  opacity: 0.3;
 }
 
 /* ==========================================================================
@@ -463,10 +462,7 @@ li a {
   transform: translateY(-0.125rem);
 }
 
-/* Navigation buttons */
 .nav-buttons {
-  display: flex;
-  justify-content: space-between;
   margin-top: 3rem;
 }
 
@@ -477,6 +473,8 @@ li a {
 
 .next-button {
   margin-left: auto;
+  background-color: #576FCB;
+  color: white;
 }
 
 .nav-button:hover {
@@ -700,7 +698,7 @@ a.disabled:hover::before {
   -webkit-appearance: none;
   width: 1.25rem;
   height: 1.25rem;
-  border: 0.125rem solid #ccc;
+  border: 0.125rem solid #576FCB;
   border-radius: 50%;
   display: inline-block;
   position: relative;
@@ -722,8 +720,8 @@ a.disabled:hover::before {
 }
 
 .quiz-option input[type="radio"]:checked {
-  background-color: #546dfd;
-  border-color: #546dfd;
+  background-color: #576FCB;
+  border-color: #576FCB;
 }
 
 .quiz-option input[type="radio"]:checked::after {
@@ -743,13 +741,14 @@ a.disabled:hover::before {
 .quiz-multiple button[type="submit"] {
   background-color: #576FCB;
   color: white;
-  font-size: 1rem;
-  padding: 0.75rem 1.25rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
   border: none;
-  border-radius: 0.625rem;
   cursor: pointer;
-  margin-top: 1.5rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
 }
 
 .quiz-multiple button[type="submit"]:hover {
@@ -861,7 +860,7 @@ a.disabled:hover::before {
   padding: 2rem 3rem;
   box-shadow: 0 0.5rem 1.875rem rgba(84, 109, 253, 0.1);
   max-width: 800px;
-  margin: 2rem auto;
+  margin: 2rem;
   font-family: "GraublauDisplay", sans-serif;
   color: #2c2e4a;
   line-height: 1.6;
