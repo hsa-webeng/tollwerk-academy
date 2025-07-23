@@ -1,3 +1,5 @@
+// GLobal Variables
+
 // Global variables for tracking completion
 let completedExercises = JSON.parse(localStorage.getItem('completedExercises') || '{}');
 let moduleProgress = JSON.parse(localStorage.getItem('moduleProgress') || '{}');
@@ -5,35 +7,68 @@ let moduleProgress = JSON.parse(localStorage.getItem('moduleProgress') || '{}');
 // Intro pages that should never be marked as completed
 const INTRO_PAGES = ['index.html', 'hinweise.html'];
 
-// Event listener to handle the accessibility card toggle
- document.addEventListener('DOMContentLoaded', function () {
-    const card = document.getElementById('barrierefreiheit-card');
+document.addEventListener('DOMContentLoaded', function () {
+  const courseCards = document.querySelectorAll('.course-card.toggleable');
 
-    // Verhindere, dass ein Klick auf den Button das Öffnen auslöst
-    const button = card.querySelector('a.nav-button');
-    button.addEventListener('click', (e) => e.stopPropagation());
+  // Kurskarte öffnen/schließen
+  courseCards.forEach(card => {
+    const moduleButton = card.querySelector('.show-modules-button');
+    const courseLink = card.querySelector('.nav-button');
+
+    // Klicks auf Buttons nicht zum Eltern-Card-Klick durchreichen
+    [moduleButton, courseLink].forEach(el => {
+      if (el) {
+        el.addEventListener('click', e => e.stopPropagation());
+      }
+    });
 
     card.addEventListener('click', function () {
-      card.classList.toggle('open');
+      if (card.classList.contains('disabled')) return;
+
+      const isExpanded = card.classList.contains('expanded');
+      courseCards.forEach(c => c.classList.remove('expanded'));
+
+      if (!isExpanded) {
+        card.classList.add('expanded');
+      }
+    });
+
+    // Overlay öffnen (über Klasse)
+    if (moduleButton) {
+      moduleButton.addEventListener('click', () => {
+        const wrapper = card.closest('.course-cards-wrapper');
+        wrapper.classList.add('active');
+      });
+    }
+  });
+
+  // Overlay schließen
+  document.querySelectorAll('.close-overlay').forEach(button => {
+    button.addEventListener('click', () => {
+      const wrapper = button.closest('.course-cards-wrapper');
+      wrapper.classList.remove('active');
     });
   });
+});
+
 
 // Module configuration - defines what exercises are required for each module
 const MODULE_CONFIG = {
   'modul1': {
     exercises: [
-      'modul1_allgemeine_definitionen.html',
-      'modul1_gesetzliche_definitionen.html', 
-      'modul1_lueckentext.html',
-      'modul1_quiz.html'
+      '1_1_modul1_allgemeine_definition.html',
+      '1_2_modul1_gesetzliche_definition.html',
+      '1_3_modul1_lueckentext.html',
+      '1_4_modul1_quiz.html',
     ],
     requiredPercentage: 80,
     nextModule: 'modul2'
   },
   'modul2': {
     exercises: [
-      'modul2.html',
-      'modul2_quiz.html'
+      '2_1_modul2_barrieren_reflexion.html',
+      '2_2_modul2_barrieren_sind_ueberall.html',
+      '2_3_modul2_digitale_medien.html',
       // Add more exercises as they become available
     ],
     requiredPercentage: 80,
@@ -50,9 +85,10 @@ const MODULE_CONFIG = {
 
 // Page type configuration - defines how each page type should be marked as completed
 const PAGE_TYPES = {
-  'content': ['modul1_allgemeine_definitionen.html', 'modul1_gesetzliche_definitionen.html', 'modul_2.html'],
-  'quiz': ['modul1_quiz.html', 'modul2_quiz.html'],
-  'fillInTheBlanks': ['modul1_lueckentext.html']
+  'content': ['1_1_modul1_allgemeine_definition.html', '1_2_modul1_gesetzliche_definition.html', '1_3_modul1_soziale_praktische_aspekte.html',
+    '1_4_modul1_bezug_zur_nachhaltigkeit.html', '2_1_modul2_barrieren_reflexion.html', '2_2_modul2_barrieren_sind_ueberall.html', '2_3_modul2_digitale_medien.html'],
+  'quiz': ['1_7_modul1_quiz.html', '2_5_modul2_quiz.html'],
+  'fillInTheBlanks': ['1_6_modul1_lueckentext.html']
 };
 
 // Reset progress on page reload (for prototyping)
@@ -122,29 +158,29 @@ class EnhancedProgressTracker {
   }
 
   markPageAsCompleted(pagePath, score = 100) {
-  // Nur Dateiname ohne Query oder Hash extrahieren
-  const cleanPath = pagePath.split('?')[0].split('#')[0];
+    // Nur Dateiname ohne Query oder Hash extrahieren
+    const cleanPath = pagePath.split('?')[0].split('#')[0];
 
-  if (INTRO_PAGES.includes(cleanPath)) {
-    console.log(`Skipping completion tracking for intro page: ${cleanPath}`);
-    return;
+    if (INTRO_PAGES.includes(cleanPath)) {
+      console.log(`Skipping completion tracking for intro page: ${cleanPath}`);
+      return;
+    }
+
+    const isPassed = score >= 80;
+
+    completedExercises[cleanPath] = {
+      completed: isPassed,
+      score: score,
+      completedAt: new Date().toISOString(),
+      pageType: this.pageType
+    };
+
+    localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
+    this.updateModuleProgress();
+    this.controlModuleNavigation();
+    this.displayModuleProgress();
+    this.highlightCompletedExercises();
   }
-
-  const isPassed = score >= 80;
-
-  completedExercises[cleanPath] = {
-    completed: isPassed,
-    score: score,
-    completedAt: new Date().toISOString(),
-    pageType: this.pageType
-  };
-
-  localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
-  this.updateModuleProgress();
-  this.controlModuleNavigation();
-  this.displayModuleProgress();
-  this.highlightCompletedExercises();
-}
 
 
   calculateModuleProgress(moduleName) {
@@ -220,14 +256,14 @@ class EnhancedProgressTracker {
 
     const progress = this.calculateModuleProgress(this.currentModule);
     const moduleConfig = MODULE_CONFIG[this.currentModule];
-    
+
     // Create or update progress indicator in sidebar
     let progressIndicator = document.getElementById('module-progress-indicator');
     if (!progressIndicator) {
       progressIndicator = document.createElement('div');
       progressIndicator.id = 'module-progress-indicator';
       progressIndicator.className = 'module-progress-indicator';
-      
+
       const sidebar = document.querySelector('.sidebar');
       if (sidebar) {
         // Insert after the nav element
@@ -238,7 +274,7 @@ class EnhancedProgressTracker {
       }
     }
 
-    const completedCount = moduleConfig.exercises.filter(exercise => 
+    const completedCount = moduleConfig.exercises.filter(exercise =>
       completedExercises[exercise] && completedExercises[exercise].completed
     ).length;
 
@@ -252,36 +288,42 @@ class EnhancedProgressTracker {
       </div>
       <div class="progress-requirements">
         <p>Für das nächste Modul benötigt: ${moduleConfig.requiredPercentage}%</p>
-        ${progress >= moduleConfig.requiredPercentage ? 
-          '<p class="requirement-met">✅ Anforderungen erfüllt - Sie können zum nächsten Modul weitergehen!</p>' : 
-          '<p class="requirement-pending">⏳ Anforderungen noch nicht erfüllt</p>'
-        }
+        ${progress >= moduleConfig.requiredPercentage ?
+        '<p class="requirement-met">✅ Anforderungen erfüllt - Sie können zum nächsten Modul weitergehen!</p>' :
+        '<p class="requirement-pending">⏳ Anforderungen noch nicht erfüllt</p>'
+      }
       </div>
     `;
   }
 
   highlightCompletedExercises() {
-    // Add visual indicators for completed exercises in navigation
     const navLinks = document.querySelectorAll('.sidebar nav a');
+    const currentPath = window.location.pathname.split("/").pop();
+
     navLinks.forEach(link => {
       const href = link.getAttribute('href');
-      // Skip intro pages
-      if (href && INTRO_PAGES.includes(href)) {
-        // Remove any completion indicators from intro pages
-        link.classList.remove('completed', 'completed-quiz', 'completed-content');
-        return;
+
+      // remove all completion classes and attributes
+      link.classList.remove('completed', 'completed-quiz', 'completed-content');
+      link.removeAttribute('aria-current');
+      link.title = "";
+
+      // mark current page
+      if (href === currentPath) {
+        link.setAttribute("aria-current", "page");
       }
-      
+
+      // skip intro pages
+      if (href && INTRO_PAGES.includes(href)) return;
+
+      // mark completed exercises
       if (href && completedExercises[href]) {
         const completionData = completedExercises[href];
-        
-        // Remove existing completion indicators
-        link.classList.remove('completed', 'completed-quiz', 'completed-content');
-        
+
         if (completionData.completed) {
           if (completionData.pageType === 'quiz' || completionData.pageType === 'fillInTheBlanks') {
             link.classList.add('completed', 'completed-quiz');
-            link.title = `Abgeschlossen - ${completionData.score}% erreicht`;
+            link.title = `Abgeschlossen – ${completionData.score}% erreicht`;
           } else {
             link.classList.add('completed', 'completed-content');
             link.title = 'Abgeschlossen';
@@ -290,55 +332,69 @@ class EnhancedProgressTracker {
       }
     });
   }
+
 }
 
-// Sidebar highlight current page
+
 
 document.addEventListener("DOMContentLoaded", () => {
-  const currentPath = window.location.pathname.split("/").pop();
-  const links = document.querySelectorAll(".sidebar a");
-
-  links.forEach(link => {
-    const href = link.getAttribute("href");
-    if (href === currentPath) {
-      link.setAttribute("aria-current", "page");
-    }
-  });
-});
-
-// Disable Media Tab buttons if content type is missing
-
-document.addEventListener("DOMContentLoaded", function () {
-  const tabs = document.querySelectorAll(".tabs button");
+  // --- Media Tabs Setup ---
+  const buttons = document.querySelectorAll(".tabs button");
   const mediaItems = {
     "Video": document.getElementById("video-content"),
     "Audio": document.getElementById("audio-content"),
-    "Text": document.getElementById("text-content")
+    "Text": document.getElementById("text-content"),
   };
 
   let firstAvailable = null;
 
-  tabs.forEach(tab => {
-    const label = tab.textContent.trim();
+  // Tabs deaktivieren, wenn Inhalt leer ist
+  buttons.forEach(button => {
+    const label = button.textContent.trim();
     const mediaItem = mediaItems[label];
 
-    // Ist der Inhalt wirklich leer?
     const isEmpty = !mediaItem || mediaItem.querySelectorAll("img, audio, video, p").length === 0;
 
     if (isEmpty) {
-      tab.disabled = true;
-      tab.classList.add("disabled");
+      button.disabled = true;
+      button.classList.add("disabled");
     } else if (!firstAvailable) {
-      firstAvailable = { tab, mediaItem };
+      firstAvailable = { tab: button, mediaItem };
     }
   });
 
-  // Aktiviere den ersten verfügbaren
+  // Ersten verfügbaren Tab aktivieren
   if (firstAvailable) {
     firstAvailable.tab.classList.add("active");
     firstAvailable.mediaItem.classList.remove("hidden");
   }
+
+  // Klick-Listener für Tabs
+  buttons.forEach(button => {
+    button.addEventListener("click", () => {
+      if (button.disabled) return;
+
+      buttons.forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+
+      Object.values(mediaItems).forEach(item => {
+        if (item) item.classList.add("hidden");
+      });
+
+      const label = button.textContent.trim();
+      if (mediaItems[label]) {
+        mediaItems[label].classList.remove("hidden");
+      }
+    });
+  });
+
+
+  // --- Initialisierung von Quiz & Fortschritt ---
+  if (typeof QuizEvaluator === "function") new QuizEvaluator();
+  if (typeof FillInTheBlanksEvaluator === "function") new FillInTheBlanksEvaluator();
+  if (typeof EnhancedProgressTracker === "function") new EnhancedProgressTracker();
 });
+
 
 // Quiz Evaluation System
 class QuizEvaluator {
@@ -375,15 +431,15 @@ class QuizEvaluator {
 
   handleQuizSubmit(e) {
     e.preventDefault();
-    
+
     const formData = new FormData(this.quizForm);
     const answers = this.collectAnswers(formData);
     const results = this.evaluateAnswers(answers);
-    
+
     this.displayFeedback(results);
     this.updateNavigation(results.allCorrect);
     this.saveCompletionStatus(results.allCorrect);
-    
+
     // Update module progress after completion
     if (results.score >= 80) {
       new EnhancedProgressTracker().markPageAsCompleted(window.location.pathname, results.score);
@@ -393,36 +449,53 @@ class QuizEvaluator {
   collectAnswers(formData) {
     const answers = {};
     const questionGroups = document.querySelectorAll('fieldset');
-    
+
     questionGroups.forEach((fieldset, index) => {
       const questionName = `question${index + 1}`;
-      const selectedAnswer = formData.get(questionName);
-      answers[questionName] = selectedAnswer;
+      const inputs = fieldset.querySelectorAll('input');
+
+      // Prüfen, ob es sich um eine Checkbox-Gruppe handelt
+      const isMultiple = Array.from(inputs).some(input => input.type === 'checkbox');
+
+      if (isMultiple) {
+        answers[questionName] = formData.getAll(questionName); // gibt ein Array
+      } else {
+        const singleAnswer = formData.get(questionName);
+        answers[questionName] = singleAnswer ? [singleAnswer] : [];
+      }
     });
-    
+
     return answers;
   }
+
 
   evaluateAnswers(answers) {
     const correctAnswers = this.getCorrectAnswers();
     let allCorrect = true;
     let feedback = [];
-    
+
     Object.keys(answers).forEach(questionName => {
       const userAnswer = answers[questionName];
-      const correctAnswer = correctAnswers[questionName];
-      
-      if (!userAnswer) {
+      const correct = correctAnswers[questionName];
+
+      if (!userAnswer || userAnswer.length === 0) {
         allCorrect = false;
         feedback.push(`Frage ${questionName.replace('question', '')}: Bitte wähle eine Antwort aus.`);
-      } else if (userAnswer === correctAnswer) {
+        return;
+      }
+
+      // Sortiere für sauberen Vergleich
+      const sortedUser = [...userAnswer].sort().join('');
+      const sortedCorrect = [...correct].sort().join('');
+
+      if (sortedUser === sortedCorrect) {
         feedback.push(`✅ Frage ${questionName.replace('question', '')}: Richtig!`);
       } else {
         allCorrect = false;
-        feedback.push(`❌ Frage ${questionName.replace('question', '')}: Falsch. Die richtige Antwort ist: ${correctAnswer}.`);
+        feedback.push(`❌ Frage ${questionName.replace('question', '')}: Falsch. Richtige Antwort(en): ${correct.join(', ')}`);
       }
     });
-    
+
     return {
       allCorrect,
       feedback: feedback.join('\n'),
@@ -430,31 +503,46 @@ class QuizEvaluator {
     };
   }
 
+
   getCorrectAnswers() {
-    // Define correct answers for each quiz
     const currentPage = window.location.pathname;
-    
-    if (currentPage.includes('modul1_quiz.html')) {
-      return { question1: 'B' };
-    } else if (currentPage.includes('modul2_quiz.html')) {
-      return { question1: 'A', question2: 'C' };
+
+    if (currentPage.includes('modul2_quiz.html')) {
+      return {
+        question1: ['C'],           // Single Choice
+        question2: ['A', 'B', 'D'], // Multiple Choice
+        question3: ['B'],           // Single Choice
+        question4: ['C']            // Single Choice
+      };
+    } else if (currentPage.includes('modul1_quiz.html')) {
+      return {
+        question1: ['B']
+      };
     }
-    
+
     return {};
   }
 
+
   calculateScore(answers, correctAnswers) {
-    let correct = 0;
-    let total = Object.keys(correctAnswers).length;
-    
-    Object.keys(answers).forEach(questionName => {
-      if (answers[questionName] === correctAnswers[questionName]) {
-        correct++;
+    let correctCount = 0;
+    const total = Object.keys(correctAnswers).length;
+
+    Object.keys(correctAnswers).forEach(questionName => {
+      const userAnswer = answers[questionName] || [];
+      const correctAnswer = correctAnswers[questionName];
+
+      const sortedUser = [...userAnswer].sort().join('');
+      const sortedCorrect = [...correctAnswer].sort().join('');
+
+      if (sortedUser === sortedCorrect) {
+        correctCount++;
       }
     });
-    
-    return Math.round((correct / total) * 100);
+
+    return Math.round((correctCount / total) * 100);
   }
+
 
   displayFeedback(results) {
     const feedbackElement = document.getElementById("feedback");
@@ -463,7 +551,7 @@ class QuizEvaluator {
       feedbackElement.style.color = results.allCorrect ? "#2ecc71" : "#e74c3c";
       feedbackElement.style.fontWeight = "bold";
       feedbackElement.style.marginTop = "1rem";
-      
+
       // Add score display
       if (results.score !== undefined) {
         const scoreText = `\n\nPunktzahl: ${results.score}%`;
@@ -480,7 +568,7 @@ class QuizEvaluator {
       const answers = this.collectAnswers(formData);
       const correctAnswers = this.getCorrectAnswers();
       const score = this.calculateScore(answers, correctAnswers);
-      
+
       if (score >= 80) {
         nextLink.classList.remove("disabled");
         nextLink.removeAttribute("aria-disabled");
@@ -504,7 +592,7 @@ class QuizEvaluator {
     const answers = this.collectAnswers(formData);
     const correctAnswers = this.getCorrectAnswers();
     const score = this.calculateScore(answers, correctAnswers);
-    
+
     if (score >= 80) {
       completedExercises[currentPage] = {
         completed: true,
@@ -533,11 +621,11 @@ class FillInTheBlanksEvaluator {
   handleValidation() {
     const selects = document.querySelectorAll('section.fill-in-the-blanks select');
     const results = this.evaluateAnswers(selects);
-    
+
     this.displayFeedback(results);
     this.updateNavigation(results.allCorrect);
     this.saveCompletionStatus(results.allCorrect);
-    
+
     // Update module progress after completion
     if (results.score >= 80) {
       new EnhancedProgressTracker().markPageAsCompleted(window.location.pathname, results.score);
@@ -578,16 +666,16 @@ class FillInTheBlanksEvaluator {
   calculateScore(selects) {
     let correct = 0;
     let total = selects.length;
-    
+
     selects.forEach(select => {
       const userAnswer = select.value.trim();
       const correctAnswer = select.dataset.solution.trim();
-      
+
       if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
         correct++;
       }
     });
-    
+
     return Math.round((correct / total) * 100);
   }
 
@@ -600,7 +688,7 @@ class FillInTheBlanksEvaluator {
       } else if (results.allCorrect) {
         feedback.textContent = "✅ Richtig! Alle Antworten sind korrekt.";
         feedback.style.color = "#2ecc71";
-        
+
         // Add score display
         if (results.score !== undefined) {
           feedback.textContent += `\n\nPunktzahl: ${results.score}%`;
@@ -608,25 +696,25 @@ class FillInTheBlanksEvaluator {
       } else {
         feedback.textContent = "Nicht ganz richtig. Versuche es noch einmal.\n\n" + results.feedback;
         feedback.style.color = "#e74c3c";
-        
+
         // Add score display
         if (results.score !== undefined) {
           feedback.textContent += `\n\nPunktzahl: ${results.score}%`;
         }
       }
-      
+
       feedback.style.fontWeight = "bold";
       feedback.style.marginTop = "1rem";
     }
   }
 
   updateNavigation(allCorrect) {
-    const nextLink = document.querySelector('.nav-buttons a[href*="quiz.html"]');
+    const nextLink = document.querySelector('.nav-buttons a.button-secondary:last-of-type');
     if (nextLink) {
       // Calculate score to check if 80% threshold is met
       const selects = document.querySelectorAll('section.fill-in-the-blanks select');
       const score = this.calculateScore(selects);
-      
+
       if (score >= 80) {
         nextLink.classList.remove("disabled");
         nextLink.removeAttribute("aria-disabled");
@@ -648,7 +736,7 @@ class FillInTheBlanksEvaluator {
     // Calculate score to check if 80% threshold is met
     const selects = document.querySelectorAll('section.fill-in-the-blanks select');
     const score = this.calculateScore(selects);
-    
+
     if (score >= 80) {
       completedExercises[currentPage] = {
         completed: true,
@@ -661,64 +749,77 @@ class FillInTheBlanksEvaluator {
   }
 }
 
-// Initialize all systems when DOM is loaded
+// Drag and Drop Functionality
+
 document.addEventListener("DOMContentLoaded", () => {
-  // Media Button Funktion
-  const buttons = document.querySelectorAll(".tabs button");
-  const mediaItems = {
-    "Video": document.getElementById("video-content"),
-    "Audio": document.getElementById("audio-content"),
-    "Text": document.getElementById("text-content"),
-  };
+  const draggables = document.querySelectorAll(".draggable");
+  const dropzones = document.querySelectorAll(".dropzone");
+  const feedback = document.getElementById("drop-feedback");
 
-  buttons.forEach(button => {
-    button.addEventListener("click", () => {
-      buttons.forEach(btn => btn.classList.remove("active"));
-      button.classList.add("active");
+  draggables.forEach(draggable => {
+    // Mausbedienung
+    draggable.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("text/plain", draggable.dataset.id);
+    });
 
-      Object.values(mediaItems).forEach(item => {
-        if (item) item.classList.add("hidden");
-      });
+    // Tastaturbedienung
+    draggable.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") {
+        draggable.classList.add("dragging");
+        draggable.setAttribute("aria-grabbed", "true");
+      }
+    });
 
-      const label = button.textContent.trim();
-      if (mediaItems[label]) {
-        mediaItems[label].classList.remove("hidden");
+    draggable.addEventListener("keyup", e => {
+      if ((e.key === "Enter" || e.key === " ") && draggable.classList.contains("dragging")) {
+        draggable.classList.remove("dragging");
+        draggable.setAttribute("aria-grabbed", "false");
       }
     });
   });
 
-  // Note Funktion
-  const addNoteBtn = document.getElementById("add-note");
-  const notesContainer = document.getElementById("notes-container");
+  dropzones.forEach(dropzone => {
+    // Drag & Drop mit Maus
+    dropzone.addEventListener("dragover", e => e.preventDefault());
 
-  if (addNoteBtn && notesContainer) {
-    addNoteBtn.addEventListener("click", () => {
-      const note = document.createElement("div");
-      note.className = "note";
-
-      const deleteButton = document.createElement("button");
-      deleteButton.className = "delete-note";
-      deleteButton.innerHTML = "✕";
-      deleteButton.title = "Notiz löschen";
-
-      deleteButton.addEventListener("click", () => {
-        notesContainer.removeChild(note);
-      });
-
-      const textarea = document.createElement("textarea");
-      textarea.placeholder = "Deine Notiz...";
-
-      note.appendChild(deleteButton);
-      note.appendChild(textarea);
-      notesContainer.appendChild(note);
+    dropzone.addEventListener("drop", e => {
+      e.preventDefault();
+      const draggedId = e.dataTransfer.getData("text/plain");
+      handleDrop(dropzone, draggedId);
     });
-  }
 
-  // Initialize evaluation systems
-  new QuizEvaluator();
-  new FillInTheBlanksEvaluator();
-  new EnhancedProgressTracker();
+    // Tastatur: per Enter loslassen
+    dropzone.addEventListener("keydown", e => {
+      if ((e.key === "Enter" || e.key === " ") && document.querySelector(".dragging")) {
+        const dragged = document.querySelector(".dragging");
+        handleDrop(dropzone, dragged.dataset.id);
+        dragged.classList.remove("dragging");
+        dragged.setAttribute("aria-grabbed", "false");
+      }
+    });
+  });
+
+  function handleDrop(zone, draggedId) {
+    const correct = zone.dataset.accept === draggedId;
+    zone.textContent = zone.textContent + ` (${draggedId})`;
+    zone.classList.add(correct ? "correct" : "incorrect");
+
+    // Deaktivieren weiterer Drops
+    zone.setAttribute("tabindex", "-1");
+    zone.setAttribute("aria-disabled", "true");
+
+    const remaining = document.querySelectorAll(".dropzone:not(.correct):not(.incorrect)");
+    if (remaining.length === 0) {
+      feedback.textContent = "✅ Alle Zuordnungen abgeschlossen!";
+      feedback.style.color = "#2ecc71";
+      document.getElementById("next-link").classList.remove("disabled");
+      document.getElementById("next-link").removeAttribute("aria-disabled");
+    }
+  }
 });
+
+
+// Initialize Functions
 
 // Utility function to check if exercise is completed
 function isExerciseCompleted(pagePath) {
@@ -741,3 +842,86 @@ function isModuleRequirementsMet(moduleName) {
   const config = MODULE_CONFIG[moduleName];
   return config && progress.percentage >= config.requiredPercentage;
 }
+
+// Note Funktion
+document.addEventListener("DOMContentLoaded", function () {
+  const addNoteBtn = document.getElementById("add-note");
+  const notesContainer = document.getElementById("notes-container");
+  // Kann man dann noch auf die einzelnen Module anwenden
+  const storageKey = "global_notes";
+
+  // save
+  function saveNotes() {
+    const notes = [];
+    notesContainer.querySelectorAll("textarea").forEach(textarea => {
+      const text = textarea.value.trim();
+      if (text !== "") {
+        notes.push(text);
+      }
+    });
+    localStorage.setItem(storageKey, JSON.stringify(notes));
+  }
+
+  // make note
+  function createNote(content = "") {
+    const note = document.createElement("div");
+    note.className = "note";
+
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "delete-note";
+    deleteButton.innerHTML = "✕";
+    deleteButton.title = "Notiz löschen";
+
+    deleteButton.addEventListener("click", () => {
+      notesContainer.removeChild(note);
+      saveNotes();
+    });
+
+    const textarea = document.createElement("textarea");
+    textarea.placeholder = "Deine Notiz...";
+    textarea.value = content;
+
+    textarea.addEventListener("input", saveNotes);
+
+    note.appendChild(deleteButton);
+    note.appendChild(textarea);
+    notesContainer.appendChild(note);
+  }
+
+  function loadNotes() {
+    const saved = localStorage.getItem(storageKey);
+    if (saved) {
+      JSON.parse(saved).forEach(text => createNote(text));
+    }
+  }
+
+  addNoteBtn.addEventListener("click", () => {
+    createNote();
+    saveNotes();
+  });
+
+  // load notes 
+  loadNotes();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const nextButton = document.querySelector(".next-button");
+  if (nextButton) {
+    nextButton.addEventListener("click", () => {
+      const currentPage = window.location.pathname.split("/").pop();
+
+      // Mark current page as completed (as content)
+      completedExercises[currentPage] = {
+        completed: true,
+        pageType: "content"
+      };
+
+      localStorage.setItem("completedExercises", JSON.stringify(completedExercises));
+
+      // Optional: sofort visuelles Update in Navigation (nützlich falls SPA oder Soft-Reload)
+      if (typeof enhancedProgress !== "undefined") {
+        enhancedProgress.highlightCompletedExercises();
+      }
+    });
+  }
+});
