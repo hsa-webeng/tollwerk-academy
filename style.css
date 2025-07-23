@@ -904,7 +904,7 @@ ul.marked {
 }
 
 /* =========================
-   Kurskarten (Course Cards)
+   Course Cards
    ========================= */
 .course-cards {
   display: grid;
@@ -1051,6 +1051,7 @@ ul.marked {
    Modul-Karten
    ========================= */
 .module-card {
+  display: block;
   background: #f9f9f9;
   border-radius: 1rem;
   padding: 1rem;
@@ -1058,11 +1059,29 @@ ul.marked {
   max-width: 300px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   gap: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  color: inherit;
+  text-decoration: none;
 }
 
-.module-card:hover {
-  transform: translateY(-0.25rem);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.module-card:hover,
+ .modul-card:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  outline: none;
+}
+
+.module-card h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.15rem;
+  color: #1a1a1a;
 }
 
 .module-card h3 {
@@ -1072,8 +1091,11 @@ ul.marked {
 }
 
 .module-card p {
+  margin: 0;
   color: #6c757d;
   margin-bottom: 1rem;
+  font-size: 0.95rem;
+  
 }
 
 .module-card ul {
