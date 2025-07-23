@@ -805,7 +805,7 @@ a.disabled:hover::before {
   padding: 2rem 3rem;
   box-shadow: 0 0.5rem 1.875rem rgba(84, 109, 253, 0.1);
   max-width: 800px;
-  margin: 2rem auto;
+  margin: 2rem;
   font-family: "GraublauDisplay", sans-serif;
   color: #2c2e4a;
   line-height: 1.6;
