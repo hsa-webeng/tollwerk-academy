@@ -206,6 +206,7 @@ header {
   max-width: 100%;
   padding: 1rem 6rem;
   background: white;
+  position: relative;
 }
 
 /* Notes */
@@ -466,14 +467,7 @@ li a {
 
 .nav-button {
   display: inline-block;
-  padding: 0.6rem 1.2rem;
-  background-color: #576FCB;
-  color: white;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 1rem;
-  transition: background-color 0.2s ease;
+  
 }
 
 .next-button {
@@ -490,6 +484,15 @@ li a {
   color: #666;
   text-decoration: none;
   cursor: not-allowed;
+}
+
+.show-modules-button {
+  display: inline-block;
+  
+}
+
+.show-modules-button:hover {
+  background-color: #005fa3;
 }
 
 /* Disabled links */
@@ -900,9 +903,9 @@ ul.marked {
   font-style: italic;
 }
 
-/* ==========================================================================
-   MODULE CARDS
-   ========================================================================== */
+/* =========================
+   Kurskarten (Course Cards)
+   ========================= */
 .course-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -920,19 +923,6 @@ ul.marked {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-}
-
-.course-description {
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: max-height 0.5s ease, opacity 0.3s ease;
-}
-
-.course-card.open .course-description {
-  max-height: 500px; /* ausreichend für gesamten Text */
-  opacity: 1;
-  margin-top: 1rem;
 }
 
 .course-card:hover {
@@ -957,25 +947,117 @@ ul.marked {
   pointer-events: none;
 }
 
-.course-card .nav-button.disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+.course-card .nav-button {
+  display: inline-block;
+  margin-top: 0.5rem;
 }
 
-.course-modules {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin: 2rem 0;
+.course-card.expanded .nav-button {
+  display: none;
 }
 
+.course-card .show-modules-button {
+  display: none;
+  margin-top: 1rem;
+}
+
+.course-card.expanded .show-modules-button {
+  display: block;
+}
+
+.course-description {
+  display: none;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+.course-card.expanded .course-description {
+  display: block;
+}
+
+
+
+/* =========================
+   Modulansicht (Overlay)
+   ========================= */
+/* Das Overlay selbst bleibt immer im Layout */
+.module-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  overflow-y: auto;
+  z-index: 999;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition: opacity 0.3s ease;
+  padding-top: 4rem; /* Platz für Zurück-Button */
+}
+
+/* Sichtbar, wenn Wrapper die active-Klasse hat */
+.course-cards-wrapper.active .module-overlay {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Inhalt im Overlay → Flex-Layout */
+.module-overlay-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
+  padding: 1rem;
+}
+
+
+
+.close-overlay {
+  background-color: transparent;
+  color: #576FCB;
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #576FCB;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  
+  /* Positionierung oben links */
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+}
+
+.close-overlay:hover,
+.close-overlay:focus {
+  background-color: #576FCB;
+  color: white;
+  outline: none;
+  transform: translateY(-0.125rem);
+}
+
+
+/* =========================
+   Modul-Karten
+   ========================= */
 .module-card {
-  background: white;
-  border: 2px solid #e9ecef;
+  background: #f9f9f9;
   border-radius: 1rem;
-  padding: 1.5rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  padding: 1rem;
+  flex: 1 1 300px;
+  max-width: 300px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  gap: 1.5rem;
 }
 
 .module-card:hover {
@@ -1030,6 +1112,22 @@ ul.marked {
 .module-card.locked .module-requirements small {
   color: #721c24;
 }
+
+/* =========================
+   Responsive Module Cards
+   ========================= */
+@media screen and (max-width: 1024px) {
+  .module-card {
+    flex: 1 1 calc(50% - 1rem);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .module-card {
+    flex: 1 1 100%;
+  }
+}
+
 
 /* ==========================================================================
    NOTES

@@ -1,3 +1,5 @@
+// GLobal Variables
+
 // Global variables for tracking completion
 let completedExercises = JSON.parse(localStorage.getItem('completedExercises') || '{}');
 let moduleProgress = JSON.parse(localStorage.getItem('moduleProgress') || '{}');
@@ -5,18 +7,50 @@ let moduleProgress = JSON.parse(localStorage.getItem('moduleProgress') || '{}');
 // Intro pages that should never be marked as completed
 const INTRO_PAGES = ['index.html', 'hinweise.html'];
 
-// Event listener to handle the accessibility card toggle
 document.addEventListener('DOMContentLoaded', function () {
-  const card = document.getElementById('course-card');
+  const courseCards = document.querySelectorAll('.course-card.toggleable');
 
-  // Prevent a click on the button from triggering the card toggle
-  const button = card.querySelector('a.nav-button');
-  button.addEventListener('click', (e) => e.stopPropagation());
+  // Kurskarte öffnen/schließen
+  courseCards.forEach(card => {
+    const moduleButton = card.querySelector('.show-modules-button');
+    const courseLink = card.querySelector('.nav-button');
 
-  card.addEventListener('click', function () {
-    card.classList.toggle('open');
+    // Klicks auf Buttons nicht zum Eltern-Card-Klick durchreichen
+    [moduleButton, courseLink].forEach(el => {
+      if (el) {
+        el.addEventListener('click', e => e.stopPropagation());
+      }
+    });
+
+    card.addEventListener('click', function () {
+      if (card.classList.contains('disabled')) return;
+
+      const isExpanded = card.classList.contains('expanded');
+      courseCards.forEach(c => c.classList.remove('expanded'));
+
+      if (!isExpanded) {
+        card.classList.add('expanded');
+      }
+    });
+
+    // Overlay öffnen (über Klasse)
+    if (moduleButton) {
+      moduleButton.addEventListener('click', () => {
+        const wrapper = card.closest('.course-cards-wrapper');
+        wrapper.classList.add('active');
+      });
+    }
+  });
+
+  // Overlay schließen
+  document.querySelectorAll('.close-overlay').forEach(button => {
+    button.addEventListener('click', () => {
+      const wrapper = button.closest('.course-cards-wrapper');
+      wrapper.classList.remove('active');
+    });
   });
 });
+
 
 // Module configuration - defines what exercises are required for each module
 const MODULE_CONFIG = {
@@ -303,39 +337,64 @@ class EnhancedProgressTracker {
 
 
 
-// Disable Media Tab buttons if content type is missing
-
-document.addEventListener("DOMContentLoaded", function () {
-  const tabs = document.querySelectorAll(".tabs button");
+document.addEventListener("DOMContentLoaded", () => {
+  // --- Media Tabs Setup ---
+  const buttons = document.querySelectorAll(".tabs button");
   const mediaItems = {
     "Video": document.getElementById("video-content"),
     "Audio": document.getElementById("audio-content"),
-    "Text": document.getElementById("text-content")
+    "Text": document.getElementById("text-content"),
   };
 
   let firstAvailable = null;
 
-  tabs.forEach(tab => {
-    const label = tab.textContent.trim();
+  // Tabs deaktivieren, wenn Inhalt leer ist
+  buttons.forEach(button => {
+    const label = button.textContent.trim();
     const mediaItem = mediaItems[label];
 
-    // Is it really empty?
     const isEmpty = !mediaItem || mediaItem.querySelectorAll("img, audio, video, p").length === 0;
 
     if (isEmpty) {
-      tab.disabled = true;
-      tab.classList.add("disabled");
+      button.disabled = true;
+      button.classList.add("disabled");
     } else if (!firstAvailable) {
-      firstAvailable = { tab, mediaItem };
+      firstAvailable = { tab: button, mediaItem };
     }
   });
 
-  // activate the first available tab and media item
+  // Ersten verfügbaren Tab aktivieren
   if (firstAvailable) {
     firstAvailable.tab.classList.add("active");
     firstAvailable.mediaItem.classList.remove("hidden");
   }
+
+  // Klick-Listener für Tabs
+  buttons.forEach(button => {
+    button.addEventListener("click", () => {
+      if (button.disabled) return;
+
+      buttons.forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+
+      Object.values(mediaItems).forEach(item => {
+        if (item) item.classList.add("hidden");
+      });
+
+      const label = button.textContent.trim();
+      if (mediaItems[label]) {
+        mediaItems[label].classList.remove("hidden");
+      }
+    });
+  });
+
+
+  // --- Initialisierung von Quiz & Fortschritt ---
+  if (typeof QuizEvaluator === "function") new QuizEvaluator();
+  if (typeof FillInTheBlanksEvaluator === "function") new FillInTheBlanksEvaluator();
+  if (typeof EnhancedProgressTracker === "function") new EnhancedProgressTracker();
 });
+
 
 // Quiz Evaluation System
 class QuizEvaluator {
@@ -660,38 +719,7 @@ class FillInTheBlanksEvaluator {
 
 // Initialize Functions
 
-// Initialize all systems when DOM is loaded
-document.addEventListener("DOMContentLoaded", () => {
-  // Media Button Funktion
-  const buttons = document.querySelectorAll(".tabs button");
-  const mediaItems = {
-    "Video": document.getElementById("video-content"),
-    "Audio": document.getElementById("audio-content"),
-    "Text": document.getElementById("text-content"),
-  };
 
-  buttons.forEach(button => {
-    button.addEventListener("click", () => {
-      buttons.forEach(btn => btn.classList.remove("active"));
-      button.classList.add("active");
-
-      Object.values(mediaItems).forEach(item => {
-        if (item) item.classList.add("hidden");
-      });
-
-      const label = button.textContent.trim();
-      if (mediaItems[label]) {
-        mediaItems[label].classList.remove("hidden");
-      }
-    });
-  });
-
-
-  // Initialize evaluation systems
-  new QuizEvaluator();
-  new FillInTheBlanksEvaluator();
-  new EnhancedProgressTracker();
-});
 
 // Utility function to check if exercise is completed
 function isExerciseCompleted(pagePath) {
