@@ -457,10 +457,7 @@ li a {
   transform: translateY(-0.125rem);
 }
 
-/* Navigation buttons */
 .nav-buttons {
-  display: flex;
-  justify-content: space-between;
   margin-top: 3rem;
 }
 
@@ -478,6 +475,8 @@ li a {
 
 .next-button {
   margin-left: auto;
+  background-color: #576FCB;
+  color: white;
 }
 
 .nav-button:hover {
@@ -734,13 +733,14 @@ a.disabled:hover::before {
 .quiz-multiple button[type="submit"] {
   background-color: #576FCB;
   color: white;
-  font-size: 1rem;
-  padding: 0.75rem 1.25rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
   border: none;
-  border-radius: 0.625rem;
   cursor: pointer;
-  margin-top: 1.5rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
 }
 
 .quiz-multiple button[type="submit"]:hover {
