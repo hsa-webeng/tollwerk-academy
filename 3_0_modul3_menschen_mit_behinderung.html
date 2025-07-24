@@ -2,34 +2,34 @@
 <html lang="de">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lernplattform - Modul 2</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modul 2 – Inhaltsverzeichnis</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
     <header>
         <div class="header-content">
             <div class="logo">
-                <img src="logos/Tollwerk-Logo_RGB.svg" alt="Tollwerk Logo">
+                <img src="logos/Tollwerk-Logo_RGB.svg" alt="Tollwerk Logo" />
             </div>
             <div class="search-wrapper">
-                <img src="icons/Search.svg" alt="Suche Icon" class="search-icon">
-                <input type="search" placeholder="Suche nach Lerninhalten" aria-label="Suche" class="searchbar">
+                <img src="icons/Search.svg" alt="Suche Icon" class="search-icon" />
+                <input type="search" placeholder="Suche nach Lerninhalten" aria-label="Suche" class="searchbar" />
             </div>
             <div class="header-nav">
-                <img src="icons/Profile.svg" alt="Profil Icon" class="header-nav-icon">
+                <img src="icons/Profile.svg" alt="Profil Icon" class="header-nav-icon" />
             </div>
         </div>
     </header>
 
     <div class="container">
         <aside class="sidebar">
-            <nav>
+            <nav aria-label="Modulnavigation">
                 <h3>
                     <span class="with-icon">
-                        <img src="icons/List.svg" alt="Menü Icon" class="type-icon">
+                        <img src="icons/List.svg" alt="Menü Icon" class="type-icon" />
                         Navigation
                     </span>
                 </h3>
@@ -58,7 +58,8 @@
                 <details open>
                     <summary>Modul 2: Barrieren</summary>
                     <ul>
-                        <li><a href="2_0_modul2_inhaltsverzeichnis.html">2.0 Inhaltsverzeichnis</a></li>
+                        <li><a href="2_0_modul2_inhaltsverzeichnis.html" aria-current="page">2.0 Inhaltsverzeichnis</a>
+                        </li>
                         <li><a href="2_1_modul2_barrieren_reflexion.html">2.1 Barrieren-Reflexion</a></li>
                         <li><a href="2_2_modul2_barrieren_sind_ueberall.html">2.2 Barrieren sind überall</a></li>
                         <li><a href="2_3_modul2_digitale_medien.html">2.3 Digitale Medien</a></li>
@@ -66,20 +67,19 @@
                         <li><a href="2_5_modul2_quiz.html">2.5 Quiz</a></li>
                         <li><a href="2_6_modul2_lueckentext.html">2.6 Lückentext</a></li>
                         <li><a href="2_7_modul2_drag_and_drop_quiz.html">2.7 Drag and Drop</a></li>
-                        <li><a href="2_8_modul2_testergebnis.html" aria-current="page">2.8 Testergebnis</a></li>
+                        <li><a href="2_8_modul2_testergebnis.html">2.8 Testergebnis</a></li>
                     </ul>
                 </details>
 
                 <details>
                     <summary class="locked">Modul 3: Betroffene</summary>
                     <ul>
-                        <!-- Nicht exisent aktuell -->
+                        <li><span class="disabled" aria-disabled="true">Inhaltsverzeichnis</span></li>
                     </ul>
                 </details>
-
             </nav>
             <div id="modul-fortschritt-container">
-                <h2>Modul 2 Fortschritt</h2>
+                <h2>Modul 3 Fortschritt</h2>
                 <div class="modul-progress-bar">
                     <div class="modul-progress-fill" style="width: 0%"></div>
                 </div>
@@ -102,28 +102,49 @@
                 <div id="inhalt-progress-text" aria-live="polite">0 von 8 Seiten abgeschlossen</div>
             </div>
             <section>
-                <h2>2.8 Barrieren - Testergebnis</h2>
-                <div class="infobox">
-                    <strong>Lernziel:</strong> Sie sehen ihre Ergebnisse aus dem Test "Teste dein Wissen" und können
-                    diese überprüfen.
+                <h2>Modul 2: Barrieren</h2>
+                <h2>2.0 Inhaltsverzeichnis</h2>
+
+                <div class="infobox" role="region" aria-label="Lernziel">
+                    <strong>Lernziel:</strong>
+                    <p>In diesem Modul lernen Sie übe die Betroffenen.</p>
                 </div>
+
+                <section class="modul-inhaltsverzeichnis" aria-labelledby="modul-uebersicht">
+                    <h3 id="modul-uebersicht">Übersicht der Lektionen in Modul 3</h3>
+                    <div class="module-grid" role="list">
+                        <a href="2_1_modul2_barrieren_reflexion.html" class="module-card" role="listitem"
+                            aria-label="">
+                            
+                        </a>
+                        <a href="2_2_modul2_barrieren_sind_ueberall.html" class="module-card" role="listitem"
+                            aria-label="">
+                           
+                        </a>
+                        <a href="2_3_modul2_digitale_medien.html" class="module-card" role="listitem"
+                            aria-label="">
+                            
+                        </a>
+                        
+                    </div>
+
+                </section>
 
                 <div class="nav-buttons">
-                    <a href="2_7_modul2_drag_and_drop_quiz.html" class="button-secondary">&larr; Zurück</a>
-                    <a href="3_0_modul3_menschen_mit_behinderung.html" class="next-button button-secondary">Weiter mit
-                        Modul 3 &rarr;</a>
+                    <a href="2_8_modul2_testergebnis.html" class="button-secondary" aria-label="Zurück zu Hinweise">&larr; Hinweise</a>
+                    <a href=" " class="next-button button-secondary disabled"
+                        aria-label="Inhalt noch nicht vorhanden">Weiter &rarr;</a>
                 </div>
-
-
             </section>
         </main>
 
         <aside class="notes">
             <h3>Notizen</h3>
-            <button id="add-note">Neue Notiz erstellen</button>
+            <button id="add-note" aria-label="Neue Notiz erstellen">Neue Notiz erstellen</button>
             <div id="notes-container"></div>
         </aside>
     </div>
+
     <script src="script.js"></script>
 </body>
 

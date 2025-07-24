@@ -1,5 +1,5 @@
 /* ==========================================================================
-   TOLLWERK LEARNING PLATFORM - CLEAN CSS
+   TOLLWERK LEARNING PLATFORM 
    ========================================================================== */
 
 /* ==========================================================================
@@ -65,7 +65,9 @@ header {
   color: white;
 }
 
-/* Search */
+/* ==========================================================================
+   Search Bar
+   ========================================================================== */
 .search-wrapper {
   position: relative;
   max-width: 400px;
@@ -140,7 +142,9 @@ header {
   border-bottom: 1px solid #ccc;
 }
 
-/* KLAPPBARE BEREICHE */
+/* ==========================================================================
+   Foldable Sections
+   ========================================================================== */
 .sidebar details {
   margin-bottom: 1rem;
 }
@@ -336,6 +340,7 @@ li a {
   color: #4055a4 !important;
 }
 
+
 /* ==========================================================================
    PROGRESS TRACKING
    ========================================================================== */
@@ -419,6 +424,119 @@ li a {
 
 .requirement-pending {
   color: #f39c12 !important;
+  font-weight: bold;
+}
+
+
+/* ==========================================================================
+   Page Progress Tracker
+   ========================================================================== */
+/* CSS für Inhaltsfortschritt */
+#inhalt-fortschritt-container {
+  max-width: 1000px; /* etwas breiter als Main-Inhalt */
+  margin: 1rem auto 0.5rem auto; /* weniger Abstand oben/unten */
+  padding: 0.75rem 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+#inhalt-fortschritt-container h2 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+#inhalt-progress-bar {
+  width: 100%;
+  height: 10px; /* flacher Balken */
+  background-color: #dcdcdc;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 0.4rem;
+}
+
+#inhalt-progress-fill {
+  height: 100%;
+  width: 0%;
+  background-color: #3478f6;
+  transition: width 0.4s ease-in-out;
+}
+
+#inhalt-progress-text {
+  text-align: right;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+/* ==========================================================================
+   Module Progress Tracker
+   ========================================================================== */
+
+#modul-fortschritt-container {
+  max-width: 900px;
+  margin: 2rem auto 1rem auto;
+  padding: 1rem;
+  background-color: #f2f2f2;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+#modul-fortschritt-container h2 {
+  margin-top: 0;
+  font-size: 1.3rem; /* identisch mit Inhalt-Fortschritt */
+  color: #333;
+}
+
+.modul-progress-bar {
+  width: 100%;
+  height: 16px;
+  background-color: #d0d0d0;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 0.4rem;
+  position: relative;
+}
+
+.modul-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #4a90e2, #79b7ff);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+  transition: width 0.4s ease-in-out;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.modul-progress-text {
+  margin-top: 0.2rem;
+  font-size: 0.95rem;
+  color: #444;
+  text-align: left;
+}
+
+.modul-progress-requirements {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 0.6rem;
+}
+
+.requirement-met {
+  color: green;
+  font-weight: bold;
+}
+
+.requirement-pending {
+  color: #b30000;
   font-weight: bold;
 }
 
@@ -1458,45 +1576,4 @@ a.disabled {
   pointer-events: none;
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-/* ==========================================================================
-   Page Progress Tracker
-   ========================================================================== */
-/* CSS für Inhaltsfortschritt */
-#inhalt-fortschritt-container {
-  max-width: 1000px; /* etwas breiter als Main-Inhalt */
-  margin: 1rem auto 0.5rem auto; /* weniger Abstand oben/unten */
-  padding: 0.75rem 1rem;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-}
-
-#inhalt-fortschritt-container h2 {
-  margin-top: 0;
-  font-size: 1.1rem;
-  color: #333;
-}
-
-#inhalt-progress-bar {
-  width: 100%;
-  height: 10px; /* flacher Balken */
-  background-color: #dcdcdc;
-  border-radius: 5px;
-  overflow: hidden;
-  margin-bottom: 0.4rem;
-}
-
-#inhalt-progress-fill {
-  height: 100%;
-  width: 0%;
-  background-color: #3478f6;
-  transition: width 0.4s ease-in-out;
-}
-
-#inhalt-progress-text {
-  text-align: right;
-  font-size: 0.85rem;
-  color: #555;
 }

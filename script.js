@@ -56,40 +56,59 @@ document.addEventListener('DOMContentLoaded', function () {
 const MODULE_CONFIG = {
   'modul1': {
     exercises: [
-      '1_1_modul1_allgemeine_definition.html',
-      '1_2_modul1_gesetzliche_definition.html',
-      '1_3_modul1_lueckentext.html',
-      '1_4_modul1_quiz.html',
+      '1_6_modul1_lueckentext.html',
+      '1_7_modul1_quiz.html'
     ],
     requiredPercentage: 80,
     nextModule: 'modul2'
   },
   'modul2': {
     exercises: [
-      '2_1_modul2_barrieren_reflexion.html',
-      '2_2_modul2_barrieren_sind_ueberall.html',
-      '2_3_modul2_digitale_medien.html',
-      // Add more exercises as they become available
+      '2_5_modul2_quiz.html',
+      '2_6_modul2_lueckentext.html',
+      '2_7_modul2_drag_and_drop_quiz.html'
     ],
     requiredPercentage: 80,
     nextModule: 'modul3'
   },
   'modul3': {
     exercises: [
-      // Will be populated when modul3 content is available
+      // Wird ergänzt, sobald Inhalte existieren
     ],
     requiredPercentage: 80,
     nextModule: null
   }
 };
 
+
 // Page type configuration - defines how each page type should be marked as completed
 const PAGE_TYPES = {
-  'content': ['1_1_modul1_allgemeine_definition.html', '1_2_modul1_gesetzliche_definition.html', '1_3_modul1_soziale_praktische_aspekte.html',
-    '1_4_modul1_bezug_zur_nachhaltigkeit.html', '2_1_modul2_barrieren_reflexion.html', '2_2_modul2_barrieren_sind_ueberall.html', '2_3_modul2_digitale_medien.html'],
-  'quiz': ['1_7_modul1_quiz.html', '2_5_modul2_quiz.html'],
-  'fillInTheBlanks': ['1_6_modul1_lueckentext.html']
+  content: [
+    '1_1_modul1_allgemeine_definition.html',
+    '1_2_modul1_gesetzliche_definition.html',
+    '1_3_modul1_soziale_praktische_aspekte.html',
+    '1_4_modul1_bezug_zur_nachhaltigkeit.html',
+    '1_5_modul1_teste_dein_wissen.html',
+    '1_8_modul1_testergebnis.html',
+    '2_1_modul2_barrieren_reflexion.html',
+    '2_2_modul2_barrieren_sind_ueberall.html',
+    '2_3_modul2_digitale_medien.html',
+    '2_4_modul2_teste_dein_wissen.html',
+    '2_8_modul2_testergebnis.html'
+  ],
+  quiz: [
+    '1_7_modul1_quiz.html',
+    '2_5_modul2_quiz.html'
+  ],
+  fillInTheBlanks: [
+    '1_6_modul1_lueckentext.html',
+    '2_6_modul2_lueckentext.html'
+  ],
+  dragAndDrop: [
+    '2_7_modul2_drag_and_drop_quiz.html'
+  ]
 };
+
 
 // Page Progress Tracking
 document.addEventListener("DOMContentLoaded", function () {
@@ -207,20 +226,19 @@ class EnhancedProgressTracker {
   }
 
   setupContentPageTracking() {
-    // For content pages, mark as completed when user clicks "Weiter"
-    // But skip intro pages
-    if (this.pageType === 'content' && !INTRO_PAGES.includes(this.currentPage)) {
+    if ((this.pageType === 'content' || this.pageType === 'quiz' || this.pageType === 'fillInTheBlanks' || this.pageType === 'dragAndDrop')
+      && !INTRO_PAGES.includes(this.currentPage)) {
       const nextButtons = document.querySelectorAll('.nav-button.next-button');
       nextButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
+        button.addEventListener('click', () => {
           this.markPageAsCompleted(this.currentPage, 100);
         });
       });
     }
   }
 
+
   markPageAsCompleted(pagePath, score = 100) {
-    // Nur Dateiname ohne Query oder Hash extrahieren
     const cleanPath = pagePath.split('?')[0].split('#')[0];
 
     if (INTRO_PAGES.includes(cleanPath)) {
@@ -230,11 +248,18 @@ class EnhancedProgressTracker {
 
     const isPassed = score >= 80;
 
+    // Hole den Page Type für die jeweilige Seite
+    let pageType = 'content'; // default fallback
+    if (PAGE_TYPES.quiz.includes(cleanPath)) pageType = 'quiz';
+    else if (PAGE_TYPES.fillInTheBlanks.includes(cleanPath)) pageType = 'fillInTheBlanks';
+    else if (PAGE_TYPES.dragAndDrop && PAGE_TYPES.dragAndDrop.includes(cleanPath)) pageType = 'dragAndDrop';
+    else if (PAGE_TYPES.content.includes(cleanPath)) pageType = 'content';
+
     completedExercises[cleanPath] = {
       completed: isPassed,
       score: score,
       completedAt: new Date().toISOString(),
-      pageType: this.pageType
+      pageType: pageType
     };
 
     localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
@@ -243,6 +268,7 @@ class EnhancedProgressTracker {
     this.displayModuleProgress();
     this.highlightCompletedExercises();
   }
+
 
 
   calculateModuleProgress(moduleName) {
@@ -319,45 +345,23 @@ class EnhancedProgressTracker {
     const progress = this.calculateModuleProgress(this.currentModule);
     const moduleConfig = MODULE_CONFIG[this.currentModule];
 
-    // Create or update progress indicator in sidebar
-    let progressIndicator = document.getElementById('module-progress-indicator');
-    if (!progressIndicator) {
-      progressIndicator = document.createElement('div');
-      progressIndicator.id = 'module-progress-indicator';
-      progressIndicator.className = 'module-progress-indicator';
-
-      const sidebar = document.querySelector('.sidebar');
-      if (sidebar) {
-        // Insert after the nav element
-        const nav = sidebar.querySelector('nav');
-        if (nav) {
-          nav.insertAdjacentElement('afterend', progressIndicator);
-        }
-      }
-    }
+    const progressFill = document.getElementById('modul-progress-fill');
+    const progressText = document.getElementById('modul-progress-text');
 
     const completedCount = moduleConfig.exercises.filter(exercise =>
       completedExercises[exercise] && completedExercises[exercise].completed
     ).length;
 
-    progressIndicator.innerHTML = `
-      <div class="progress-header">
-        <h3>Modul Fortschritt: ${progress}%</h3>
-        <p>${completedCount} von ${moduleConfig.exercises.length} Übungen abgeschlossen</p>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill" style="width: ${progress}%"></div>
-      </div>
-      <div class="progress-requirements">
-        <p>Für das nächste Modul benötigt: ${moduleConfig.requiredPercentage}%</p>
-        ${progress >= moduleConfig.requiredPercentage ?
-        '<p class="requirement-met">✅ Anforderungen erfüllt - Sie können zum nächsten Modul weitergehen!</p>' :
-        '<p class="requirement-pending">⏳ Anforderungen noch nicht erfüllt</p>'
-      }
-      </div>
-    `;
+    if (progressFill) {
+      progressFill.style.width = `${progress}%`;
+    }
+
+    if (progressText) {
+      progressText.textContent = `${completedCount} von ${moduleConfig.exercises.length} Übungen abgeschlossen`;
+    }
   }
 
+  //Mark Pages as Completed in Navigation
   highlightCompletedExercises() {
     const navLinks = document.querySelectorAll('.sidebar nav a');
     const currentPath = window.location.pathname.split("/").pop();
@@ -365,40 +369,40 @@ class EnhancedProgressTracker {
     navLinks.forEach(link => {
       const href = link.getAttribute('href');
 
-      // remove all completion classes and attributes
+      // Reset all classes and attributes
       link.classList.remove('completed', 'completed-quiz', 'completed-content');
       link.removeAttribute('aria-current');
       link.title = "";
 
-      // mark current page
+      // Mark current page
       if (href === currentPath) {
         link.setAttribute("aria-current", "page");
       }
 
-      // skip intro pages
+      // Skip intro pages
       if (href && INTRO_PAGES.includes(href)) return;
 
-      // mark completed exercises
+      // Mark completed exercises
       if (href && completedExercises[href]) {
         const completionData = completedExercises[href];
 
         if (completionData.completed) {
-          if (completionData.pageType === 'quiz' || completionData.pageType === 'fillInTheBlanks') {
-            link.classList.add('completed', 'completed-quiz');
+          const type = completionData.pageType;
+
+          if (['quiz', 'fillInTheBlanks', 'dragAndDrop'].includes(type)) {
+            link.classList.add('completed', 'completed-quiz'); // ✅ Zielscheiben-Icon
             link.title = `Abgeschlossen – ${completionData.score}% erreicht`;
           } else {
-            link.classList.add('completed', 'completed-content');
+            link.classList.add('completed', 'completed-content'); // ✅ Buch-Icon
             link.title = 'Abgeschlossen';
           }
         }
       }
     });
   }
-
 }
 
-
-
+// Media TABs and Content Display
 document.addEventListener("DOMContentLoaded", () => {
   // --- Media Tabs Setup ---
   const buttons = document.querySelectorAll(".tabs button");
@@ -987,3 +991,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+
