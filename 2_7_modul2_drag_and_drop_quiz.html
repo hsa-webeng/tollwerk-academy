@@ -2,17 +2,17 @@
 <html lang="de">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lernplattform - Modul 2</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online-Kurs – Modul 2: Drag and Drop</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
     <header>
         <div class="header-content">
             <div class="logo">
-                <img src="logos/Tollwerk-Logo_RGB.svg" alt="Tollwerk Logo">
+                <img src="logos/Tollwerk-Logo_RGB.svg" alt="Tollwerk Logo" />
             </div>
             <div class="search-wrapper">
                 <img src="icons/Search.svg" alt="Suche Icon" class="search-icon">
@@ -29,7 +29,7 @@
             <nav>
                 <h3>
                     <span class="with-icon">
-                        <img src="icons/List.svg" alt="Menü Icon" class="type-icon">
+                        <img src="icons/List.svg" alt="Menü Icon" class="type-icon" />
                         Navigation
                     </span>
                 </h3>
@@ -62,22 +62,18 @@
                         <li><a href="2_1_modul2_barrieren_reflexion.html">2.1 Barrieren-Reflexion</a></li>
                         <li><a href="2_2_modul2_barrieren_sind_ueberall.html">2.2 Barrieren sind überall</a></li>
                         <li><a href="2_3_modul2_digitale_medien.html">2.3 Digitale Medien</a></li>
-                        <li><a href="2_4_modul2_teste_dein_wissen.html" aria-current="page">2.4 Teste dein Wissen</a>
-                        </li>
+                        <li><a href="2_4_modul2_teste_dein_wissen.html">2.4 Teste dein Wissen</a></li>
                         <li><a href="2_5_modul2_quiz.html">2.5 Quiz</a></li>
                         <li><a href="2_6_modul2_lueckentext.html">2.6 Lückentext</a></li>
-                        <li><a href="2_7_modul2_drag_and_drop_quiz.html">2.7 Drag and Drop</a></li>
+                        <li><a href="2_7_modul2_drag_and_drop_quiz.html" aria-current="page">2.7 Drag and Drop</a></li>
                         <li><a href="2_8_modul2_testergebnis.html">2.8 Testergebnis</a></li>
                     </ul>
                 </details>
 
                 <details>
                     <summary class="locked">Modul 3: Betroffene</summary>
-                    <ul>
-                        <!-- Nicht exisent aktuell -->
-                    </ul>
+                    <ul></ul>
                 </details>
-
             </nav>
         </aside>
 
@@ -90,32 +86,58 @@
                 <div id="inhalt-progress-text" aria-live="polite">0 von 8 Seiten abgeschlossen</div>
             </div>
             <section>
-                <h2>2.4 Teste dein Wissen</h2>
-                <p class="meta-info"><em>Bearbeitungszeit für alle Tests ca. 15 Minuten</em></p>
+                <h2 id="drag-heading">2.7 Drag & Drop</h2>
+                <p class="meta-info"><em>Bearbeitungszeit ca. 5 Minuten</em></p>
                 <div class="infobox">
                     <strong>Lernziel:</strong> Sie testen Ihr Wissen über die Inhalte des Moduls 2 zu Barrieren.
                 </div>
-                <div class="information-text">
-                    <p>
-                        Jetzt haben Sie die Gelegenheit, Ihr Wissen über die Inhalte des Moduls 2 zu überprüfen.
-                        Um den nächsten Abschnitt freizuschalten, benötigen Sie mindestens <strong>80 % richtige
-                            Antworten</strong>.
-                    </p>
-                    <p>
-                        Falls Sie sich noch unsicher fühlen, können Sie jederzeit zu den vorherigen Kapiteln
-                        zurückkehren
-                        und bestimmte Themen nochmals durchgehen. Viel Erfolg!
-                    </p>
+                <div class="drag-instructions" id="instructions" tabindex="0">
+                    Ordnen Sie die Begriffe den passenden Barriere-Beispielen zu.
+                    Nutzen Sie die Tabulatortaste, um durch die Begriffe und Zielbereiche zu navigieren. Mit Enter
+                    aktivieren und loslassen.
                 </div>
+
+                <div class="drag-container">
+                    <div class="draggables" aria-labelledby="drag-heading">
+                        <h3>Begriffe</h3>
+                        <div class="draggable" tabindex="0" role="button" aria-grabbed="false" draggable="true"
+                            data-id="website">Website</div>
+                        <div class="draggable" tabindex="0" role="button" aria-grabbed="false" draggable="true"
+                            data-id="video">Video</div>
+                        <div class="draggable" tabindex="0" role="button" aria-grabbed="false" draggable="true"
+                            data-id="app">App</div>
+                        <div class="draggable" tabindex="0" role="button" aria-grabbed="false" draggable="true"
+                            data-id="pdf">PDF</div>
+                        <div class="draggable" tabindex="0" role="button" aria-grabbed="false" draggable="true"
+                            data-id="terminal">Selbstbedienungs-Terminal</div>
+                    </div>
+
+                    <div class="dropzones">
+                        <h3>Barriere-Beispiele</h3>
+                        <div class="dropzone" tabindex="0" role="region"
+                            aria-label="Zu geringe Farbkontraste von Texten" data-accept="website">Zu geringe
+                            Farbkontraste von Texten</div>
+                        <div class="dropzone" tabindex="0" role="region" aria-label="Fehlende Untertitel"
+                            data-accept="video">Fehlende Untertitel</div>
+                        <div class="dropzone" tabindex="0" role="region"
+                            aria-label="Schaltflächen nicht programmatisch beschriftet" data-accept="app">Schaltflächen
+                            nicht programmatisch beschriftet</div>
+                        <div class="dropzone" tabindex="0" role="region" aria-label="Nicht getaggtes Dokument"
+                            data-accept="pdf">Nicht getaggtes Dokument</div>
+                        <div class="dropzone" tabindex="0" role="region" aria-label="Keine Sprachausgabe"
+                            data-accept="terminal">Keine Sprachausgabe</div>
+                    </div>
+                </div>
+
+                <div id="drop-feedback" aria-live="polite"></div>
 
                 <div class="nav-buttons">
-                    <a href="2_3_modul2_digitale_medien.html" class="button-secondary">&larr; Zurück</a>
-                    <a href="2_5_modul2_quiz.html" class="next-button button-secondary">Test beginnen
-                        &rarr;</a>
+                    <a href="2_6_modul2_lueckentext.html" class="button-secondary">&larr; Zurück</a>
+                    <a href="2_8_modul2_testergebnis.html" id="next-link" class="next-button button-secondary disabled"
+                        aria-disabled="true">Weiter &rarr;</a>
                 </div>
-
-
             </section>
+
         </main>
 
         <aside class="notes">
@@ -124,6 +146,7 @@
             <div id="notes-container"></div>
         </aside>
     </div>
+
     <script src="script.js"></script>
 </body>
 

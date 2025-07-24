@@ -90,7 +90,6 @@ header {
   width: 20px;
   height: 20px;
   pointer-events: none;
-  opacity: 0.3;
 }
 
 /* ==========================================================================
@@ -122,7 +121,7 @@ header {
   margin-bottom: 15px;
   padding-bottom: 10px;
   border-bottom: 1px solid #ccc;
-  word-wrap: break-word; 
+  word-wrap: break-word;
   line-height: 1.4;
 }
 
@@ -206,7 +205,10 @@ header {
   max-width: 100%;
   padding: 1rem 6rem;
   background: white;
+  position: relative;
+  
 }
+
 
 /* Notes */
 .notes {
@@ -305,7 +307,7 @@ li a {
 }
 
 .completed-content {
-  color: #2ecc71 !important;
+  color: #217e48 !important;
   font-weight: bold;
 }
 
@@ -385,13 +387,18 @@ li a {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   animation: shimmer 2s infinite;
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .progress-requirements {
@@ -457,27 +464,19 @@ li a {
   transform: translateY(-0.125rem);
 }
 
-/* Navigation buttons */
 .nav-buttons {
-  display: flex;
-  justify-content: space-between;
   margin-top: 3rem;
 }
 
 .nav-button {
   display: inline-block;
-  padding: 0.6rem 1.2rem;
-  background-color: #576FCB;
-  color: white;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 1rem;
-  transition: background-color 0.2s ease;
+
 }
 
 .next-button {
   margin-left: auto;
+  background-color: #576FCB;
+  color: white;
 }
 
 .nav-button:hover {
@@ -490,6 +489,15 @@ li a {
   color: #666;
   text-decoration: none;
   cursor: not-allowed;
+}
+
+.show-modules-button {
+  display: inline-block;
+
+}
+
+.show-modules-button:hover {
+  background-color: #005fa3;
 }
 
 /* Disabled links */
@@ -549,7 +557,8 @@ a.disabled:hover::before {
   height: auto;
   object-fit: contain;
   border-radius: 10px;
-  flex: 1 1 300px; /* Flexibles Verhalten bei kleineren Bildschirmen */
+  flex: 1 1 300px;
+  /* Flexibles Verhalten bei kleineren Bildschirmen */
 }
 
 .media-item {
@@ -559,6 +568,11 @@ a.disabled:hover::before {
 }
 
 #video-content {
+  border-radius: 1.25rem;
+  box-shadow: 0 0.5rem 1.875rem rgba(84, 109, 253, 0.15);
+}
+
+#audio-content {
   border-radius: 1.25rem;
   box-shadow: 0 0.5rem 1.875rem rgba(84, 109, 253, 0.15);
 }
@@ -659,7 +673,7 @@ a.disabled:hover::before {
 }
 
 .quiz-multiple legend {
-  font-size: 1.5rem;
+  font-size: 1.125rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
   color: #2c2e4a;
@@ -691,7 +705,7 @@ a.disabled:hover::before {
   -webkit-appearance: none;
   width: 1.25rem;
   height: 1.25rem;
-  border: 0.125rem solid #ccc;
+  border: 0.125rem solid #576FCB;
   border-radius: 50%;
   display: inline-block;
   position: relative;
@@ -713,15 +727,15 @@ a.disabled:hover::before {
 }
 
 .quiz-option input[type="radio"]:checked {
-  background-color: #546dfd;
-  border-color: #546dfd;
+  background-color: #576FCB;
+  border-color: #576FCB;
 }
 
 .quiz-option input[type="radio"]:checked::after {
   display: block;
 }
 
-.quiz-option input[type="radio"]:checked + * {
+.quiz-option input[type="radio"]:checked+* {
   font-weight: bold;
   color: #576FCB;
 }
@@ -734,13 +748,14 @@ a.disabled:hover::before {
 .quiz-multiple button[type="submit"] {
   background-color: #576FCB;
   color: white;
-  font-size: 1rem;
-  padding: 0.75rem 1.25rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
   border: none;
-  border-radius: 0.625rem;
   cursor: pointer;
-  margin-top: 1.5rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
 }
 
 .quiz-multiple button[type="submit"]:hover {
@@ -764,7 +779,7 @@ a.disabled:hover::before {
 }
 
 .fill-in-the-blanks h2 {
-  font-size: 1.75rem;
+  font-size: 1.125rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
   color: #2c2e4a;
@@ -797,6 +812,52 @@ a.disabled:hover::before {
 }
 
 /* ==========================================================================
+   Drag and Drop Quiz
+   ========================================================================== */
+
+.drag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.draggables,
+.dropzones {
+  flex: 1;
+  min-width: 250px;
+}
+
+.draggable,
+.dropzone {
+  background-color: #f4f4f4;
+  padding: 1rem;
+  border: 2px dashed #ccc;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  cursor: grab;
+  outline: none;
+}
+
+.draggable:focus,
+.dropzone:focus {
+  border-color: #007acc;
+  background-color: #eef6fb;
+}
+
+.correct {
+  border-color: green;
+  background-color: #e0f8e0;
+}
+
+.incorrect {
+  border-color: red;
+  background-color: #fbe0e0;
+}
+
+
+
+/* ==========================================================================
    CONTENT BOXES
    ========================================================================== */
 
@@ -806,7 +867,7 @@ a.disabled:hover::before {
   padding: 2rem 3rem;
   box-shadow: 0 0.5rem 1.875rem rgba(84, 109, 253, 0.1);
   max-width: 800px;
-  margin: 2rem auto;
+  margin: 2rem;
   font-family: "GraublauDisplay", sans-serif;
   color: #2c2e4a;
   line-height: 1.6;
@@ -859,11 +920,14 @@ ul.marked {
   border-bottom-right-radius: 0.75rem;
   font-size: 1rem;
   line-height: 1.6;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .exercise {
-  background-color: #fffde7; /* sehr helles, weiches Gelb */
-  border-left: 4px solid #fdd835; /* etwas kräftigeres Gelb für visuelle Führung */
+  background-color: #fffde7;
+  /* sehr helles, weiches Gelb */
+  border-left: 4px solid #fdd835;
+  /* etwas kräftigeres Gelb für visuelle Führung */
   padding: 1.25rem 1.5rem;
   margin: 2rem 0;
   border-top-right-radius: 0.75rem;
@@ -885,6 +949,13 @@ ul.marked {
   color: #333;
 }
 
+.information-bild {
+  width: 100%;
+  max-width: 1300px;
+  height: 300px;
+  border-radius: 10px;
+}
+
 .meta-info {
   font-size: 0.95rem;
   color: #666;
@@ -892,9 +963,9 @@ ul.marked {
   font-style: italic;
 }
 
-/* ==========================================================================
-   MODULE CARDS
-   ========================================================================== */
+/* =========================
+   Course Cards
+   ========================= */
 .course-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -912,19 +983,6 @@ ul.marked {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-}
-
-.course-description {
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: max-height 0.5s ease, opacity 0.3s ease;
-}
-
-.course-card.open .course-description {
-  max-height: 500px; /* ausreichend für gesamten Text */
-  opacity: 1;
-  margin-top: 1rem;
 }
 
 .course-card:hover {
@@ -949,30 +1007,142 @@ ul.marked {
   pointer-events: none;
 }
 
-.course-card .nav-button.disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+.course-card .nav-button {
+  display: inline-block;
+  margin-top: 0.5rem;
 }
 
-.course-modules {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin: 2rem 0;
+.course-card.expanded .nav-button {
+  display: none;
 }
 
+.course-card .show-modules-button {
+  display: none;
+  margin-top: 1rem;
+}
+
+.course-card.expanded .show-modules-button {
+  display: block;
+}
+
+.course-description {
+  display: none;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+.course-card.expanded .course-description {
+  display: block;
+}
+
+
+
+/* =========================
+   Modulansicht (Overlay)
+   ========================= */
+/* Das Overlay selbst bleibt immer im Layout */
+.module-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  overflow-y: auto;
+  z-index: 999;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition: opacity 0.3s ease;
+  padding-top: 4rem;
+  /* Platz für Zurück-Button */
+}
+
+/* Sichtbar, wenn Wrapper die active-Klasse hat */
+.course-cards-wrapper.active .module-overlay {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Inhalt im Overlay → Flex-Layout */
+.module-overlay-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
+  padding: 1rem;
+}
+
+
+
+.close-overlay {
+  background-color: transparent;
+  color: #576FCB;
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #576FCB;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  /* Positionierung oben links */
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+}
+
+.close-overlay:hover,
+.close-overlay:focus {
+  background-color: #576FCB;
+  color: white;
+  outline: none;
+  transform: translateY(-0.125rem);
+}
+
+
+/* =========================
+   Modul-Karten
+   ========================= */
 .module-card {
-  background: white;
-  border: 2px solid #e9ecef;
+  display: block;
+  background: #f9f9f9;
   border-radius: 1rem;
-  padding: 1.5rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  padding: 1rem;
+  flex: 1 1 300px;
+  max-width: 300px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  gap: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  color: inherit;
+  text-decoration: none;
 }
 
-.module-card:hover {
-  transform: translateY(-0.25rem);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.module-card:hover,
+.modul-card:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  outline: none;
+}
+
+.module-card h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.15rem;
+  color: #1a1a1a;
 }
 
 .module-card h3 {
@@ -982,8 +1152,11 @@ ul.marked {
 }
 
 .module-card p {
+  margin: 0;
   color: #6c757d;
   margin-bottom: 1rem;
+  font-size: 0.95rem;
+
 }
 
 .module-card ul {
@@ -1023,27 +1196,44 @@ ul.marked {
   color: #721c24;
 }
 
+/* =========================
+   Responsive Module Cards
+   ========================= */
+@media screen and (max-width: 1024px) {
+  .module-card {
+    flex: 1 1 calc(50% - 1rem);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .module-card {
+    flex: 1 1 100%;
+  }
+}
+
+
 /* ==========================================================================
    NOTES
    ========================================================================== */
-   #add-note {
-    display: inline-block;
-    margin-bottom: 1rem;
-    padding: 0.5rem 1.2rem;
-    background-color: #ffea00; /* dein Gelb */
-    color: #333;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    font-family: inherit;
-  }
-  
-  #add-note:hover {
-    background-color: #ffe000;
-  }
+#add-note {
+  display: inline-block;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1.2rem;
+  background-color: #ffea00;
+  /* dein Gelb */
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-family: inherit;
+}
+
+#add-note:hover {
+  background-color: #ffe000;
+}
 
 .note {
   position: relative;
@@ -1125,6 +1315,7 @@ ul.marked {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1153,7 +1344,7 @@ ul.marked {
   .container {
     flex-direction: column;
   }
-  
+
   .sidebar {
     width: 100%;
     position: relative;
@@ -1163,7 +1354,7 @@ ul.marked {
     border-right: none;
     border-bottom: 1px solid #ddd;
   }
-  
+
   .notes {
     width: 100%;
     position: relative;
@@ -1173,42 +1364,43 @@ ul.marked {
     border-left: none;
     border-top: 1px solid #ddd;
   }
-  
+
   .content {
+    text-align: left !important;
     padding: 1rem 2rem;
   }
-  
+
   .header-content {
     gap: 2rem;
   }
-  
+
   .search-wrapper {
     max-width: 200px;
   }
-  
+
   .information-text {
     padding: 1.5rem 1.25rem;
     font-size: 1rem;
   }
-  
+
   .information-text h3 {
     font-size: 1.15rem;
   }
-  
+
   .module-progress-indicator {
     margin: 0.5rem 0;
     padding: 0.75rem;
     font-size: 0.8rem;
   }
-  
+
   .progress-header h3 {
     font-size: 0.9rem;
   }
-  
+
   .progress-header p {
     font-size: 0.75rem;
   }
-  
+
   .progress-requirements p {
     font-size: 0.7rem;
   }
@@ -1219,45 +1411,46 @@ ul.marked {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .search-wrapper {
     max-width: 100%;
   }
-  
+
   .content {
     padding: 1rem;
   }
-  
+
   .sidebar {
     max-height: 350px;
   }
-  
+
   .notes {
     max-height: 250px;
   }
-  
+
   .module-progress-indicator {
     padding: 0.5rem;
     font-size: 0.75rem;
   }
-  
+
   .progress-header h3 {
     font-size: 0.85rem;
   }
-  
+
   .progress-header p {
     font-size: 0.7rem;
   }
-  
+
   .progress-requirements p {
     font-size: 0.65rem;
   }
 }
 
-h2 + p {
+h2+p {
   margin-top: 0.1rem;
 }
-h2:has(+p){
+
+h2:has(+p) {
   margin-bottom: 0;
 }
 
@@ -1265,4 +1458,45 @@ a.disabled {
   pointer-events: none;
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Page Progress Tracker
+   ========================================================================== */
+/* CSS für Inhaltsfortschritt */
+#inhalt-fortschritt-container {
+  max-width: 1000px; /* etwas breiter als Main-Inhalt */
+  margin: 1rem auto 0.5rem auto; /* weniger Abstand oben/unten */
+  padding: 0.75rem 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+#inhalt-fortschritt-container h2 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+#inhalt-progress-bar {
+  width: 100%;
+  height: 10px; /* flacher Balken */
+  background-color: #dcdcdc;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 0.4rem;
+}
+
+#inhalt-progress-fill {
+  height: 100%;
+  width: 0%;
+  background-color: #3478f6;
+  transition: width 0.4s ease-in-out;
+}
+
+#inhalt-progress-text {
+  text-align: right;
+  font-size: 0.85rem;
+  color: #555;
 }
