@@ -206,7 +206,9 @@ header {
   padding: 1rem 6rem;
   background: white;
   position: relative;
+  
 }
+
 
 /* Notes */
 .notes {
@@ -305,7 +307,7 @@ li a {
 }
 
 .completed-content {
-  color: #2ecc71 !important;
+  color: #217e48 !important;
   font-weight: bold;
 }
 
@@ -570,6 +572,11 @@ a.disabled:hover::before {
   box-shadow: 0 0.5rem 1.875rem rgba(84, 109, 253, 0.15);
 }
 
+#audio-content {
+  border-radius: 1.25rem;
+  box-shadow: 0 0.5rem 1.875rem rgba(84, 109, 253, 0.15);
+}
+
 .media img {
   width: auto;
   max-width: 100%;
@@ -666,7 +673,7 @@ a.disabled:hover::before {
 }
 
 .quiz-multiple legend {
-  font-size: 1.5rem;
+  font-size: 1.125rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
   color: #2c2e4a;
@@ -772,7 +779,7 @@ a.disabled:hover::before {
 }
 
 .fill-in-the-blanks h2 {
-  font-size: 1.75rem;
+  font-size: 1.125rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
   color: #2c2e4a;
@@ -1359,6 +1366,7 @@ ul.marked {
   }
 
   .content {
+    text-align: left !important;
     padding: 1rem 2rem;
   }
 
@@ -1451,3 +1459,4 @@ a.disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
