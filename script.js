@@ -91,6 +91,68 @@ const PAGE_TYPES = {
   'fillInTheBlanks': ['1_6_modul1_lueckentext.html']
 };
 
+// Page Progress Tracking
+document.addEventListener("DOMContentLoaded", function () {
+  const modulPages = {
+    modul1: [
+      "1_0_modul1_inhaltsverzeichnis.html",
+      "1_1_modul1_allgemeine_definition.html",
+      "1_2_modul1_gesetzliche_definition.html",
+      "1_3_modul1_soziale_praktische_aspekte.html",
+      "1_4_modul1_bezug_zur_nachhaltigkeit.html",
+      "1_5_modul1_teste_dein_wissen.html",
+      "1_6_modul1_lueckentext.html",
+      "1_7_modul1_quiz.html",
+      "1_8_modul1_testergebnis.html"
+    ],
+    modul2: [
+      "2_0_modul2_inhaltsverzeichnis.html",
+      "2_1_modul2_barrieren_reflexion.html",
+      "2_2_modul2_barrieren_sind_ueberall.html",
+      "2_3_modul2_digitale_medien.html",
+      "2_4_modul2_teste_dein_wissen.html",
+      "2_5_modul2_quiz.html",
+      "2_6_modul2_lueckentext.html",
+      "2_7_modul2_drag_and_drop_quiz.html",
+      "2_8_modul2_testergebnis.html"
+    ]
+  };
+
+  const path = window.location.pathname;
+  const currentPage = path.substring(path.lastIndexOf("/") + 1);
+
+  let activeModule = null;
+  let activePages = [];
+
+  // Determine which module the page belongs to
+  for (const [module, pages] of Object.entries(modulPages)) {
+    if (pages.includes(currentPage)) {
+      activeModule = module;
+      activePages = pages;
+      break;
+    }
+  }
+
+  // Only proceed if the page is part of a known module
+  if (activeModule && activePages.length > 0) {
+    const currentIndex = activePages.indexOf(currentPage);
+    const completedPages = currentIndex > 0 ? currentIndex : 0;
+    const progressPercent = (completedPages / activePages.length) * 100;
+
+    const fill = document.getElementById("inhalt-progress-fill");
+    const text = document.getElementById("inhalt-progress-text");
+
+    if (fill) {
+      fill.style.width = progressPercent + "%";
+    }
+
+    if (text) {
+      text.textContent = `${completedPages} von ${activePages.length} Seiten abgeschlossen`;
+    }
+  }
+});
+
+
 // Reset progress on page reload (for prototyping)
 function resetProgressOnReload() {
   // Check if this is a page reload (not a navigation)
