@@ -281,54 +281,58 @@ li a {
 }
 
 /* ==========================================================================
-   COMPLETION INDICATORS
+   COMPLETION INDICATORS (überarbeitet)
    ========================================================================== */
-.completed {
-  color: #2ecc71 !important;
-  font-weight: bold;
+
+.sidebar nav a.completed-quiz,
+.sidebar nav a.completed-content {
   position: relative;
-}
-
-.completed::before {
-  content: "✓";
-  position: absolute;
-  left: -20px;
-  color: #2ecc71;
   font-weight: bold;
-  font-size: 1.2em;
+  padding-left: 1.75rem; /* Platz für Icon */
 }
 
-.completed-quiz {
+.sidebar nav a.completed-quiz::before,
+.sidebar nav a.completed-content::before {
+  position: absolute;
+  left: 0.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1em;
+}
+
+/* Quiz-, Lückentext- und Drag-and-Drop-Seiten */
+.sidebar nav a.completed-quiz {
   color: #007bff !important;
-  font-weight: bold;
 }
-
-.completed-quiz::before {
+.sidebar nav a.completed-quiz::before {
   content: "🎯";
-  position: absolute;
-  left: -25px;
-  font-size: 1.1em;
 }
 
-.completed-content {
+/* Inhaltsseiten */
+.sidebar nav a.completed-content {
   color: #217e48 !important;
-  font-weight: bold;
 }
-
-.completed-content::before {
+.sidebar nav a.completed-content::before {
   content: "📖";
-  position: absolute;
-  left: -25px;
-  font-size: 1.1em;
 }
 
-/* Hide completion indicators for intro pages */
-.sidebar nav a[href="index.html"].completed::before,
-.sidebar nav a[href="hinweise.html"].completed::before {
+/* Verhindere doppelte Icons: alte .completed-Klasse vollständig entfernen */
+.sidebar nav a.completed::before {
+  content: none !important;
+}
+.sidebar nav a.completed {
+  color: inherit !important;
+  font-weight: inherit !important;
+}
+
+/* Intro-Seiten niemals als abgeschlossen markieren */
+.sidebar nav a[href="index.html"].completed-quiz::before,
+.sidebar nav a[href="hinweise.html"].completed-quiz::before,
+.sidebar nav a[href="index.html"].completed-content::before,
+.sidebar nav a[href="hinweise.html"].completed-content::before {
   content: none !important;
 }
 
-/* Also prevent intro pages from getting completion styling */
 .sidebar nav a[href="index.html"],
 .sidebar nav a[href="hinweise.html"] {
   color: #546dfd !important;
@@ -339,6 +343,7 @@ li a {
 .sidebar nav a[href="hinweise.html"]:hover {
   color: #4055a4 !important;
 }
+
 
 
 /* ==========================================================================
@@ -433,7 +438,7 @@ li a {
    ========================================================================== */
 /* CSS für Inhaltsfortschritt */
 #inhalt-fortschritt-container {
-  max-width: 1000px; /* etwas breiter als Main-Inhalt */
+  max-width: relative; 
   margin: 1rem auto 0.5rem auto; /* weniger Abstand oben/unten */
   padding: 0.75rem 1rem;
   background-color: #f9f9f9;

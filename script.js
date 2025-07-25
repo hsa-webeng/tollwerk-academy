@@ -1,11 +1,13 @@
-// GLobal Variables
+//GLobal Variables
 
 // Global variables for tracking completion
 let completedExercises = JSON.parse(localStorage.getItem('completedExercises') || '{}');
 let moduleProgress = JSON.parse(localStorage.getItem('moduleProgress') || '{}');
 
 // Intro pages that should never be marked as completed
+
 const INTRO_PAGES = ['index.html', 'hinweise.html'];
+
 
 document.addEventListener('DOMContentLoaded', function () {
   const courseCards = document.querySelectorAll('.course-card.toggleable');
@@ -109,6 +111,7 @@ const PAGE_TYPES = {
   ]
 };
 
+// NAVIGATION AND COMPLETION LOGIC
 
 // Page Progress Tracking
 document.addEventListener("DOMContentLoaded", function () {
@@ -226,19 +229,29 @@ class EnhancedProgressTracker {
   }
 
   setupContentPageTracking() {
-    if ((this.pageType === 'content' || this.pageType === 'quiz' || this.pageType === 'fillInTheBlanks' || this.pageType === 'dragAndDrop')
-      && !INTRO_PAGES.includes(this.currentPage)) {
+    if (!INTRO_PAGES.includes(this.currentPage)) {
       const nextButtons = document.querySelectorAll('.nav-button.next-button');
+
       nextButtons.forEach(button => {
         button.addEventListener('click', () => {
-          this.markPageAsCompleted(this.currentPage, 100);
+          const cleanPath = this.currentPage.split('?')[0].split('#')[0];
+
+          // Dynamisch richtigen pageType für die aktuelle Seite ermitteln
+          let detectedPageType = 'content';
+          if (PAGE_TYPES.quiz.includes(cleanPath)) detectedPageType = 'quiz';
+          else if (PAGE_TYPES.fillInTheBlanks.includes(cleanPath)) detectedPageType = 'fillInTheBlanks';
+          else if (PAGE_TYPES.dragAndDrop?.includes(cleanPath)) detectedPageType = 'dragAndDrop';
+          else if (PAGE_TYPES.content.includes(cleanPath)) detectedPageType = 'content';
+
+          this.markPageAsCompleted(this.currentPage, 100, detectedPageType);
         });
       });
     }
   }
 
 
-  markPageAsCompleted(pagePath, score = 100) {
+
+  markPageAsCompleted(pagePath, score = 100, pageType = null) {
     const cleanPath = pagePath.split('?')[0].split('#')[0];
 
     if (INTRO_PAGES.includes(cleanPath)) {
@@ -249,11 +262,13 @@ class EnhancedProgressTracker {
     const isPassed = score >= 80;
 
     // Hole den Page Type für die jeweilige Seite
-    let pageType = 'content'; // default fallback
-    if (PAGE_TYPES.quiz.includes(cleanPath)) pageType = 'quiz';
-    else if (PAGE_TYPES.fillInTheBlanks.includes(cleanPath)) pageType = 'fillInTheBlanks';
-    else if (PAGE_TYPES.dragAndDrop && PAGE_TYPES.dragAndDrop.includes(cleanPath)) pageType = 'dragAndDrop';
-    else if (PAGE_TYPES.content.includes(cleanPath)) pageType = 'content';
+    if (!pageType) {
+      if (PAGE_TYPES.quiz.includes(cleanPath)) pageType = 'quiz';
+      else if (PAGE_TYPES.fillInTheBlanks.includes(cleanPath)) pageType = 'fillInTheBlanks';
+      else if (PAGE_TYPES.dragAndDrop && PAGE_TYPES.dragAndDrop.includes(cleanPath)) pageType = 'dragAndDrop';
+      else if (PAGE_TYPES.content.includes(cleanPath)) pageType = 'content';
+    }
+
 
     completedExercises[cleanPath] = {
       completed: isPassed,
@@ -267,6 +282,8 @@ class EnhancedProgressTracker {
     this.controlModuleNavigation();
     this.displayModuleProgress();
     this.highlightCompletedExercises();
+
+    this.updateModulFortschrittsanzeige();
   }
 
 
@@ -299,6 +316,7 @@ class EnhancedProgressTracker {
     };
 
     localStorage.setItem('moduleProgress', JSON.stringify(moduleProgress));
+    this.updateModulFortschrittsanzeige();
   }
 
   controlModuleNavigation() {
@@ -360,6 +378,45 @@ class EnhancedProgressTracker {
       progressText.textContent = `${completedCount} von ${moduleConfig.exercises.length} Übungen abgeschlossen`;
     }
   }
+ 
+  updateModulFortschrittsanzeige() {
+  const container = document.getElementById('modul-fortschritt-container');
+  if (!container) return;
+
+  const progressFill = container.querySelector('.modul-progress-fill');
+  const progressText = container.querySelector('.modul-progress-text');
+  const requirementPending = container.querySelector('.modul-progress-requirements .requirement-pending');
+
+  const moduleConfig = MODULE_CONFIG[this.currentModule];
+  if (!moduleConfig) return;
+
+  const totalExercises = moduleConfig.exercises.length;
+  const completedCount = moduleConfig.exercises.filter(exercise =>
+    completedExercises[exercise] && completedExercises[exercise].completed
+  ).length;
+
+  const percent = Math.round((completedCount / totalExercises) * 100);
+
+  if (progressFill) {
+    progressFill.style.width = `${percent}%`;
+  }
+
+  if (progressText) {
+    progressText.textContent = `${completedCount} von ${totalExercises} Tests abgeschlossen`;
+  }
+
+  if (requirementPending) {
+    if (percent >= moduleConfig.requiredPercentage) {
+      requirementPending.textContent = '✅ Anforderungen erfüllt';
+      requirementPending.classList.remove('requirement-pending');
+      requirementPending.classList.add('requirement-met');
+    } else {
+      requirementPending.textContent = '⏳ Anforderungen noch nicht erfüllt';
+      requirementPending.classList.add('requirement-pending');
+      requirementPending.classList.remove('requirement-met');
+    }
+  }
+}
 
   //Mark Pages as Completed in Navigation
   highlightCompletedExercises() {
@@ -390,10 +447,10 @@ class EnhancedProgressTracker {
           const type = completionData.pageType;
 
           if (['quiz', 'fillInTheBlanks', 'dragAndDrop'].includes(type)) {
-            link.classList.add('completed', 'completed-quiz'); // ✅ Zielscheiben-Icon
+            link.classList.add('completed-quiz');
             link.title = `Abgeschlossen – ${completionData.score}% erreicht`;
           } else {
-            link.classList.add('completed', 'completed-content'); // ✅ Buch-Icon
+            link.classList.add('completed-content');
             link.title = 'Abgeschlossen';
           }
         }
@@ -401,6 +458,9 @@ class EnhancedProgressTracker {
     });
   }
 }
+
+
+// CONTENT MANAGEMENT
 
 // Media TABs and Content Display
 document.addEventListener("DOMContentLoaded", () => {
@@ -453,6 +513,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+ 
+  
+
+// QUIZ UND TEST LOGIK
 
 
   // --- Initialisierung von Quiz & Fortschritt ---
