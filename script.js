@@ -1,5 +1,6 @@
 //GLobal Variables
 
+
 // Global variables for tracking completion
 let completedExercises = JSON.parse(localStorage.getItem('completedExercises') || '{}');
 let moduleProgress = JSON.parse(localStorage.getItem('moduleProgress') || '{}');
@@ -61,14 +62,30 @@ const MODULE_CONFIG = {
       '1_6_modul1_lueckentext.html',
       '1_7_modul1_quiz.html'
     ],
+    contentPages: [
+      '1_0_modul1_inhaltsverzeichnis.html',
+      '1_1_modul1_allgemeine_definition.html',
+      '1_2_modul1_gesetzliche_definition.html',
+      '1_3_modul1_soziale_praktische_aspekte.html',
+      '1_4_modul1_bezug_zur_nachhaltigkeit.html',
+      '1_5_modul1_teste_dein_wissen.html' // gehört laut deiner letzten Struktur evtl. zu content
+    ],
     requiredPercentage: 80,
     nextModule: 'modul2'
   },
   'modul2': {
     exercises: [
+
       '2_5_modul2_quiz.html',
       '2_6_modul2_lueckentext.html',
       '2_7_modul2_drag_and_drop_quiz.html'
+    ],
+    contentPages: [
+      '2_0_modul2_inhaltsverzeichnis.html',
+      '2_1_modul2_barrieren_reflexion.html',
+      '2_2_modul2_barrieren_sind_ueberall.html',
+      '2_3_modul2_digitale_medien.html',
+      '2_4_modul2_teste_dein_wissen.html',
     ],
     requiredPercentage: 80,
     nextModule: 'modul3'
@@ -77,10 +94,14 @@ const MODULE_CONFIG = {
     exercises: [
       // Wird ergänzt, sobald Inhalte existieren
     ],
+    contentPages: [
+      // Auch später ergänzen
+    ],
     requiredPercentage: 80,
     nextModule: null
   }
 };
+
 
 
 // Page type configuration - defines how each page type should be marked as completed
@@ -292,18 +313,25 @@ class EnhancedProgressTracker {
     const moduleConfig = MODULE_CONFIG[moduleName];
     if (!moduleConfig) return 0;
 
-    const totalExercises = moduleConfig.exercises.length;
-    if (totalExercises === 0) return 0;
+    const exercises = moduleConfig.exercises || [];
+    const contentPages = moduleConfig.contentPages || [];
+
+    const totalItems = exercises.length + contentPages.length;
+    if (totalItems === 0) return 0;
 
     let completedCount = 0;
-    moduleConfig.exercises.forEach(exercise => {
-      if (completedExercises[exercise] && completedExercises[exercise].completed) {
+
+    // Zähle abgeschlossene Inhalte aus beiden Kategorien
+    [...exercises, ...contentPages].forEach(page => {
+      if (completedExercises[page] && completedExercises[page].completed) {
         completedCount++;
       }
     });
 
-    return Math.round((completedCount / totalExercises) * 100);
+    return Math.round((completedCount / totalItems) * 100);
   }
+
+
 
   updateModuleProgress() {
     if (!this.currentModule) return;
@@ -378,33 +406,68 @@ class EnhancedProgressTracker {
       progressText.textContent = `${completedCount} von ${moduleConfig.exercises.length} Übungen abgeschlossen`;
     }
   }
- 
-  updateModulFortschrittsanzeige() {
+
+updateModulFortschrittsanzeige() {
   const container = document.getElementById('modul-fortschritt-container');
   if (!container) return;
 
   const progressFill = container.querySelector('.modul-progress-fill');
   const progressText = container.querySelector('.modul-progress-text');
   const requirementPending = container.querySelector('.modul-progress-requirements .requirement-pending');
+  const percentDisplay = container.querySelector('.modul-progress-percent');
 
   const moduleConfig = MODULE_CONFIG[this.currentModule];
   if (!moduleConfig) return;
 
-  const totalExercises = moduleConfig.exercises.length;
-  const completedCount = moduleConfig.exercises.filter(exercise =>
-    completedExercises[exercise] && completedExercises[exercise].completed
-  ).length;
+  const exercises = moduleConfig.exercises || [];
+  const contentPages = moduleConfig.contentPages || [];
 
-  const percent = Math.round((completedCount / totalExercises) * 100);
+  // Gewichtung anpassen je nach gewünschtem Verhältnis
+  const EXERCISE_WEIGHT = 0.8;
+  const CONTENT_WEIGHT = 0.2;
 
+  const totalExercises = exercises.length;
+  const totalContent = contentPages.length;
+
+  const totalWeight = (totalExercises * EXERCISE_WEIGHT) + (totalContent * CONTENT_WEIGHT);
+  let completedWeight = 0;
+
+  // Gewichtete Zählung: Übungen
+  exercises.forEach(exercise => {
+    if (completedExercises[exercise] && completedExercises[exercise].completed) {
+      completedWeight += EXERCISE_WEIGHT;
+    }
+  });
+
+  // Gewichtete Zählung: Inhaltsseiten
+  contentPages.forEach(page => {
+    if (completedExercises[page] && completedExercises[page].completed) {
+      completedWeight += CONTENT_WEIGHT;
+    }
+  });
+
+  const percent = totalWeight === 0 ? 0 : Math.round((completedWeight / totalWeight) * 100);
+
+  // ✅ Ladebalken aktualisieren
   if (progressFill) {
     progressFill.style.width = `${percent}%`;
   }
 
-  if (progressText) {
-    progressText.textContent = `${completedCount} von ${totalExercises} Tests abgeschlossen`;
+  // ✅ Prozentanzeige aktualisieren
+  if (percentDisplay) {
+    percentDisplay.textContent = `${percent}%`;
   }
 
+  // ✅ Nur Übungen in der Textanzeige
+  const completedExercisesCount = exercises.filter(exercise =>
+    completedExercises[exercise] && completedExercises[exercise].completed
+  ).length;
+
+  if (progressText) {
+    progressText.textContent = `${completedExercisesCount} von ${exercises.length} Übungen abgeschlossen`;
+  }
+
+  // ✅ Anforderungen erfüllt?
   if (requirementPending) {
     if (percent >= moduleConfig.requiredPercentage) {
       requirementPending.textContent = '✅ Anforderungen erfüllt';
@@ -417,6 +480,8 @@ class EnhancedProgressTracker {
     }
   }
 }
+
+
 
   //Mark Pages as Completed in Navigation
   highlightCompletedExercises() {
@@ -514,10 +579,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
- 
-  
 
-// QUIZ UND TEST LOGIK
+
+
+  // QUIZ UND TEST LOGIK
 
 
   // --- Initialisierung von Quiz & Fortschritt ---
