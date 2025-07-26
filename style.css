@@ -430,7 +430,7 @@ li a {
    ========================================================================== */
 /* CSS für Inhaltsfortschritt */
 #inhalt-fortschritt-container {
-  max-width: 900px; 
+  max-width: relative; 
   margin: 1rem auto 0.5rem auto;
   padding: 0.75rem 1rem;
   background-color: #f9f9f9;
@@ -706,6 +706,18 @@ a.disabled:hover::before {
   max-width: 350px;
   width: 100%;
   height: auto;
+}
+
+/* Responsive: Bilder untereinander bei mittleren und kleinen Bildschirmen */
+@media (max-width: 1100px) {
+  .image-row {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .image-row .information-bild {
+    max-width: 90vw;
+  }
 }
 
 /* Tabs */

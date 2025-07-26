@@ -282,6 +282,24 @@ isPageUnlocked(index) {
       }
     });
   }
+
+  markCurrentPageComplete() {
+  if (!this.currentPage) return;
+
+  // Verhindere Mehrfach-Einträge
+  if (!this.completedExercises[this.currentPage]) {
+    this.completedExercises[this.currentPage] = {};
+  }
+
+  this.completedExercises[this.currentPage].completed = true;
+
+  // Optional: Lokale Speicherung zur Persistenz
+  localStorage.setItem('completedExercises', JSON.stringify(this.completedExercises));
+
+  // Zugriff erneut prüfen und ggf. nächste Seite freischalten
+  this.applyAccessControl();
+}
+
 }
 
 
@@ -602,6 +620,8 @@ updateModulFortschrittsanzeige() {
 
 // CONTENT MANAGEMENT
 
+// THIRD DOMCONTENT LOADED EVENT
+
 // Media TABs and Content Display
 document.addEventListener("DOMContentLoaded", () => {
   // --- Media Tabs Setup ---
@@ -664,6 +684,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (typeof EnhancedProgressTracker === "function") new EnhancedProgressTracker();
 });
 
+// CLASS FOR QUIZ EVALUATION
+
 
 // Quiz Evaluation System
 class QuizEvaluator {
@@ -716,26 +738,43 @@ class QuizEvaluator {
   }
 
   collectAnswers(formData) {
-    const answers = {};
-    const questionGroups = document.querySelectorAll('fieldset');
+  const answers = {};
+  const questionGroups = document.querySelectorAll('fieldset');
 
-    questionGroups.forEach((fieldset, index) => {
-      const questionName = `question${index + 1}`;
-      const inputs = fieldset.querySelectorAll('input');
+  questionGroups.forEach((fieldset, index) => {
+    const questionName = `question${index + 1}`;
+    const inputs = fieldset.querySelectorAll('input');
 
-      // Prüfen, ob es sich um eine Checkbox-Gruppe handelt
-      const isMultiple = Array.from(inputs).some(input => input.type === 'checkbox');
+    // Prüfen, ob es sich um eine Checkbox-Gruppe handelt
+    const isMultiple = Array.from(inputs).some(input => input.type === 'checkbox');
 
-      if (isMultiple) {
-        answers[questionName] = formData.getAll(questionName); // gibt ein Array
-      } else {
-        const singleAnswer = formData.get(questionName);
-        answers[questionName] = singleAnswer ? [singleAnswer] : [];
+    if (isMultiple) {
+      answers[questionName] = formData.getAll(questionName); // gibt ein Array
+    } else {
+      const singleAnswer = formData.get(questionName);
+      answers[questionName] = singleAnswer ? [singleAnswer] : [];
+    }
+  });
+
+  // ⬇️ Hier Drag-and-Drop-Antworten ergänzen
+  const dragContainer = document.querySelector('.drag-container');
+  if (dragContainer) {
+    const dropzones = dragContainer.querySelectorAll('.dropzone');
+    const userAnswers = [];
+
+    dropzones.forEach(zone => {
+      const droppedId = zone.dataset.droppedId;
+      if (droppedId) {
+        userAnswers.push(droppedId);
       }
     });
 
-    return answers;
+    answers['dragAndDrop'] = userAnswers;
   }
+
+  return answers;
+}
+
 
 
   evaluateAnswers(answers) {
@@ -774,23 +813,34 @@ class QuizEvaluator {
 
 
   getCorrectAnswers() {
-    const currentPage = window.location.pathname;
+  const currentPage = window.location.pathname;
 
-    if (currentPage.includes('modul2_quiz.html')) {
-      return {
-        question1: ['C'],           // Single Choice
-        question2: ['A', 'B', 'D'], // Multiple Choice
-        question3: ['B'],           // Single Choice
-        question4: ['C']            // Single Choice
-      };
-    } else if (currentPage.includes('modul1_quiz.html')) {
-      return {
-        question1: ['B']
-      };
-    }
-
-    return {};
+  if (currentPage.includes('modul2_quiz.html')) {
+    return {
+      question1: ['C'],
+      question2: ['A', 'B', 'D'],
+      question3: ['B'],
+      question4: ['C']
+    };
+  } else if (currentPage.includes('modul1_quiz.html')) {
+    return {
+      question1: ['B']
+    };
+  } else if (currentPage.includes('2_7_modul2_drag_and_drop_quiz.html')) {
+    return {
+      dragAndDrop: [
+        'website',
+        'video',
+        'app',
+        'pdf',
+        'terminal'
+      ]
+    };
   }
+
+  return {};
+}
+
 
 
   calculateScore(answers, correctAnswers) {
@@ -829,196 +879,192 @@ class QuizEvaluator {
     }
   }
 
-  updateNavigation(allCorrect) {
-    const nextLink = document.getElementById("next-link");
-    if (nextLink) {
-      // Calculate score to check if 80% threshold is met
-      const formData = new FormData(this.quizForm);
-      const answers = this.collectAnswers(formData);
-      const correctAnswers = this.getCorrectAnswers();
-      const score = this.calculateScore(answers, correctAnswers);
+  saveCompletionStatusAndNavigation() {
+  const currentPage = window.location.pathname.split("/").pop();
+  const formData = new FormData(this.quizForm);
+  const answers = this.collectAnswers(formData);
+  const correctAnswers = this.getCorrectAnswers();
+  const score = this.calculateScore(answers, correctAnswers); // ergibt z. B. 83
 
-      if (score >= 80) {
-        nextLink.classList.remove("disabled");
-        nextLink.removeAttribute("aria-disabled");
-        nextLink.style.pointerEvents = "auto";
-        nextLink.style.opacity = "1";
-        nextLink.title = `Weiter (${score}% erreicht)`;
-      } else {
-        nextLink.classList.add("disabled");
-        nextLink.setAttribute("aria-disabled", "true");
-        nextLink.style.pointerEvents = "none";
-        nextLink.style.opacity = "0.5";
-        nextLink.title = `Mindestens 80% erforderlich (aktuell: ${score}%)`;
-      }
-    }
+  const scorePercentage = Math.round(score);
+
+  // ✅ Speichern nur bei bestandenem Quiz
+  if (scorePercentage >= 80) {
+    completedExercises[currentPage] = {
+      completed: true,
+      timestamp: new Date().toISOString(),
+      type: 'quiz',
+      score: scorePercentage
+    };
+    localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
   }
 
-  saveCompletionStatus(allCorrect) {
-    const currentPage = window.location.pathname;
-    // Calculate score to check if 80% threshold is met
-    const formData = new FormData(this.quizForm);
-    const answers = this.collectAnswers(formData);
-    const correctAnswers = this.getCorrectAnswers();
-    const score = this.calculateScore(answers, correctAnswers);
-
-    if (score >= 80) {
-      completedExercises[currentPage] = {
-        completed: true,
-        timestamp: new Date().toISOString(),
-        type: 'quiz',
-        score: score
-      };
-      localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
+  // 🧭 Weiter-Link aktivieren/deaktivieren
+  const nextLink = document.getElementById("next-link");
+  if (nextLink) {
+    if (scorePercentage >= 80) {
+      nextLink.classList.remove("disabled");
+      nextLink.removeAttribute("aria-disabled");
+      nextLink.style.pointerEvents = "auto";
+      nextLink.style.opacity = "1";
+      nextLink.title = `Weiter (${scorePercentage}% erreicht)`;
+    } else {
+      nextLink.classList.add("disabled");
+      nextLink.setAttribute("aria-disabled", "true");
+      nextLink.style.pointerEvents = "none";
+      nextLink.style.opacity = "0.5";
+      nextLink.title = `Mindestens 80% erforderlich (aktuell: ${scorePercentage}%)`;
     }
   }
+}
 }
 
 // Fill-in-the-blanks Evaluation System
 class FillInTheBlanksEvaluator {
   constructor() {
     this.validateButton = document.getElementById('validate-button');
-    this.initializeFillInTheBlanks();
+    this.feedbackElement = document.getElementById('feedback');
+    this.selects = document.querySelectorAll('section.fill-in-the-blanks select[data-solution]');
+    this.nextLink = document.querySelector('.nav-buttons a.button-secondary:last-of-type');
+
+    this.initialize();
   }
 
-  initializeFillInTheBlanks() {
-    if (this.validateButton) {
-      this.validateButton.addEventListener('click', () => this.handleValidation());
-    }
+  initialize() {
+    if (!this.validateButton || !this.feedbackElement || !this.selects.length) return;
+
+    this.validateButton.addEventListener('click', () => this.handleValidation());
   }
 
   handleValidation() {
-    const selects = document.querySelectorAll('section.fill-in-the-blanks select');
-    const results = this.evaluateAnswers(selects);
+    const results = this.evaluateAnswers();
 
     this.displayFeedback(results);
-    this.updateNavigation(results.allCorrect);
-    this.saveCompletionStatus(results.allCorrect);
+    this.updateNavigation(results);
+    this.saveCompletionStatus(results);
 
     // Update module progress after completion
-    if (results.score >= 80) {
+    if (results.score >= 80 && typeof EnhancedProgressTracker !== 'undefined') {
       new EnhancedProgressTracker().markPageAsCompleted(window.location.pathname, results.score);
     }
   }
 
-  evaluateAnswers(selects) {
+  evaluateAnswers() {
     let allCorrect = true;
     let allFilled = true;
-    let feedback = [];
+    const feedbackMessages = [];
+    let correctCount = 0;
 
-    selects.forEach((select, index) => {
+    this.selects.forEach((select, index) => {
       const userAnswer = select.value.trim();
       const correctAnswer = select.dataset.solution.trim();
 
       if (userAnswer === "") {
         allFilled = false;
-        select.style.borderColor = "#f39c12"; // orange
-        feedback.push(`Lücke ${index + 1}: Bitte fülle diese Lücke aus.`);
+        allCorrect = false;
+        select.style.borderColor = "#f39c12";
+        feedbackMessages.push(`Lücke ${index + 1}: Bitte fülle diese Lücke aus.`);
       } else if (userAnswer.toLowerCase() !== correctAnswer.toLowerCase()) {
         allCorrect = false;
-        select.style.borderColor = "#e74c3c"; // red
-        feedback.push(`Lücke ${index + 1}: Falsch. Die richtige Antwort ist: ${correctAnswer}.`);
+        select.style.borderColor = "#e74c3c";
+        feedbackMessages.push(`Lücke ${index + 1}: Falsch. Die richtige Antwort ist: ${correctAnswer}.`);
       } else {
-        select.style.borderColor = "#2ecc71"; // green
-        feedback.push(`✅ Lücke ${index + 1}: Richtig!`);
+        select.style.borderColor = "#2ecc71";
+        correctCount++;
+        feedbackMessages.push(`✅ Lücke ${index + 1}: Richtig!`);
       }
     });
 
+    const score = Math.round((correctCount / this.selects.length) * 100);
+
     return {
-      allCorrect: allCorrect && allFilled,
       allFilled,
-      feedback: feedback.join('\n'),
-      score: this.calculateScore(selects)
+      allCorrect: allCorrect && allFilled,
+      feedback: feedbackMessages.join('\n'),
+      score
     };
   }
 
-  calculateScore(selects) {
-    let correct = 0;
-    let total = selects.length;
-
-    selects.forEach(select => {
-      const userAnswer = select.value.trim();
-      const correctAnswer = select.dataset.solution.trim();
-
-      if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-        correct++;
-      }
-    });
-
-    return Math.round((correct / total) * 100);
-  }
-
   displayFeedback(results) {
-    const feedback = document.getElementById('feedback');
-    if (feedback) {
-      if (!results.allFilled) {
-        feedback.textContent = "Bitte fülle alle Lücken aus.";
-        feedback.style.color = "#f39c12";
-      } else if (results.allCorrect) {
-        feedback.textContent = "✅ Richtig! Alle Antworten sind korrekt.";
-        feedback.style.color = "#2ecc71";
+    if (!this.feedbackElement) return;
 
-        // Add score display
-        if (results.score !== undefined) {
-          feedback.textContent += `\n\nPunktzahl: ${results.score}%`;
-        }
-      } else {
-        feedback.textContent = "Nicht ganz richtig. Versuche es noch einmal.\n\n" + results.feedback;
-        feedback.style.color = "#e74c3c";
+    const { allFilled, allCorrect, feedback, score } = results;
+    this.feedbackElement.style.fontWeight = "bold";
+    this.feedbackElement.style.marginTop = "1rem";
 
-        // Add score display
-        if (results.score !== undefined) {
-          feedback.textContent += `\n\nPunktzahl: ${results.score}%`;
-        }
-      }
-
-      feedback.style.fontWeight = "bold";
-      feedback.style.marginTop = "1rem";
+    if (!allFilled) {
+      this.feedbackElement.textContent = "❗ Bitte fülle alle Lücken aus.";
+      this.feedbackElement.style.color = "#f39c12";
+    } else if (allCorrect) {
+      this.feedbackElement.textContent = "✅ Richtig! Alle Antworten sind korrekt.\n\nPunktzahl: " + score + "%";
+      this.feedbackElement.style.color = "#2ecc71";
+    } else {
+      this.feedbackElement.textContent = "🔁 Nicht ganz richtig. Versuche es noch einmal.\n\n" + feedback + "\n\nPunktzahl: " + score + "%";
+      this.feedbackElement.style.color = "#e74c3c";
     }
   }
 
-  updateNavigation(allCorrect) {
-    const nextLink = document.querySelector('.nav-buttons a.button-secondary:last-of-type');
-    if (nextLink) {
-      // Calculate score to check if 80% threshold is met
-      const selects = document.querySelectorAll('section.fill-in-the-blanks select');
-      const score = this.calculateScore(selects);
+  updateNavigation(results) {
+    if (!this.nextLink) return;
 
-      if (score >= 80) {
-        nextLink.classList.remove("disabled");
-        nextLink.removeAttribute("aria-disabled");
-        nextLink.style.pointerEvents = "auto";
-        nextLink.style.opacity = "1";
-        nextLink.title = `Weiter (${score}% erreicht)`;
-      } else {
-        nextLink.classList.add("disabled");
-        nextLink.setAttribute("aria-disabled", "true");
-        nextLink.style.pointerEvents = "none";
-        nextLink.style.opacity = "0.5";
-        nextLink.title = `Mindestens 80% erforderlich (aktuell: ${score}%)`;
-      }
+    const { score } = results;
+
+    if (score >= 80) {
+      this.nextLink.classList.remove("disabled");
+      this.nextLink.removeAttribute("aria-disabled");
+      this.nextLink.style.pointerEvents = "auto";
+      this.nextLink.style.opacity = "1";
+      this.nextLink.title = `✅ Weiter (${score}% erreicht)`;
+    } else {
+      this.nextLink.classList.add("disabled");
+      this.nextLink.setAttribute("aria-disabled", "true");
+      this.nextLink.style.pointerEvents = "none";
+      this.nextLink.style.opacity = "0.5";
+      this.nextLink.title = `❗ Mindestens 80% erforderlich (aktuell: ${score}%)`;
     }
   }
 
-  saveCompletionStatus(allCorrect) {
+  saveCompletionStatus(results) {
+    const { score } = results;
     const currentPage = window.location.pathname;
-    // Calculate score to check if 80% threshold is met
-    const selects = document.querySelectorAll('section.fill-in-the-blanks select');
-    const score = this.calculateScore(selects);
 
     if (score >= 80) {
       completedExercises[currentPage] = {
         completed: true,
         timestamp: new Date().toISOString(),
         type: 'fill-in-the-blanks',
-        score: score
+        score
       };
       localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
     }
   }
 }
 
+
 // Drag and Drop Functionality
+
+// FOURTH DOMCONTENT LOADED EVENT
+
+function getDragAnswers() {
+  const dragAnswers = {};
+
+  document.querySelectorAll('.dropzone').forEach(zone => {
+    const question = zone.dataset.question;
+    const droppedId = zone.dataset.droppedId;
+
+    if (!question) return;
+
+    if (!dragAnswers[question]) {
+      dragAnswers[question] = [];
+    }
+
+    if (droppedId) {
+      dragAnswers[question].push(droppedId);
+    }
+  });
+
+  return dragAnswers;
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   const draggables = document.querySelectorAll(".draggable");
@@ -1069,13 +1115,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function handleDrop(zone, draggedId) {
-    const correct = zone.dataset.accept === draggedId;
-    zone.textContent = zone.textContent + ` (${draggedId})`;
-    zone.classList.add(correct ? "correct" : "incorrect");
+  const correct = zone.dataset.accept === draggedId;
 
-    // Deaktivieren weiterer Drops
-    zone.setAttribute("tabindex", "-1");
-    zone.setAttribute("aria-disabled", "true");
+  // Speichere das abgelegte ID in einem Datenattribut für spätere Auswertung
+  zone.dataset.droppedId = draggedId;
+
+  zone.textContent = zone.textContent + ` (${draggedId})`;
+  zone.classList.add(correct ? "correct" : "incorrect");
 
     const remaining = document.querySelectorAll(".dropzone:not(.correct):not(.incorrect)");
     if (remaining.length === 0) {
@@ -1083,9 +1129,23 @@ document.addEventListener("DOMContentLoaded", () => {
       feedback.style.color = "#2ecc71";
       document.getElementById("next-link").classList.remove("disabled");
       document.getElementById("next-link").removeAttribute("aria-disabled");
+       markCurrentPageCompleteIfNeeded();
     }
   }
 });
+
+// Trigger Fortschritt nach erfolgreicher Lösung des Drag-and-Drop-Rätsels
+function markCurrentPageCompleteIfNeeded() {
+  const allDropzones = document.querySelectorAll(".dropzone");
+  const allFilled = Array.from(allDropzones).every(zone => zone.dataset.droppedId);
+
+  if (allFilled) {
+    // Der Fortschritt soll nur dann getrackt werden, wenn alle Dropzones befüllt sind
+    if (typeof progressManager !== "undefined" && progressManager !== null) {
+  progressManager.markCurrentPageComplete?.();
+}
+  }
+}
 
 
 // Initialize Functions
@@ -1111,6 +1171,8 @@ function isModuleRequirementsMet(moduleName) {
   const config = MODULE_CONFIG[moduleName];
   return config && progress.percentage >= config.requiredPercentage;
 }
+
+// FIFTH DOMCONTENT LOADED EVENT
 
 // NOTE function
 document.addEventListener("DOMContentLoaded", function () {
@@ -1173,6 +1235,7 @@ document.addEventListener("DOMContentLoaded", function () {
   loadNotes();
 });
 
+
 //Initialize Page Progress 
 document.addEventListener("DOMContentLoaded", () => {
   const nextButton = document.querySelector(".next-button");
@@ -1193,6 +1256,85 @@ document.addEventListener("DOMContentLoaded", () => {
         enhancedProgress.highlightCompletedExercises();
       }
     });
+  }
+});
+
+// SIXTH DOMCONTENT LOADED EVENT
+document.addEventListener('DOMContentLoaded', () => {
+  const nextButton = document.querySelector('.next-button');
+  const feedback = document.getElementById('feedback');
+
+  // --- Lückentext-Seite ---
+  if (document.querySelector('select[data-solution]')) {
+    const validateButton = document.getElementById('validate-button');
+    const selects = document.querySelectorAll('select[data-solution]');
+    let quizPassed = false;
+
+    validateButton.addEventListener('click', () => {
+      let allCorrect = true;
+
+      selects.forEach(select => {
+        const solution = select.dataset.solution;
+        const userAnswer = select.value;
+
+        if (userAnswer !== solution) {
+          allCorrect = false;
+          select.classList.add('incorrect');
+          select.classList.remove('correct');
+        } else {
+          select.classList.add('correct');
+          select.classList.remove('incorrect');
+        }
+      });
+
+      if (allCorrect) {
+        feedback.textContent = '✅ Alle Antworten sind korrekt!';
+        quizPassed = true;
+
+        if (typeof enhancedProgressTracker !== 'undefined') {
+          enhancedProgressTracker.markPageCompleted(window.location.pathname.split('/').pop());
+        }
+      } else {
+        feedback.textContent = '❌ Einige Antworten sind noch falsch. Bitte korrigieren.';
+      }
+    });
+
+    nextButton.addEventListener('click', (event) => {
+      if (!quizPassed) {
+        event.preventDefault();
+        feedback.textContent = '❗Bitte überprüfen Sie zuerst Ihre Antworten und korrigieren Sie sie, bevor Sie fortfahren.';
+        feedback.focus();
+      }
+    });
+
+  // --- Drag-and-Drop-Seite ---
+  } else if (document.querySelector('.dropzone')) {
+    const dropzones = document.querySelectorAll('.dropzone');
+    let dragDropPassed = false;
+
+    function checkCompletion() {
+      let correctCount = 0;
+      dropzones.forEach(zone => {
+        if (zone.classList.contains('correct')) correctCount++;
+      });
+      const percentCorrect = (correctCount / dropzones.length) * 100;
+      return percentCorrect >= 80;  // z.B. 80% richtig als Schwelle
+    }
+
+    nextButton.addEventListener('click', (event) => {
+      if (!checkCompletion()) {
+        event.preventDefault();
+        feedback.textContent = '❗Bitte ordnen Sie mindestens 80 % der Elemente richtig zu, bevor Sie fortfahren.';
+        feedback.focus();
+      } else {
+        dragDropPassed = true;
+        feedback.textContent = '✅ Gut gemacht! Sie können fortfahren.';
+        if (typeof enhancedProgressTracker !== 'undefined') {
+          enhancedProgressTracker.markPageCompleted(window.location.pathname.split('/').pop());
+        }
+      }
+    });
+
   }
 });
 
