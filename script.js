@@ -1,19 +1,18 @@
 //GLobal Variables
 
-
 // Global variables for tracking completion
 let completedExercises = JSON.parse(localStorage.getItem('completedExercises') || '{}');
 let moduleProgress = JSON.parse(localStorage.getItem('moduleProgress') || '{}');
 
 // Intro pages that should never be marked as completed
-
 const INTRO_PAGES = ['index.html', 'hinweise.html'];
 
 
+// Course Cards on index.html
 document.addEventListener('DOMContentLoaded', function () {
   const courseCards = document.querySelectorAll('.course-card.toggleable');
 
-  // Kurskarte öffnen/schließen
+  // open/close course cards
   courseCards.forEach(card => {
     const moduleButton = card.querySelector('.show-modules-button');
     const courseLink = card.querySelector('.nav-button');
@@ -68,7 +67,7 @@ const MODULE_CONFIG = {
       '1_2_modul1_gesetzliche_definition.html',
       '1_3_modul1_soziale_praktische_aspekte.html',
       '1_4_modul1_bezug_zur_nachhaltigkeit.html',
-      '1_5_modul1_teste_dein_wissen.html' // gehört laut deiner letzten Struktur evtl. zu content
+      '1_5_modul1_teste_dein_wissen.html' 
     ],
     requiredPercentage: 80,
     nextModule: 'modul2'
@@ -103,6 +102,8 @@ const MODULE_CONFIG = {
 };
 
 
+// NAVIGATION AND COMPLETION LOGIC
+
 
 // Page type configuration - defines how each page type should be marked as completed
 const PAGE_TYPES = {
@@ -131,8 +132,6 @@ const PAGE_TYPES = {
     '2_7_modul2_drag_and_drop_quiz.html'
   ]
 };
-
-// NAVIGATION AND COMPLETION LOGIC
 
 // Page Progress Tracking
 document.addEventListener("DOMContentLoaded", function () {
@@ -195,6 +194,34 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+//Only One page at a time
+function disableAllModuleLinksExceptFirst(activeModule) {
+  const moduleConfig = MODULE_CONFIG[activeModule];
+  if (!moduleConfig) return;
+
+  const allPages = [...(moduleConfig.contentPages || []), ...(moduleConfig.exercises || [])];
+  const firstPage = allPages[0];
+
+  allPages.forEach(page => {
+    const link = document.querySelector(`a[href="${page}"]`);
+    if (!link) return;
+
+    const isCompleted = completedExercises[page]?.completed;
+    const isUnlocked = page === firstPage || isCompleted;
+
+    if (isUnlocked) {
+      link.classList.remove("disabled");
+      link.removeAttribute("aria-disabled");
+      link.style.pointerEvents = "auto";
+      link.style.opacity = "1";
+    } else {
+      link.classList.add("disabled");
+      link.setAttribute("aria-disabled", "true");
+      link.style.pointerEvents = "none";
+      link.style.opacity = "0.5";
+    }
+  });
+}
 
 // Reset progress on page reload (for prototyping)
 function resetProgressOnReload() {
@@ -212,6 +239,9 @@ function resetProgressOnReload() {
 // Call reset function on page load
 resetProgressOnReload();
 
+
+// Class for Progress Tracking (what is done, what is not done)
+
 // Enhanced Progress Tracking System
 class EnhancedProgressTracker {
   constructor() {
@@ -219,6 +249,7 @@ class EnhancedProgressTracker {
     this.currentPage = this.getCurrentPage();
     this.pageType = this.getPageType();
     this.initializeProgressTracking();
+    window.tracker = this;
   }
 
   getCurrentModule() {
@@ -271,7 +302,7 @@ class EnhancedProgressTracker {
   }
 
 
-
+// mark page as completed
   markPageAsCompleted(pagePath, score = 100, pageType = null) {
     const cleanPath = pagePath.split('?')[0].split('#')[0];
 
@@ -282,7 +313,7 @@ class EnhancedProgressTracker {
 
     const isPassed = score >= 80;
 
-    // Hole den Page Type für die jeweilige Seite
+    // get page type for current page
     if (!pageType) {
       if (PAGE_TYPES.quiz.includes(cleanPath)) pageType = 'quiz';
       else if (PAGE_TYPES.fillInTheBlanks.includes(cleanPath)) pageType = 'fillInTheBlanks';
@@ -307,8 +338,7 @@ class EnhancedProgressTracker {
     this.updateModulFortschrittsanzeige();
   }
 
-
-
+// calculöate module progress
   calculateModuleProgress(moduleName) {
     const moduleConfig = MODULE_CONFIG[moduleName];
     if (!moduleConfig) return 0;
@@ -321,7 +351,7 @@ class EnhancedProgressTracker {
 
     let completedCount = 0;
 
-    // Zähle abgeschlossene Inhalte aus beiden Kategorien
+    // count finished exercises from both page types
     [...exercises, ...contentPages].forEach(page => {
       if (completedExercises[page] && completedExercises[page].completed) {
         completedCount++;
@@ -332,7 +362,7 @@ class EnhancedProgressTracker {
   }
 
 
-
+// update module progress
   updateModuleProgress() {
     if (!this.currentModule) return;
 
@@ -384,7 +414,7 @@ class EnhancedProgressTracker {
       }
     });
   }
-
+//display the results
   displayModuleProgress() {
     if (!this.currentModule) return;
 
@@ -407,6 +437,7 @@ class EnhancedProgressTracker {
     }
   }
 
+  //display the resuölts
 updateModulFortschrittsanzeige() {
   const container = document.getElementById('modul-fortschritt-container');
   if (!container) return;
@@ -480,7 +511,6 @@ updateModulFortschrittsanzeige() {
     }
   }
 }
-
 
 
   //Mark Pages as Completed in Navigation
@@ -580,12 +610,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
+  // QUIZ/EXERCISES LOGIC
 
 
-  // QUIZ UND TEST LOGIK
-
-
-  // --- Initialisierung von Quiz & Fortschritt ---
+  //Initialize Progress 
   if (typeof QuizEvaluator === "function") new QuizEvaluator();
   if (typeof FillInTheBlanksEvaluator === "function") new FillInTheBlanksEvaluator();
   if (typeof EnhancedProgressTracker === "function") new EnhancedProgressTracker();
@@ -1039,7 +1067,7 @@ function isModuleRequirementsMet(moduleName) {
   return config && progress.percentage >= config.requiredPercentage;
 }
 
-// Note Funktion
+// NOTE function
 document.addEventListener("DOMContentLoaded", function () {
   const addNoteBtn = document.getElementById("add-note");
   const notesContainer = document.getElementById("notes-container");
@@ -1100,6 +1128,7 @@ document.addEventListener("DOMContentLoaded", function () {
   loadNotes();
 });
 
+//Initialize Page Progress 
 document.addEventListener("DOMContentLoaded", () => {
   const nextButton = document.querySelector(".next-button");
   if (nextButton) {
