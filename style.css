@@ -677,7 +677,15 @@ a.disabled:hover::before {
   opacity: 0.7;
 }
 
-.modulbild,
+.modulbild {
+  width: 100%;
+  max-width: none; /* oder z.B. 100% des Containers */
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  object-fit: contain;
+}
+
 .information-bild {
   width: 100%;
   max-width: 350px;

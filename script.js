@@ -1,4 +1,18 @@
-//GLobal Variables
+// GLOBAL VARIABLES AND CONFIGURATION
+
+// Reset progress on page reload (for prototyping)
+function resetProgressOnReload() {
+  // Check if this is a page reload (not a navigation)
+  if (performance.navigation.type === 1) {
+    // Clear all progress data
+    localStorage.removeItem('completedExercises');
+    localStorage.removeItem('moduleProgress');
+    console.log('Progress reset on page reload');
+  }
+}
+
+// Call reset function on page load
+resetProgressOnReload();
 
 // Global variables for tracking completion
 let completedExercises = JSON.parse(localStorage.getItem('completedExercises') || '{}');
@@ -7,6 +21,8 @@ let moduleProgress = JSON.parse(localStorage.getItem('moduleProgress') || '{}');
 // Intro pages that should never be marked as completed
 const INTRO_PAGES = ['index.html', 'hinweise.html'];
 
+
+// FIRST DOMCONTENT LOADED EVENT
 
 // Course Cards on index.html
 document.addEventListener('DOMContentLoaded', function () {
@@ -133,6 +149,7 @@ const PAGE_TYPES = {
   ]
 };
 
+// SECOND DOMCONTENT LOADED EVENT
 // Page Progress Tracking
 document.addEventListener("DOMContentLoaded", function () {
   const modulPages = {
@@ -192,52 +209,80 @@ document.addEventListener("DOMContentLoaded", function () {
       text.textContent = `${completedPages} von ${activePages.length} Seiten abgeschlossen`;
     }
   }
+
+  // Initialize the progress manager
+  const progressManager = new ProgressManager(MODULE_CONFIG, completedExercises);
+  progressManager.applyAccessControl();
 });
 
-//Only One page at a time
-function disableAllModuleLinksExceptFirst(activeModule) {
-  const moduleConfig = MODULE_CONFIG[activeModule];
-  if (!moduleConfig) return;
 
-  const allPages = [...(moduleConfig.contentPages || []), ...(moduleConfig.exercises || [])];
-  const firstPage = allPages[0];
 
-  allPages.forEach(page => {
-    const link = document.querySelector(`a[href="${page}"]`);
-    if (!link) return;
+// CLASS FOR PROGRESS MANAGEMENT
 
-    const isCompleted = completedExercises[page]?.completed;
-    const isUnlocked = page === firstPage || isCompleted;
+class ProgressManager {
+  constructor(moduleConfig, completedExercises) {
+    this.moduleConfig = moduleConfig;
+    this.completedExercises = completedExercises;
+    this.currentPage = this.getCurrentPage();
+    this.activeModule = this.getActiveModule();
+    this.modulePages = this.getModulePages();
+  }
 
-    if (isUnlocked) {
-      link.classList.remove("disabled");
-      link.removeAttribute("aria-disabled");
-      link.style.pointerEvents = "auto";
-      link.style.opacity = "1";
-    } else {
-      link.classList.add("disabled");
-      link.setAttribute("aria-disabled", "true");
-      link.style.pointerEvents = "none";
-      link.style.opacity = "0.5";
+  getCurrentPage() {
+    const path = window.location.pathname;
+    return path.substring(path.lastIndexOf("/") + 1);
+  }
+
+  getActiveModule() {
+    for (const [module, data] of Object.entries(this.moduleConfig)) {
+      const allPages = [...(data.contentPages || []), ...(data.exercises || [])];
+      if (allPages.includes(this.currentPage)) {
+        return module;
+      }
     }
-  });
+    return null;
+  }
+
+  getModulePages() {
+    if (!this.activeModule) return [];
+    const config = this.moduleConfig[this.activeModule];
+    return [...(config.contentPages || []), ...(config.exercises || [])];
+  }
+
+  isPageCompleted(page) {
+    return this.completedExercises[page]?.completed === true;
+  }
+
+isPageUnlocked(index) {
+  if (index === 0) return true;
+  
+  // Für alle anderen Seiten:
+  // Prüfe, ob die vorherige Seite abgeschlossen ist
+  return this.isPageCompleted(this.modulePages[index - 1]);
 }
 
-// Reset progress on page reload (for prototyping)
-function resetProgressOnReload() {
-  // Check if this is a page reload (not a navigation)
-  if (performance.navigation.type === 1) {
-    // Clear all progress data
-    localStorage.removeItem('completedExercises');
-    localStorage.removeItem('moduleProgress');
-    completedExercises = {};
-    moduleProgress = {};
-    console.log('Progress reset on page reload');
+
+  applyAccessControl() {
+    this.modulePages.forEach((page, index) => {
+      const link = document.querySelector(`a[href="${page}"]`);
+      if (!link) return;
+
+      const unlocked = this.isPageUnlocked(index);
+
+      if (unlocked) {
+        link.classList.remove("disabled");
+        link.removeAttribute("aria-disabled");
+        link.style.pointerEvents = "auto";
+        link.style.opacity = "1";
+      } else {
+        link.classList.add("disabled");
+        link.setAttribute("aria-disabled", "true");
+        link.style.pointerEvents = "none";
+        link.style.opacity = "0.5";
+      }
+    });
   }
 }
-
-// Call reset function on page load
-resetProgressOnReload();
 
 
 // Class for Progress Tracking (what is done, what is not done)
