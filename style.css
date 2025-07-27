@@ -1312,10 +1312,12 @@ ul.marked {
 /* Header mit Button */
 .notes-header {
   display: flex;
-  justify-content: flex-end;
   align-items: center;
+  gap: 0.5rem;
   padding: 0 1rem;
   margin-bottom: 1rem;
+  margin-top: 0.5rem;
+  justify-content: flex-start;
 }
 
 /* Versteckter Bereich */
@@ -1325,6 +1327,7 @@ ul.marked {
 
 /* Notizen Button */
 .notes-toggle-button {
+  margin-left: -1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1335,7 +1338,13 @@ ul.marked {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
-  padding: 0; /* Kein Innenabstand mehr nötig */
+  padding: 0;
+}
+
+.notes-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color:#576FCB ;
 }
 
 /* Icon im Button */
