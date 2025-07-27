@@ -987,7 +987,7 @@ ul.marked {
   background-color: var(--exercise-bg);
   border-left: 4px solid var(--exercise-border);
   padding: 1.25rem 1.5rem;
-  margin: 2rem 0;
+  margin: 1rem;
   border-top-right-radius: 0.75rem;
   border-bottom-right-radius: 0.75rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
@@ -1397,6 +1397,82 @@ ul.marked {
 .hidden {
   display: none;
   opacity: 0;
+}
+
+
+/* ==========================================================================
+   OVERLAY BILDVERGRÖßERUNG DESIGN
+   ========================================================================== */
+
+  /* Bilder verkleinert in der Übung */
+.information-bild {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  object-fit: contain;
+}
+
+.information-bild:focus,
+.information-bild:hover {
+  outline: none;
+  border-color: var(--primary, #007acc);
+}
+
+/* Overlay Grundstil */
+#image-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  margin: 0;
+  padding: 0;
+}
+
+/* Overlay sichtbar */
+#image-overlay[aria-hidden="false"] {
+  display: flex;
+}
+
+/* Großes Bild im Overlay */
+#overlay-img {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+/* Schließen Button */
+#close-overlay {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+#close-overlay:hover,
+#close-overlay:focus {
+  color: var(--primary, #007acc);
+  outline: none;
 }
 
 /* ==========================================================================

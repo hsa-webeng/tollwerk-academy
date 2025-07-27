@@ -216,11 +216,20 @@
                             <p>Zwei Fotos: eins mit Treppe, eins mit Rampe.</p>
                             <p><strong>Frage:</strong> Welche Variante ist für mehr Menschen nutzbar?</p>
                             <div class="image-row">
-                            <img src="images/barrieren_überall.jpg" alt="Bild einer Treppe (schlechte Barrierefreiheit)"
-                                class="information-bild">
-                            <img src="images/barrieren_überall2.jpg" alt="Bild einer Rampe" class="information-bild">
+                                <div class="image-container">
+                                  <img src="images/barrieren_überall.jpg" alt="Bild einer Treppe (schlechte Barrierefreiheit)" class="information-bild">
+                                </div>
+                                <div class="image-container">
+                                  <img src="images/barrieren_überall2.jpg" alt="Bild einer Rampe" class="information-bild">
+                                </div>
                             </div>
-                        </div>
+                          </div>
+                          
+                          <!-- Overlay -->
+                          <div id="image-overlay" role="dialog" aria-modal="true" aria-hidden="true" tabindex="-1">
+                            <button id="close-overlay" aria-label="Bild schließen">×</button>
+                            <img id="overlay-img" src="" alt="" />
+                          </div>
 
                         <h3>Gebrauchsgegenstände</h3>
                         <p>Alltägliche Dinge wie Haushaltsgeräte, technische Apparate oder Selbstbedienungsterminals
