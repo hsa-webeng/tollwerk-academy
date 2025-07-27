@@ -1,6 +1,25 @@
 /* ==========================================================================
-   TOLLWERK LEARNING PLATFORM - CLEAN CSS
+   TOLLWERK LEARNING PLATFORM 
    ========================================================================== */
+
+/* ==========================================================================
+   CSS VARIABLES
+   ========================================================================== */
+:root {
+  --primary: #576FCB;
+  --primary-dark: #4055a4;
+  --accent: #4f6bdb;
+  --success: #2ecc71;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+  --info-bg: #e3f6ff;
+  --info-border: #576FCB;
+  --exercise-bg: #fffde7;
+  --exercise-border: #fdd835;
+  --module-bg: #f9f9f9;
+  --module-border: #e9ecef;
+  --module-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
 /* ==========================================================================
    FONTS
@@ -41,7 +60,7 @@ body {
    HEADER
    ========================================================================== */
 header {
-  background: #576FCB;
+  background: var(--primary);
   padding: 1rem 2rem;
 }
 
@@ -65,7 +84,9 @@ header {
   color: white;
 }
 
-/* Search */
+/* ==========================================================================
+   Search Bar
+   ========================================================================== */
 .search-wrapper {
   position: relative;
   max-width: 400px;
@@ -115,7 +136,9 @@ header {
   line-height: 1.5;
 }
 
-.sidebar nav h1 {
+.sidebar nav h1,
+.sidebar nav h2,
+.sidebar nav h3 {
   font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 15px;
@@ -127,20 +150,15 @@ header {
 
 .sidebar nav h2 {
   font-size: 1rem;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ccc;
 }
 
 .sidebar nav h3 {
-  font-size: 1rem;
-  color: #576fcb;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ccc;
+  color: var(--primary);
 }
 
-/* KLAPPBARE BEREICHE */
+/* ==========================================================================
+   Foldable Sections
+   ========================================================================== */
 .sidebar details {
   margin-bottom: 1rem;
 }
@@ -149,14 +167,14 @@ header {
   font-weight: bold;
   font-size: 1rem;
   cursor: pointer;
-  color: #576fcb;
+  color: var(--primary);
   padding-bottom: 10px;
   margin-bottom: 0.5rem;
   border-bottom: 1px solid #ccc;
 }
 
 .sidebar details[open] summary {
-  color: #576fcb;
+  color: var(--primary);
 }
 
 .sidebar ul {
@@ -178,16 +196,16 @@ header {
 }
 
 .sidebar a:hover {
-  color: #576fcb;
+  color: var(--primary);
   font-weight: 500;
 }
 
 /* Aktive Seite hervorheben */
 .sidebar a[aria-current="page"] {
   background-color: #e9edfd;
-  color: #576fcb;
+  color: var(--primary);
   font-weight: bold;
-  border-left: 4px solid #576fcb;
+  border-left: 4px solid var(--primary);
   padding-left: 0.75rem;
   border-top-right-radius: 0.25rem;
   border-bottom-right-radius: 0.25rem;
@@ -206,11 +224,8 @@ header {
   padding: 1rem 6rem;
   background: white;
   position: relative;
-  
 }
 
-
-/* Notes */
 .notes {
   width: 250px;
   background-color: white;
@@ -245,7 +260,7 @@ li a {
   align-items: center;
   gap: 0.5rem;
   text-decoration: none;
-  color: #546dfd;
+  color: var(--primary);
 }
 
 .active {
@@ -254,20 +269,13 @@ li a {
   border-radius: 5px;
 }
 
-
-/* Icons */
-.type-icon {
+.type-icon,
+.locked-icon {
   width: 1.5rem;
   height: 1.5rem;
   flex-shrink: 0;
   display: block;
   margin-right: 0.5rem;
-}
-
-.locked-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  max-height: 1.5rem;
 }
 
 .with-icon {
@@ -279,61 +287,64 @@ li a {
 /* ==========================================================================
    COMPLETION INDICATORS
    ========================================================================== */
-.completed {
-  color: #2ecc71 !important;
-  font-weight: bold;
+.sidebar nav a.completed-quiz,
+.sidebar nav a.completed-content {
   position: relative;
-}
-
-.completed::before {
-  content: "✓";
-  position: absolute;
-  left: -20px;
-  color: #2ecc71;
   font-weight: bold;
-  font-size: 1.2em;
+  padding-left: 1.75rem; /* Platz für Icon */
 }
 
-.completed-quiz {
+.sidebar nav a.completed-quiz::before,
+.sidebar nav a.completed-content::before {
+  position: absolute;
+  left: 0.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1em;
+}
+
+/* Quiz-, Lückentext- und Drag-and-Drop-Seiten */
+.sidebar nav a.completed-quiz {
   color: #007bff !important;
-  font-weight: bold;
 }
-
-.completed-quiz::before {
+.sidebar nav a.completed-quiz::before {
   content: "🎯";
-  position: absolute;
-  left: -25px;
-  font-size: 1.1em;
 }
 
-.completed-content {
+/* Inhaltsseiten */
+.sidebar nav a.completed-content {
   color: #217e48 !important;
-  font-weight: bold;
 }
-
-.completed-content::before {
+.sidebar nav a.completed-content::before {
   content: "📖";
-  position: absolute;
-  left: -25px;
-  font-size: 1.1em;
 }
 
-/* Hide completion indicators for intro pages */
-.sidebar nav a[href="index.html"].completed::before,
-.sidebar nav a[href="hinweise.html"].completed::before {
+/* Verhindere doppelte Icons: alte .completed-Klasse vollständig entfernen */
+.sidebar nav a.completed::before {
+  content: none !important;
+}
+.sidebar nav a.completed {
+  color: inherit !important;
+  font-weight: inherit !important;
+}
+
+/* Intro-Seiten niemals als abgeschlossen markieren */
+.sidebar nav a[href="index.html"].completed-quiz::before,
+.sidebar nav a[href="hinweise.html"].completed-quiz::before,
+.sidebar nav a[href="index.html"].completed-content::before,
+.sidebar nav a[href="hinweise.html"].completed-content::before {
   content: none !important;
 }
 
-/* Also prevent intro pages from getting completion styling */
 .sidebar nav a[href="index.html"],
 .sidebar nav a[href="hinweise.html"] {
-  color: #546dfd !important;
+  color: var(--primary) !important;
   font-weight: normal !important;
 }
 
 .sidebar nav a[href="index.html"]:hover,
 .sidebar nav a[href="hinweise.html"]:hover {
-  color: #4055a4 !important;
+  color: var(--primary-dark) !important;
 }
 
 /* ==========================================================================
@@ -374,7 +385,7 @@ li a {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #576FCB, #4f6bdb);
+  background: linear-gradient(90deg, var(--primary), var(--accent));
   border-radius: 0.75rem;
   transition: width 0.5s ease;
   position: relative;
@@ -383,22 +394,14 @@ li a {
 .progress-fill::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
   animation: shimmer 2s infinite;
 }
 
 @keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-
-  100% {
-    transform: translateX(100%);
-  }
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
 .progress-requirements {
@@ -413,98 +416,179 @@ li a {
 }
 
 .requirement-met {
-  color: #2ecc71 !important;
+  color: var(--success) !important;
   font-weight: bold;
 }
 
 .requirement-pending {
-  color: #f39c12 !important;
+  color: var(--warning) !important;
   font-weight: bold;
+}
+
+/* ==========================================================================
+   Page Progress Tracker
+   ========================================================================== */
+/* CSS für Inhaltsfortschritt */
+#inhalt-fortschritt-container {
+  max-width: relative; 
+  margin: 1rem auto 0.5rem auto;
+  padding: 0.75rem 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+#inhalt-fortschritt-container h2 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+#inhalt-progress-bar {
+  width: 100%;
+  height: 10px;
+  background-color: #dcdcdc;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 0.4rem;
+}
+
+#inhalt-progress-fill {
+  height: 100%;
+  width: 0%;
+  background-color: var(--primary);
+  transition: width 0.4s ease-in-out;
+}
+
+#inhalt-progress-text {
+  text-align: right;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+/* ==========================================================================
+   Module Progress Tracker
+   ========================================================================== */
+
+#modul-fortschritt-container {
+  max-width: 900px;
+  margin: 2rem auto 1rem auto;
+  padding: 1rem;
+  background-color: #f2f2f2;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+#modul-fortschritt-container h2 {
+  margin-top: 0;
+  font-size: 1.3rem;
+  color: #333;
+}
+
+.modul-progress-bar {
+  width: 100%;
+  height: 16px;
+  background-color: #d0d0d0;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 0.4rem;
+  position: relative;
+}
+
+.modul-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #4a90e2, #79b7ff);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+  transition: width 0.4s ease-in-out;
+  border-radius: 8px;
+}
+
+.modul-progress-text {
+  margin-top: 0.2rem;
+  font-size: 0.95rem;
+  color: #444;
+  text-align: left;
+}
+
+.modul-progress-requirements {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 0.6rem;
 }
 
 /* ==========================================================================
    BUTTONS
    ========================================================================== */
-.button-primary {
-  background-color: #576FCB;
-  color: white;
+.btn,
+.button-primary,
+.button-secondary,
+.nav-button,
+.show-modules-button,
+.close-overlay,
+.tabs button,
+.quiz-multiple button[type="submit"] {
   padding: 0.75rem 1.5rem;
-  border-radius: 0.75rem;
-  border: none;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-  text-decoration: none;
-}
-
-.button-primary:hover {
-  background-color: #576FCB;
-  transform: translateY(-0.125rem);
-}
-
-.button-secondary {
-  background-color: transparent;
-  color: #576FCB;
-  text-decoration: none;
-  padding: 0.75rem 1.5rem;
-  border: 2px solid #576FCB;
   border-radius: 0.75rem;
   font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+  border: none;
+  font-family: "GraublauDisplay", sans-serif;
+  display: inline-block;
+}
+
+.button-primary,
+.next-button,
+.quiz-multiple button[type="submit"] {
+  background-color: var(--primary);
+  color: white;
+}
+
+.button-primary:hover,
+.next-button:hover,
+.quiz-multiple button[type="submit"]:hover {
+  background-color: var(--accent);
+  transform: translateY(-0.125rem);
+}
+
+.button-secondary,
+.close-overlay,
+.tabs button {
+  background-color: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
 }
 
 .button-secondary:hover,
-.button-secondary:focus {
-  background-color: #576FCB;
+.close-overlay:hover,
+.tabs button:hover:not(.disabled),
+.tabs button:focus-visible:not(.disabled) {
+  background-color: var(--accent);
   color: white;
   outline: none;
   transform: translateY(-0.125rem);
 }
 
-.nav-buttons {
-  margin-top: 3rem;
-}
-
-.nav-button {
-  display: inline-block;
-
-}
-
-.next-button {
-  margin-left: auto;
-  background-color: #576FCB;
+.tabs button.active {
+  background-color: var(--primary);
   color: white;
 }
 
-.nav-button:hover {
-  background-color: #4055a4;
-}
-
-.nav-button.disabled {
-  background-color: #ccc;
-  pointer-events: none;
-  color: #666;
-  text-decoration: none;
-  cursor: not-allowed;
-}
-
-.show-modules-button {
-  display: inline-block;
-
-}
-
-.show-modules-button:hover {
-  background-color: #005fa3;
-}
-
-/* Disabled links */
+.tabs button.disabled,
+.nav-button.disabled,
 a.disabled {
+  background-color: transparent;
+  color: #bbb;
+  border-color: #ccc;
+  cursor: not-allowed;
   pointer-events: none;
   opacity: 0.5;
-  cursor: not-allowed;
+  font-weight: 400;
+  transform: none;
   position: relative;
 }
 
@@ -536,6 +620,17 @@ a.disabled:hover::before {
   z-index: 1000;
 }
 
+.nav-buttons {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: flex-start;;
+  gap: 1rem;
+}
+
+.nav-buttons a {
+  margin: 0;
+}
+
 /* ==========================================================================
    MEDIA CONTENT
    ========================================================================== */
@@ -552,13 +647,13 @@ a.disabled:hover::before {
   margin-top: 1rem;
 }
 
-.media-row img {
-  max-width: 100%;
+.media-row img,
+.media img {
+  
   height: auto;
   object-fit: contain;
   border-radius: 10px;
   flex: 1 1 300px;
-  /* Flexibles Verhalten bei kleineren Bildschirmen */
 }
 
 .media-item {
@@ -567,37 +662,62 @@ a.disabled:hover::before {
   overflow: hidden;
 }
 
-#video-content {
-  border-radius: 1.25rem;
-  box-shadow: 0 0.5rem 1.875rem rgba(84, 109, 253, 0.15);
-}
-
+#video-content,
 #audio-content {
   border-radius: 1.25rem;
-  box-shadow: 0 0.5rem 1.875rem rgba(84, 109, 253, 0.15);
-}
-
-.media img {
-  width: auto;
-  max-width: 100%;
-  border-radius: 10px;
+  box-shadow: 0 0.5rem 1.875rem rgba(84,109,253,0.15);
 }
 
 .play-button {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   font-size: 7rem;
-  color: rgb(216, 216, 216);
+  color: rgb(216,216,216);
   opacity: 0.7;
 }
 
 .modulbild {
   width: 100%;
-  max-width: 1300px;
+  max-width: none; /* oder z.B. 100% des Containers */
   height: auto;
   border-radius: 10px;
+  display: block;
+  object-fit: contain;
+}
+
+.information-bild {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  object-fit: contain;
+}
+
+.image-row {
+  display: flex;
+  gap: 2rem;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.image-row .information-bild {
+  max-width: 350px;
+  width: 100%;
+  height: auto;
+}
+
+/* Responsive: Bilder untereinander bei mittleren und kleinen Bildschirmen */
+@media (max-width: 1100px) {
+  .image-row {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .image-row .information-bild {
+    max-width: 90vw;
+  }
 }
 
 /* Tabs */
@@ -607,60 +727,15 @@ a.disabled:hover::before {
   margin-bottom: 1.5rem;
 }
 
-.tabs button {
-  background-color: transparent;
-  color: #576FCB;
-  text-decoration: none;
-  padding: 0.75rem 1.5rem;
-  border: 2px solid #576FCB;
-  border-radius: 0.75rem;
-  font-weight: 700;
-  font-size: 1rem;
-  font-family: "GraublauDisplay", sans-serif;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Hover & Focus */
-.tabs button:hover:not(.disabled),
-.tabs button:focus-visible:not(.disabled) {
-  background-color: #4f6bdb;
-  color: white;
-  outline: none;
-  transform: translateY(-0.125rem);
-}
-
-/* Aktiver Tab */
-.tabs button.active {
-  background-color: #576FCB;
-  color: white;
-}
-
-/* Deaktivierter Button */
-.tabs button.disabled {
-  background-color: transparent;
-  color: #bbb;
-  border-color: #ccc;
-  cursor: not-allowed;
-  transform: none;
-  pointer-events: none;
-  font-weight: 400;
-}
-
-.hidden {
-  display: none;
-  opacity: 0;
-}
-
 /* ==========================================================================
    QUIZ STYLES
    ========================================================================== */
 .quiz-multiple {
-  background-color: #ffffff;
+  background-color: #fff;
   padding: 2rem 3rem;
   border-radius: 1.25rem;
-  box-shadow: 0 0.5rem 1.875rem rgba(84, 109, 253, 0.15);
-  max-width: 800px;
+  box-shadow: 0 0.5rem 1.875rem rgba(84,109,253,0.15);
+  max-width: relative;
   font-size: 1.125rem;
   line-height: 1.5;
   margin: 2rem 0 0 0;
@@ -705,7 +780,7 @@ a.disabled:hover::before {
   -webkit-appearance: none;
   width: 1.25rem;
   height: 1.25rem;
-  border: 0.125rem solid #576FCB;
+  border: 0.125rem solid var(--primary);
   border-radius: 50%;
   display: inline-block;
   position: relative;
@@ -714,53 +789,19 @@ a.disabled:hover::before {
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.quiz-option input[type="radio"]::after {
-  content: "";
-  position: absolute;
-  top: 0.25rem;
-  left: 0.25rem;
-  width: 0.5rem;
-  height: 0.5rem;
-  background-color: white;
-  border-radius: 50%;
-  display: none;
-}
-
 .quiz-option input[type="radio"]:checked {
-  background-color: #576FCB;
-  border-color: #576FCB;
-}
-
-.quiz-option input[type="radio"]:checked::after {
-  display: block;
+  background-color: var(--primary);
+  border-color: var(--primary);
 }
 
 .quiz-option input[type="radio"]:checked+* {
   font-weight: bold;
-  color: #576FCB;
+  color: var(--primary);
 }
 
 .quiz-option:has(input[type="radio"]:checked) {
-  border-color: #576FCB;
+  border-color: var(--primary);
   background-color: #eef0ff;
-}
-
-.quiz-multiple button[type="submit"] {
-  background-color: #576FCB;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.75rem;
-  border: none;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-  text-decoration: none;
-}
-
-.quiz-multiple button[type="submit"]:hover {
-  background-color: #4f6bdb;
-  transform: translateY(-0.125rem);
 }
 
 /* ==========================================================================
@@ -770,10 +811,9 @@ a.disabled:hover::before {
   background-color: #fff;
   padding: 2rem 3rem;
   border-radius: 1.25rem;
-  box-shadow: 0 0.5rem 1.875rem rgba(84, 109, 253, 0.15);
-  max-width: 700px;
+  box-shadow: 0 0.5rem 1.875rem rgba(84,109,253,0.15);
+  max-width: relative;
   margin: 2rem 0 0 0;
-  font-family: "GraublauDisplay", sans-serif;
   color: #2c2e4a;
   line-height: 1.6;
 }
@@ -791,10 +831,9 @@ a.disabled:hover::before {
 }
 
 .fill-in-the-blanks select {
-  font-family: "GraublauDisplay", sans-serif;
   font-size: 1rem;
   padding: 0.4rem 0.75rem;
-  border: 2px solid #576FCB;
+  border: 2px solid var(--primary);
   border-radius: 0.75rem;
   background-color: #f9faff;
   color: #2c2e4a;
@@ -807,13 +846,23 @@ a.disabled:hover::before {
 
 .fill-in-the-blanks select:focus {
   outline: none;
-  border-color: #4055a4;
+  border-color: var(--primary-dark);
   background-color: #eef0ff;
 }
 
 /* ==========================================================================
    Drag and Drop Quiz
    ========================================================================== */
+.drag-and-drop {
+   background-color: #fff;
+  padding: 2rem 3rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 0.5rem 1.875rem rgba(84,109,253,0.15);
+  max-width: relative;
+  margin: 2rem 0 0 0;
+  color: #2c2e4a;
+  line-height: 1.6;
+}
 
 .drag-container {
   display: flex;
@@ -846,29 +895,25 @@ a.disabled:hover::before {
 }
 
 .correct {
-  border-color: green;
+  border-color: var(--success);
   background-color: #e0f8e0;
 }
 
 .incorrect {
-  border-color: red;
+  border-color: var(--danger);
   background-color: #fbe0e0;
 }
-
-
 
 /* ==========================================================================
    CONTENT BOXES
    ========================================================================== */
-
 .information-text {
-  background-color: #ffffff;
+  background-color: #fff;
   border-radius: 1.25rem;
   padding: 2rem 3rem;
-  box-shadow: 0 0.5rem 1.875rem rgba(84, 109, 253, 0.1);
-  max-width: 800px;
-  margin: 2rem;
-  font-family: "GraublauDisplay", sans-serif;
+  box-shadow: 0 0.5rem 1.875rem rgba(84,109,253,0.1);
+  max-width: 100%;
+  margin: 0;
   color: #2c2e4a;
   line-height: 1.6;
   font-size: 1.05rem;
@@ -886,9 +931,8 @@ a.disabled:hover::before {
 .information-text h3::before {
   content: "#";
   position: absolute;
-  left: 0;
-  top: 0;
-  color: #576fcb;
+  left: 0; top: 0;
+  color: var(--primary);
 }
 
 .information-text p {
@@ -900,8 +944,8 @@ ul.marked {
   font-size: 1rem;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
-  color: #000000;
-  border-left: 5px solid #576fcb;
+  color: #000;
+  border-left: 5px solid var(--primary);
   padding-left: 1.75rem;
   list-style: disc inside;
 }
@@ -912,27 +956,25 @@ ul.marked {
 }
 
 .infobox {
-  background: #e3f6ff;
-  border-left: 4px solid #576FCB;
+  background: var(--info-bg);
+  border-left: 4px solid var(--info-border);
   padding: 1rem 1.5rem;
   margin: 2rem 0;
   border-top-right-radius: 0.75rem;
   border-bottom-right-radius: 0.75rem;
   font-size: 1rem;
   line-height: 1.6;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .exercise {
-  background-color: #fffde7;
-  /* sehr helles, weiches Gelb */
-  border-left: 4px solid #fdd835;
-  /* etwas kräftigeres Gelb für visuelle Führung */
+  background-color: var(--exercise-bg);
+  border-left: 4px solid var(--exercise-border);
   padding: 1.25rem 1.5rem;
   margin: 2rem 0;
   border-top-right-radius: 0.75rem;
   border-bottom-right-radius: 0.75rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   font-size: 1rem;
   line-height: 1.6;
 }
@@ -949,18 +991,52 @@ ul.marked {
   color: #333;
 }
 
-.information-bild {
-  width: 100%;
-  max-width: 1300px;
-  height: 300px;
-  border-radius: 10px;
-}
-
 .meta-info {
   font-size: 0.95rem;
   color: #666;
   margin-bottom: 1rem;
   font-style: italic;
+}
+/* =========================
+   Result Box
+   ========================= */
+   .ergebnis-box {
+  background-color: #fff;
+  padding: 2rem 3rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 0.5rem 1.875rem rgba(84,109,253,0.15);
+  max-width: relative;
+  margin-top: 2rem;
+  color: #2c2e4a;
+  line-height: 1.6;
+}
+
+.ergebnis-box article.ergebnis-block {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.ergebnis-box article.ergebnis-block:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.ergebnis-box h3 {
+  margin-top: 0;
+  color: #3656a1;
+}
+
+.ergebnis-box .ergebnis-feedback {
+  font-style: italic;
+  color: #555;
+}
+
+.ergebnis-box .nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
 }
 
 /* =========================
@@ -975,10 +1051,10 @@ ul.marked {
 
 .course-card {
   background: white;
-  border: 2px solid #e9ecef;
+  border: 2px solid var(--module-border);
   border-radius: 1rem;
   padding: 1.5rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1);
   transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
@@ -987,7 +1063,7 @@ ul.marked {
 
 .course-card:hover {
   transform: translateY(-0.25rem);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
 }
 
 .course-card h3 {
@@ -1008,7 +1084,6 @@ ul.marked {
 }
 
 .course-card .nav-button {
-  display: inline-block;
   margin-top: 0.5rem;
 }
 
@@ -1037,18 +1112,13 @@ ul.marked {
   display: block;
 }
 
-
-
 /* =========================
    Modulansicht (Overlay)
    ========================= */
 /* Das Overlay selbst bleibt immer im Layout */
 .module-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   background-color: white;
   overflow-y: auto;
   z-index: 999;
@@ -1078,47 +1148,22 @@ ul.marked {
   padding: 1rem;
 }
 
-
-
 .close-overlay {
-  background-color: transparent;
-  color: #576FCB;
-  text-decoration: none;
-  padding: 0.75rem 1.5rem;
-  border: 2px solid #576FCB;
-  border-radius: 0.75rem;
-  font-weight: 700;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-
-  /* Positionierung oben links */
   position: absolute;
-  top: 1rem;
-  left: 1rem;
-  z-index: 1000;
+  top: 1rem; left: 1rem; z-index: 1000;
 }
-
-.close-overlay:hover,
-.close-overlay:focus {
-  background-color: #576FCB;
-  color: white;
-  outline: none;
-  transform: translateY(-0.125rem);
-}
-
 
 /* =========================
    Modul-Karten
    ========================= */
 .module-card {
   display: block;
-  background: #f9f9f9;
+  background: var(--module-bg);
   border-radius: 1rem;
   padding: 1rem;
   flex: 1 1 300px;
   max-width: 300px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--module-shadow);
   gap: 1.5rem;
   transition: transform 0.2s, box-shadow 0.2s;
   color: inherit;
@@ -1135,7 +1180,7 @@ ul.marked {
 .module-card:hover,
 .modul-card:focus {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   outline: none;
 }
 
@@ -1156,7 +1201,6 @@ ul.marked {
   color: #6c757d;
   margin-bottom: 1rem;
   font-size: 0.95rem;
-
 }
 
 .module-card ul {
@@ -1211,7 +1255,6 @@ ul.marked {
   }
 }
 
-
 /* ==========================================================================
    NOTES
    ========================================================================== */
@@ -1220,7 +1263,6 @@ ul.marked {
   margin-bottom: 1rem;
   padding: 0.5rem 1.2rem;
   background-color: #ffea00;
-  /* dein Gelb */
   color: #333;
   border: none;
   border-radius: 8px;
@@ -1241,13 +1283,12 @@ ul.marked {
   padding: 0.8rem;
   margin-bottom: 1rem;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .delete-note {
   position: absolute;
-  top: 2px;
-  right: 14px;
+  top: 2px; right: 14px;
   background: transparent;
   border: none;
   font-size: 1rem;
@@ -1300,7 +1341,7 @@ ul.marked {
 }
 
 .completion-indicator {
-  background: #2ecc71;
+  background: var(--success);
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
@@ -1332,9 +1373,14 @@ ul.marked {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip: rect(0,0,0,0);
   white-space: nowrap;
   border: 0;
+}
+
+.hidden {
+  display: none;
+  opacity: 0;
 }
 
 /* ==========================================================================
@@ -1446,6 +1492,7 @@ ul.marked {
   }
 }
 
+/* Headings spacing */
 h2+p {
   margin-top: 0.1rem;
 }
@@ -1458,45 +1505,4 @@ a.disabled {
   pointer-events: none;
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-/* ==========================================================================
-   Page Progress Tracker
-   ========================================================================== */
-/* CSS für Inhaltsfortschritt */
-#inhalt-fortschritt-container {
-  max-width: 1000px; /* etwas breiter als Main-Inhalt */
-  margin: 1rem auto 0.5rem auto; /* weniger Abstand oben/unten */
-  padding: 0.75rem 1rem;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-}
-
-#inhalt-fortschritt-container h2 {
-  margin-top: 0;
-  font-size: 1.1rem;
-  color: #333;
-}
-
-#inhalt-progress-bar {
-  width: 100%;
-  height: 10px; /* flacher Balken */
-  background-color: #dcdcdc;
-  border-radius: 5px;
-  overflow: hidden;
-  margin-bottom: 0.4rem;
-}
-
-#inhalt-progress-fill {
-  height: 100%;
-  width: 0%;
-  background-color: #3478f6;
-  transition: width 0.4s ease-in-out;
-}
-
-#inhalt-progress-text {
-  text-align: right;
-  font-size: 0.85rem;
-  color: #555;
 }

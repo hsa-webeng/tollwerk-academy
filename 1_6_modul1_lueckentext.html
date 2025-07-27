@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lernplattform - Modul 1</title>
+    <title>Lernplattform - Modul 1: Lückentext</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -77,8 +77,24 @@
                         <!-- Nicht exisent aktuell -->
                     </ul>
                 </details>
-
             </nav>
+            <div id="modul-fortschritt-container">
+                <h2>Modul 1 Fortschritt</h2>
+                <div class="modul-progress-bar-container" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div class="modul-progress-bar" style="flex-grow: 1;">
+                        <div class="modul-progress-fill" style="width: 0%"></div>
+                    </div>
+                    <span class="modul-progress-percent">0%</span>
+                </div>
+
+                <div class="modul-progress-text">
+                    0 von 2 Tests abgeschlossen
+                </div>
+                <div class="modul-progress-requirements">
+                    <p>Für das nächste Modul benötigt: 80%</p>
+                    <p class="requirement-pending">⏳ Anforderungen noch nicht erfüllt</p>
+                </div>
+            </div>
         </aside>
 
         <main class="content">
@@ -186,7 +202,7 @@
 
             <div class="nav-buttons">
                 <a href="1_5_modul1_teste_dein_wissen.html" class="button-secondary">&larr; Zurück</a>
-                <a href="1_7_modul1_quiz.html" class="button-secondary" class="next-button">Weiter &rarr;</a>
+                <a href="1_7_modul1_quiz.html" class="next-button button-secondary">Weiter &rarr;</a>
             </div>
 
         </main>

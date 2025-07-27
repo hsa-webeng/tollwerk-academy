@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lernplattform - Modul 2</title>
+    <title>Lernplattform - Modul 2: Inhalt</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -79,6 +79,23 @@
                 </details>
 
             </nav>
+            <div id="modul-fortschritt-container">
+                <h2>Modul 2 Fortschritt</h2>
+                <div class="modul-progress-bar-container" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div class="modul-progress-bar" style="flex-grow: 1;">
+                        <div class="modul-progress-fill" style="width: 0%"></div>
+                    </div>
+                    <span class="modul-progress-percent">0%</span>
+                </div>
+
+                <div class="modul-progress-text">
+                    0 von 3 Tests abgeschlossen
+                </div>
+                <div class="modul-progress-requirements">
+                    <p>Für das nächste Modul benötigt: 80%</p>
+                    <p class="requirement-pending">⏳ Anforderungen noch nicht erfüllt</p>
+                </div>
+            </div>
         </aside>
 
         <main class="content">
@@ -148,9 +165,11 @@
                             <strong>🔁 Übung</strong>
                             <p>Zwei Fotos: eins mit Treppe, eins mit Rampe.</p>
                             <p><strong>Frage:</strong> Welche Variante ist für mehr Menschen nutzbar?</p>
+                            <div class="image-row">
                             <img src="images/barrieren_überall.jpg" alt="Bild einer Treppe (schlechte Barrierefreiheit)"
                                 class="information-bild">
                             <img src="images/barrieren_überall2.jpg" alt="Bild einer Rampe" class="information-bild">
+                            </div>
                         </div>
 
                         <h3>Gebrauchsgegenstände</h3>
