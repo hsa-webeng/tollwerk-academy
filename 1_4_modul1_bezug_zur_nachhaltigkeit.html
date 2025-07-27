@@ -207,10 +207,24 @@
             </section>
         </main>
 
-        <aside class="notes">
-            <h3>Notizen</h3>
-            <button id="add-note">Neue Notiz erstellen</button>
-            <div id="notes-container"></div>
+        <aside class="notes" aria-label="Notizenbereich">
+            <div class="notes-header">
+                <button
+                id="toggle-notes"
+                aria-expanded="true"
+                aria-controls="notes-content"
+                role="heading"
+                aria-level="3"
+                class="notes-toggle-button"
+                >
+                <img src="inhalte/Icons/notes_schwarz.svg" alt="Notizen Icon" class="notes-icon">
+                </button>
+            </div>
+
+            <div id="notes-content" role="region" aria-labelledby="toggle-notes">
+                <button id="add-note">Neue Notiz erstellen</button>
+                <div id="notes-container"></div>
+            </div>
         </aside>
     </div>
     <script src="script.js"></script>

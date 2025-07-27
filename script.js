@@ -1219,14 +1219,14 @@ function isModuleRequirementsMet(moduleName) {
 
 // FIFTH DOMCONTENT LOADED EVENT
 
-// NOTE function
+// Note Funktion
 document.addEventListener("DOMContentLoaded", function () {
+  // Elemente
   const addNoteBtn = document.getElementById("add-note");
   const notesContainer = document.getElementById("notes-container");
-  // Kann man dann noch auf die einzelnen Module anwenden
   const storageKey = "global_notes";
 
-  // save
+  // Notizen speichern
   function saveNotes() {
     const notes = [];
     notesContainer.querySelectorAll("textarea").forEach(textarea => {
@@ -1238,7 +1238,7 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem(storageKey, JSON.stringify(notes));
   }
 
-  // make note
+  // Neue Notiz erstellen
   function createNote(content = "") {
     const note = document.createElement("div");
     note.className = "note";
@@ -1256,7 +1256,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const textarea = document.createElement("textarea");
     textarea.placeholder = "Deine Notiz...";
     textarea.value = content;
-
     textarea.addEventListener("input", saveNotes);
 
     note.appendChild(deleteButton);
@@ -1264,6 +1263,7 @@ document.addEventListener("DOMContentLoaded", function () {
     notesContainer.appendChild(note);
   }
 
+  // Gespeicherte Notizen laden
   function loadNotes() {
     const saved = localStorage.getItem(storageKey);
     if (saved) {
@@ -1271,13 +1271,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // Button für neue Notiz
   addNoteBtn.addEventListener("click", () => {
     createNote();
     saveNotes();
   });
 
-  // load notes 
+  // Initial laden
   loadNotes();
+
+  // Einklapp-Button und Bereich
+  const toggleBtn = document.getElementById('toggle-notes');
+  const notesContent = document.getElementById('notes-content');
+
+  toggleBtn.addEventListener('click', () => {
+    const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+    toggleBtn.setAttribute('aria-expanded', String(!expanded));
+    if (expanded) {
+      notesContent.setAttribute('hidden', '');
+    } else {
+      notesContent.removeAttribute('hidden');
+    }
+  });
 });
 
 

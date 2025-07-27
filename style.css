@@ -1309,6 +1309,62 @@ ul.marked {
   outline: none;
 }
 
+/* Header mit Button */
+.notes-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Versteckter Bereich */
+#notes-content[hidden] {
+  display: none;
+}
+
+/* Notizen Button */
+.notes-toggle-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background-color: transparent;
+  border: 1px solid #576FCB;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  padding: 0; /* Kein Innenabstand mehr nötig */
+}
+
+/* Icon im Button */
+.notes-toggle-button img.notes-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.notes-toggle-button:not(.disabled),
+.notes-toggle-button:focus-visible:not(.disabled) {
+  background-color: #4f6bdb;
+  color: white;
+  outline: none;
+  transform: translateY(-0.125rem);
+}
+
+/* Wenn eingeklappt – Button als kleine Box */
+#toggle-notes[aria-expanded="true"] {
+  background-color: #576FCB; /* Blau */
+  color: white;
+  border: 1px solid #576FCB;
+}
+
+#toggle-notes[aria-expanded="false"] {
+  background-color: white;
+  color: #576FCB; /* Blau */
+  border: 1px solid #576FCB;
+}
+
 /* ==========================================================================
    FEEDBACK & MESSAGES
    ========================================================================== */
