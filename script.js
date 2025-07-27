@@ -5,7 +5,6 @@ function resetProgressOnReload() {
   // Check if this is a page reload (not a navigation)
   if (performance.navigation.type === 1) {
     // Clear all progress data
-    localStorage.removeItem('completedExercises');
     localStorage.removeItem('moduleProgress');
     console.log('Progress reset on page reload');
   }
@@ -689,6 +688,7 @@ document.addEventListener("DOMContentLoaded", () => {
 class QuizEvaluator {
   constructor() {
     this.quizForm = document.getElementById("quiz-form");
+    this.completedExercises = JSON.parse(localStorage.getItem('completedExercises')) || {};
     this.initializeQuiz();
   }
 
@@ -696,6 +696,9 @@ class QuizEvaluator {
     if (this.quizForm) {
       this.quizForm.addEventListener("submit", (e) => this.handleQuizSubmit(e));
       this.updateProgressDisplay();
+
+          // Button-Zustand beim Laden prüfen und setzen
+      this.updateNextButtonState();
     }
   }
 
@@ -726,8 +729,7 @@ class QuizEvaluator {
     const results = this.evaluateAnswers(answers);
 
     this.displayFeedback(results);
-    this.updateNavigation(results.allCorrect);
-    this.saveCompletionStatus(results.allCorrect);
+    this.saveCompletionStatusAndNavigation();
 
     // Update module progress after completion
     if (results.score >= 80) {
@@ -874,43 +876,51 @@ class QuizEvaluator {
   }
 
   saveCompletionStatusAndNavigation() {
-    const currentPage = window.location.pathname.split("/").pop();
-    const formData = new FormData(this.quizForm);
-    const answers = this.collectAnswers(formData);
-    const correctAnswers = this.getCorrectAnswers();
-    const score = this.calculateScore(answers, correctAnswers); // ergibt z. B. 83
+  const currentPage = window.location.pathname.split("/").pop();
+  const formData = new FormData(this.quizForm);
+  const answers = this.collectAnswers(formData);
+  const correctAnswers = this.getCorrectAnswers();
+  const score = this.calculateScore(answers, correctAnswers);
 
-    const scorePercentage = Math.round(score);
+  const scorePercentage = Math.round(score);
 
-    // ✅ Speichern nur bei bestandenem Quiz
-    if (scorePercentage >= 80) {
-      completedExercises[currentPage] = {
-        completed: true,
-        timestamp: new Date().toISOString(),
-        type: 'quiz',
-        score: scorePercentage
-      };
-      localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
+  if (scorePercentage >= 80) {
+    this.completedExercises[currentPage] = {
+      completed: true,
+      timestamp: new Date().toISOString(),
+      type: 'quiz',
+      score: scorePercentage
+    };
+    localStorage.setItem('completedExercises', JSON.stringify(this.completedExercises));
+  }
+     this.updateNextButtonState(scorePercentage);
+  }
+
+  updateNextButtonState(scorePercentage = null) {
+    // Falls kein scorePercentage übergeben, dann aus localStorage laden
+    if (scorePercentage === null) {
+      const currentPage = window.location.pathname.split("/").pop();
+      const stored = this.completedExercises[currentPage];
+      scorePercentage = stored && stored.score ? stored.score : 0;
     }
-
-    // 🧭 Weiter-Link aktivieren/deaktivieren
-    const nextLink = document.getElementById("next-link");
-    if (nextLink) {
-      if (scorePercentage >= 80) {
-        nextLink.classList.remove("disabled");
-        nextLink.removeAttribute("aria-disabled");
-        nextLink.style.pointerEvents = "auto";
-        nextLink.style.opacity = "1";
-        nextLink.title = `Weiter (${scorePercentage}% erreicht)`;
-      } else {
-        nextLink.classList.add("disabled");
-        nextLink.setAttribute("aria-disabled", "true");
-        nextLink.style.pointerEvents = "none";
-        nextLink.style.opacity = "0.5";
-        nextLink.title = `Mindestens 80% erforderlich (aktuell: ${scorePercentage}%)`;
-      }
+  // Weiter-Link aktivieren/deaktivieren
+  const nextLink = document.getElementById("next-link");
+  if (nextLink) {
+    if (scorePercentage >= 80) {
+      nextLink.classList.remove("disabled");
+      nextLink.removeAttribute("aria-disabled");
+      nextLink.style.pointerEvents = "auto";
+      nextLink.style.opacity = "1";
+      nextLink.title = `Weiter (${scorePercentage}% erreicht)`;
+    } else {
+      nextLink.classList.add("disabled");
+      nextLink.setAttribute("aria-disabled", "true");
+      nextLink.style.pointerEvents = "none";
+      nextLink.style.opacity = "0.5";
+      nextLink.title = `Mindestens 80% erforderlich (aktuell: ${scorePercentage}%)`;
     }
   }
+}
 }
 
 // Fill-in-the-blanks Evaluation System
@@ -935,10 +945,9 @@ class FillInTheBlanksEvaluator {
     const results = this.evaluateAnswers();
 
     this.displayFeedback(results);
-    this.updateNavigation(results);
-    this.saveCompletionStatus(results);
+    this.saveCompletionStatus(results); // ✅ Nur noch speichern, Navigation wird zentral geregelt!
 
-    // Update module progress after completion
+    // Fortschritt markieren (bleibt)
     if (results.score >= 80 && typeof EnhancedProgressTracker !== 'undefined') {
       new EnhancedProgressTracker().markPageAsCompleted(window.location.pathname, results.score);
     }
@@ -1000,26 +1009,6 @@ class FillInTheBlanksEvaluator {
     }
   }
 
-  updateNavigation(results) {
-    if (!this.nextLink) return;
-
-    const { score } = results;
-
-    if (score >= 80) {
-      this.nextLink.classList.remove("disabled");
-      this.nextLink.removeAttribute("aria-disabled");
-      this.nextLink.style.pointerEvents = "auto";
-      this.nextLink.style.opacity = "1";
-      this.nextLink.title = `✅ Weiter (${score}% erreicht)`;
-    } else {
-      this.nextLink.classList.add("disabled");
-      this.nextLink.setAttribute("aria-disabled", "true");
-      this.nextLink.style.pointerEvents = "none";
-      this.nextLink.style.opacity = "0.5";
-      this.nextLink.title = `❗ Mindestens 80% erforderlich (aktuell: ${score}%)`;
-    }
-  }
-
   saveCompletionStatus(results) {
     const { score, allFilled } = results;
     const currentPage = window.location.pathname;
@@ -1049,8 +1038,6 @@ class FillInTheBlanksEvaluator {
 
     localStorage.setItem('completedExercises', JSON.stringify(this.completedExercises));
   }
-
-
 }
 
 
@@ -1083,6 +1070,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const draggables = document.querySelectorAll(".draggable");
   const dropzones = document.querySelectorAll(".dropzone");
   const feedback = document.getElementById("drop-feedback");
+  const validateButton = document.getElementById("validate-button");
 
   draggables.forEach(draggable => {
     // Mausbedienung
@@ -1107,7 +1095,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   dropzones.forEach(dropzone => {
-    // Drag & Drop mit Maus
     dropzone.addEventListener("dragover", e => e.preventDefault());
 
     dropzone.addEventListener("drop", e => {
@@ -1116,7 +1103,6 @@ document.addEventListener("DOMContentLoaded", () => {
       handleDrop(dropzone, draggedId);
     });
 
-    // Tastatur: per Enter loslassen
     dropzone.addEventListener("keydown", e => {
       if ((e.key === "Enter" || e.key === " ") && document.querySelector(".dragging")) {
         const dragged = document.querySelector(".dragging");
@@ -1128,56 +1114,57 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function handleDrop(zone, draggedId) {
-    const correct = zone.dataset.accept === draggedId;
-
-    // Speichere das abgelegte ID in einem Datenattribut für spätere Auswertung
     zone.dataset.droppedId = draggedId;
-
-    // Text ergänzen (z. B. "Fehlende Untertitel (video)")
-    zone.textContent = zone.textContent + ` (${draggedId})`;
-
-    // Visuelles Feedback
-    zone.classList.add(correct ? "correct" : "incorrect");
-
-    const remaining = document.querySelectorAll(".dropzone:not(.correct):not(.incorrect)");
-    if (remaining.length === 0) {
-      const feedback = document.getElementById("drop-feedback");
-      feedback.textContent = "✅ Alle Zuordnungen abgeschlossen!";
-      feedback.style.color = "#2ecc71";
-
-      const nextLink = document.getElementById("next-link");
-      nextLink.classList.remove("disabled");
-      nextLink.removeAttribute("aria-disabled");
-
-      markCurrentPageCompleteIfNeeded();
-
-      // 🔽 Ergebnis berechnen und speichern
-      const dropzones = document.querySelectorAll('.dropzone');
-      let correctCount = 0;
-
-      dropzones.forEach(zone => {
-        const expected = zone.getAttribute('data-accept');
-        const dropped = zone.dataset.droppedId;
-        if (dropped === expected) {
-          correctCount++;
-        }
-      });
-
-      const total = dropzones.length;
-      const score = Math.round((correctCount / total) * 100);
-
-      const completedExercises = JSON.parse(localStorage.getItem('completedExercises')) || {};
-      completedExercises['2_7_modul2_drag_and_drop_quiz.html'] = {
-        completed: true,
-        richtig: correctCount,
-        gesamt: total,
-        score: score
-      };
-      localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
-    }
+    zone.textContent = zone.getAttribute("aria-label") + ` (${draggedId})`;
+    zone.classList.remove("correct", "incorrect");
   }
 
+  validateButton.addEventListener("click", () => {
+    const dropzones = document.querySelectorAll(".dropzone");
+    let correctCount = 0;
+
+    dropzones.forEach(zone => {
+      const expected = zone.getAttribute("data-accept");
+      const dropped = zone.dataset.droppedId;
+
+      if (dropped === expected) {
+        correctCount++;
+        zone.classList.add("correct");
+        zone.classList.remove("incorrect");
+      } else {
+        zone.classList.add("incorrect");
+        zone.classList.remove("correct");
+      }
+    });
+
+    const total = dropzones.length;
+    const score = Math.round((correctCount / total) * 100);
+
+    // Feedback anzeigen
+    const feedback = document.getElementById("drop-feedback");
+    feedback.textContent =
+      score === 100
+        ? "✅ Alle Zuordnungen korrekt!"
+        : `Du hast ${correctCount} von ${total} richtig zugeordnet (${score}%).`;
+    feedback.style.color = score >= 80 ? "#2ecc71" : "#e74c3c";
+
+    // Fortschritt markieren
+    if (typeof progressManager !== "undefined" && progressManager !== null) {
+      progressManager.markCurrentPageComplete?.();
+    }
+
+    // Ergebnis in localStorage speichern
+    const completedExercises = JSON.parse(localStorage.getItem('completedExercises')) || {};
+    completedExercises['2_7_modul2_drag_and_drop_quiz.html'] = {
+      completed: true,
+      richtig: correctCount,
+      gesamt: total,
+      score: score
+    };
+    localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
+  });
 });
+
 
 // Trigger Fortschritt nach erfolgreicher Lösung des Drag-and-Drop-Rätsels
 function markCurrentPageCompleteIfNeeded() {
@@ -1305,90 +1292,67 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-
-
-// SIXTH DOMCONTENT LOADED EVENT
+// SEVENTH DOMCONTENT LOADED EVENT
+// Results Page Logic
 
 document.addEventListener('DOMContentLoaded', () => {
   const completedExercises = JSON.parse(localStorage.getItem('completedExercises')) || {};
-  const moduleProgress = JSON.parse(localStorage.getItem('moduleProgress')) || {};
 
-  const lueckentextPage1 = '1_6_modul1_lueckentext.html';
-  const quizPage1 = '1_7_modul1_quiz.html';
-  const dragdropPage2 = '2_7_modul2_drag_and_drop_quiz.html';
-
-  function getExerciseResult(pageName) {
-    return completedExercises[pageName] || { completed: false, score: 0, richtig: 0, gesamt: 0 };
-  }
-
-  function fromScoreToCounts(scorePercent, totalQuestions = 10) {
-    const richtig = Math.round((scorePercent / 100) * totalQuestions);
-    return { richtig, gesamt: totalQuestions };
-  }
-
-  const luecke1Result = getExerciseResult(lueckentextPage1);
-  const quiz1Result = getExerciseResult(quizPage1);
-  const dragdrop2Result = getExerciseResult(dragdropPage2);
-
-  const luecke1Counts = luecke1Result.richtig !== undefined && luecke1Result.gesamt !== undefined
-    ? { richtig: luecke1Result.richtig, gesamt: luecke1Result.gesamt }
-    : fromScoreToCounts(luecke1Result.score || 0, 5); // 5 Lücken
-
-  const quiz1Counts = quiz1Result.richtig !== undefined && quiz1Result.gesamt !== undefined
-    ? { richtig: quiz1Result.richtig, gesamt: quiz1Result.gesamt }
-    : fromScoreToCounts(quiz1Result.score || 0, 1); // 1 Frage
-
-  const dragdrop2Counts = dragdrop2Result.richtig !== undefined && dragdrop2Result.gesamt !== undefined
-    ? { richtig: dragdrop2Result.richtig, gesamt: dragdrop2Result.gesamt }
-    : fromScoreToCounts(dragdrop2Result.score || 0, 5); // 5 Zuordnungen
-
-  const gesamtRichtig = luecke1Counts.richtig + quiz1Counts.richtig + dragdrop2Counts.richtig;
-  const gesamtGesamt = luecke1Counts.gesamt + quiz1Counts.gesamt + dragdrop2Counts.gesamt;
-  const gesamtProzent = gesamtGesamt ? Math.round((gesamtRichtig / gesamtGesamt) * 100) : 0;
-
-  const setResult = (prefix, counts, successMsg, failMsg) => {
-    const richtigEl = document.getElementById(prefix + '-richtig');
-    const gesamtEl = document.getElementById(prefix + '-gesamt');
-    const feedbackEl = document.getElementById(prefix + '-feedback');
-
-    if (richtigEl) richtigEl.textContent = counts.richtig;
-    if (gesamtEl) gesamtEl.textContent = counts.gesamt;
-    if (feedbackEl) {
-      feedbackEl.textContent = counts.richtig === counts.gesamt ? '✅ ' + successMsg : '❌ ' + failMsg;
-    }
+  const pageMappings = {
+    '1_6_modul1_lueckentext.html': 5,
+    '1_7_modul1_quiz.html': 1,
+    '1_8_modul1_testergebnis.html': 0,
+    '2_6_modul2_lueckentext.html': 5,
+    '2_5_modul2_quiz.html': 1,
+    '2_7_modul2_drag_and_drop_quiz.html': 5,
+    '2_8_modul2_testergebnis.html': 0
   };
 
-  setResult('luecke', luecke1Counts, 'Alle Lücken richtig ausgefüllt.', 'Bitte überprüfen Sie Ihre Antworten.');
-  setResult('quiz', quiz1Counts, 'Alle Fragen richtig beantwortet.', 'Bitte versuchen Sie es erneut.');
-  setResult('dragdrop', dragdrop2Counts, 'Alle Zuordnungen korrekt.', 'Überprüfen Sie Ihre Zuordnungen.');
+  function fromScoreToCounts(scorePercent, total) {
+    const richtig = Math.round((scorePercent / 100) * total);
+    return { richtig, gesamt: total };
+  }
 
-  const gesamtPunkteEl = document.getElementById('gesamt-punkte');
-  const gesamtMaxEl = document.getElementById('gesamt-max');
-  const gesamtProzentEl = document.getElementById('gesamt-prozent');
-  const gesamtFeedbackEl = document.getElementById('gesamt-feedback');
+  function setWeiterButtonStateForCurrentPage() {
+    const weiter = document.getElementById('next-link');
+    if (!weiter) return;
 
-  // ✨ NEU: Modul aus Tracker ableiten, Fortschritt zentral anzeigen
-  const currentModule = window.progressTracker?.currentModule || 'modul1';
-  const modulProgress = moduleProgress[currentModule];
+    const current = window.location.pathname.split('/').pop();
+    const result = JSON.parse(localStorage.getItem('completedExercises') || '{}')[current];
+    let counts = { richtig: 0, gesamt: 0 };
 
-  if (modulProgress && modulProgress.percentage !== undefined) {
-    if (gesamtPunkteEl) gesamtPunkteEl.textContent = '';
-    if (gesamtMaxEl) gesamtMaxEl.textContent = '';
-    if (gesamtProzentEl) gesamtProzentEl.textContent = '';
-
-    if (gesamtFeedbackEl) {
-      const modulName = currentModule.replace('modul', 'Modul ');
-      gesamtFeedbackEl.textContent = `Ihr Gesamtergebnis: ${modulProgress.percentage}% von ${modulName} geschafft!`;
+    if (result) {
+      if (result.richtig != null && result.gesamt != null) {
+        counts = { richtig: result.richtig, gesamt: result.gesamt };
+      } else if (result.score != null && pageMappings[current] != null) {
+        counts = fromScoreToCounts(result.score, pageMappings[current]);
+      }
     }
-  } else {
-    // fallback-Anzeige, falls kein Fortschritt im Speicher
-    if (gesamtPunkteEl) gesamtPunkteEl.textContent = gesamtRichtig;
-    if (gesamtMaxEl) gesamtMaxEl.textContent = gesamtGesamt;
-    if (gesamtProzentEl) gesamtProzentEl.textContent = gesamtProzent + '%';
-    if (gesamtFeedbackEl) {
-      gesamtFeedbackEl.textContent = gesamtProzent >= 80
-        ? '🎉 Gut gemacht! Sie haben die Anforderungen erfüllt.'
-        : '⚠️ Noch nicht bestanden. Bitte versuchen Sie es erneut.';
+
+    const prozent = counts.gesamt > 0 ? (counts.richtig / counts.gesamt) * 100 : 0;
+
+    if (prozent >= 80) {
+      weiter.removeAttribute('aria-disabled');
+      weiter.classList.remove('disabled');
+      weiter.style.pointerEvents = '';
+      weiter.style.opacity = '';
+      weiter.title = `✅ Weiter (Score: ${Math.round(prozent)}%)`;
+    } else {
+      weiter.setAttribute('aria-disabled', 'true');
+      weiter.classList.add('disabled');
+      weiter.style.pointerEvents = 'none';
+      weiter.style.opacity = '0.5';
+      weiter.title = `❌ Mindestens 80 % erforderlich (aktuell: ${Math.round(prozent)}%)`;
     }
+  }
+
+  // Direkt initial richten
+  setWeiterButtonStateForCurrentPage();
+
+  const feedbackEl = document.getElementById('feedback');
+  if (feedbackEl) {
+    new MutationObserver(() => {
+      setTimeout(setWeiterButtonStateForCurrentPage, 50);
+    }).observe(feedbackEl, { childList: true, subtree: true });
   }
 });
