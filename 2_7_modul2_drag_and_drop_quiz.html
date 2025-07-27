@@ -2,10 +2,10 @@
 <html lang="de">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Online-Kurs – Modul 2: Drag and Drop</title>
-    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lernplattform – Modul 2: Drag and Drop</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -102,7 +102,7 @@
                 </div>
                 <div id="inhalt-progress-text" aria-live="polite">0 von 8 Seiten abgeschlossen</div>
             </div>
-            <section>
+            
                 <h2 id="drag-heading">2.7 Drag & Drop</h2>
                 <p class="meta-info"><em>Bearbeitungszeit ca. 5 Minuten</em></p>
                 <div class="infobox">
@@ -114,6 +114,7 @@
                     aktivieren und loslassen.
                 </div>
 
+                <section aria-labelledby="section-title" class="drag-and-drop">
                 <div class="drag-container">
                     <div class="draggables" aria-labelledby="drag-heading">
                         <h3>Begriffe</h3>
@@ -145,16 +146,17 @@
                             data-accept="terminal">Keine Sprachausgabe</div>
                     </div>
                 </div>
-
                 <div id="drop-feedback" aria-live="polite"></div>
 
-                <div class="nav-buttons">
+                <button id="validate-button" class="button-primary">Antworten überprüfen</button>
+                <p id="feedback" role="status" aria-live="polite"></p>
+            </section>
+
+             <div class="nav-buttons">
                     <a href="2_6_modul2_lueckentext.html" class="button-secondary">&larr; Zurück</a>
                     <a href="2_8_modul2_testergebnis.html" id="next-link" class="next-button button-secondary"
                         aria-disabled="true">Auswerten &rarr;</a>
                 </div>
-            </section>
-
         </main>
 
         <aside class="notes">

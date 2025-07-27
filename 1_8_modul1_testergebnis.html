@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lernplattform - Modul 1</title>
+    <title>Lernplattform - Modul 1: Testergebnis</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -116,13 +116,33 @@
                     <strong>Lernziel:</strong> Sie sehen ihre Ergebnisse aus dem Test "Teste dein Wissen" und können
                     diese überprüfen.
                 </div>
+                <div class="ergebnis-box">
+                <article class="ergebnis-block">
+                    <h3>🔤 Lückentext-Ergebnis</h3>
+                    <p>Sie haben <strong id="luecke-richtig">0</strong> von <strong id="luecke-gesamt">0</strong> Lücken
+                        korrekt ausgefüllt.</p>
+                    <p class="ergebnis-feedback" id="luecke-feedback">Noch kein Ergebnis vorhanden.</p>
+                </article>
 
-                <div class="nav-buttons">
-                    <a href="1_7_modul1_quiz.html" class="button-secondary">&larr; Zurück</a>
-                    <a href="2_0_modul2_inhaltsverzeichnis.html" class="next-button button-secondary">Weiter mit Modul 2
+                <article class="ergebnis-block">
+                    <h3>📝 Quiz-Ergebnis</h3>
+                    <p>Sie haben <strong id="quiz-richtig">0</strong> von <strong id="quiz-gesamt">0</strong> Fragen
+                        richtig beantwortet.</p>
+                    <p class="ergebnis-feedback" id="quiz-feedback">Noch kein Ergebnis vorhanden.</p>
+                </article>
+
+                <article class="ergebnis-block">
+                    <h3>📊 Gesamtbewertung</h3>
+                    <p id="gesamt-feedback">Ihr Gesamtergebnis: 0% von Modul 1 geschafft!</p>
+                </article>
+                </div>
+                 <div class="nav-buttons">
+                    <a href="1_7_modul1_quiz.html" class="button-secondary">&larr; Zurück zum Quiz</a>
+                    <a href="2_0_modul2_inhaltsverzeichnis.html" class="next-button button-secondary">Weiter zu Modul 2
                         &rarr;</a>
                 </div>
             </section>
+
         </main>
 
         <aside class="notes">

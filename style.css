@@ -735,7 +735,7 @@ a.disabled:hover::before {
   padding: 2rem 3rem;
   border-radius: 1.25rem;
   box-shadow: 0 0.5rem 1.875rem rgba(84,109,253,0.15);
-  max-width: 800px;
+  max-width: relative;
   font-size: 1.125rem;
   line-height: 1.5;
   margin: 2rem 0 0 0;
@@ -812,7 +812,7 @@ a.disabled:hover::before {
   padding: 2rem 3rem;
   border-radius: 1.25rem;
   box-shadow: 0 0.5rem 1.875rem rgba(84,109,253,0.15);
-  max-width: 700px;
+  max-width: relative;
   margin: 2rem 0 0 0;
   color: #2c2e4a;
   line-height: 1.6;
@@ -853,6 +853,17 @@ a.disabled:hover::before {
 /* ==========================================================================
    Drag and Drop Quiz
    ========================================================================== */
+.drag-and-drop {
+   background-color: #fff;
+  padding: 2rem 3rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 0.5rem 1.875rem rgba(84,109,253,0.15);
+  max-width: relative;
+  margin: 2rem 0 0 0;
+  color: #2c2e4a;
+  line-height: 1.6;
+}
+
 .drag-container {
   display: flex;
   flex-wrap: wrap;
@@ -985,6 +996,47 @@ ul.marked {
   color: #666;
   margin-bottom: 1rem;
   font-style: italic;
+}
+/* =========================
+   Result Box
+   ========================= */
+   .ergebnis-box {
+  background-color: #fff;
+  padding: 2rem 3rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 0.5rem 1.875rem rgba(84,109,253,0.15);
+  max-width: relative;
+  margin-top: 2rem;
+  color: #2c2e4a;
+  line-height: 1.6;
+}
+
+.ergebnis-box article.ergebnis-block {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.ergebnis-box article.ergebnis-block:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.ergebnis-box h3 {
+  margin-top: 0;
+  color: #3656a1;
+}
+
+.ergebnis-box .ergebnis-feedback {
+  font-style: italic;
+  color: #555;
+}
+
+.ergebnis-box .nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
 }
 
 /* =========================
