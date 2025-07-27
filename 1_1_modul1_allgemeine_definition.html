@@ -171,6 +171,36 @@
 
           </div>
         </div>
+        <form class="quiz-multiple" aria-labelledby="quiz-heading" id="quiz-form">
+          <fieldset>
+            <legend>Welche Aussage über Barrierefreiheit ist laut Text korrekt?</legend>
+
+            <label class="quiz-option">
+              <input type="radio" name="question1" value="A" required />
+              A) Barrierefreiheit betrifft nur bauliche Maßnahmen wie Rampen und Aufzüge.
+            </label>
+
+            <label class="quiz-option">
+              <input type="radio" name="question1" value="B" />
+              B) Barrierefreiheit ist vor allem für Menschen mit Sehbehinderungen wichtig.
+            </label>
+
+            <label class="quiz-option">
+              <input type="radio" name="question1" value="C" />
+              C) Barrierefreiheit erleichtert ausschließlich das Leben von Menschen mit dauerhaften Behinderungen.
+            </label>
+
+            <label class="quiz-option">
+              <input type="radio" name="question1" value="D" />
+              D) Barrierefreiheit ist ein Qualitätsmerkmal, das allen Menschen zugutekommt.
+            </label>
+          </fieldset>
+
+          <p id="feedback" style="margin-top: 1rem;"></p>
+          <button type="submit">Antwort absenden</button>
+        </form>
+
+        <p id="feedback" aria-live="polite" class="feedback"></p>
 
         <div class="nav-buttons">
 
