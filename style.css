@@ -149,11 +149,12 @@ header {
 }
 
 .sidebar nav h2 {
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 .sidebar nav h3 {
   color: var(--primary);
+  font-size: 1.1rem;
 }
 
 /* ==========================================================================
@@ -171,6 +172,10 @@ header {
   padding-bottom: 10px;
   margin-bottom: 0.5rem;
   border-bottom: 1px solid #ccc;
+  overflow-wrap: break-word;
+  line-height: 1.4;
+  gap: 0.5rem;
+  white-space: normal;
 }
 
 .sidebar details[open] summary {
@@ -573,6 +578,16 @@ li a {
   transform: translateY(-0.125rem);
 }
 
+.button-secondary.next-button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .tabs button.active {
   background-color: var(--primary);
   color: white;
@@ -621,7 +636,7 @@ a.disabled:hover::before {
 }
 
 .nav-buttons {
-  margin-top: 2.5rem;
+  margin: 1rem;
   display: flex;
   justify-content: flex-start;;
   gap: 1rem;
@@ -684,6 +699,7 @@ a.disabled:hover::before {
   border-radius: 10px;
   display: block;
   object-fit: contain;
+  margin: 1rem;
 }
 
 .information-bild {
@@ -724,7 +740,7 @@ a.disabled:hover::before {
 .tabs {
   display: flex;
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin: 1rem;
 }
 
 /* ==========================================================================
@@ -738,7 +754,7 @@ a.disabled:hover::before {
   max-width: relative;
   font-size: 1.125rem;
   line-height: 1.5;
-  margin: 2rem 0 0 0;
+  margin: 1rem;
 }
 
 .quiz-multiple fieldset {
@@ -913,7 +929,7 @@ a.disabled:hover::before {
   padding: 2rem 3rem;
   box-shadow: 0 0.5rem 1.875rem rgba(84,109,253,0.1);
   max-width: 100%;
-  margin: 0;
+  margin: 1rem;
   color: #2c2e4a;
   line-height: 1.6;
   font-size: 1.05rem;
@@ -959,7 +975,7 @@ ul.marked {
   background: var(--info-bg);
   border-left: 4px solid var(--info-border);
   padding: 1rem 1.5rem;
-  margin: 2rem 0;
+  margin: 1rem;
   border-top-right-radius: 0.75rem;
   border-bottom-right-radius: 0.75rem;
   font-size: 1rem;
@@ -971,7 +987,7 @@ ul.marked {
   background-color: var(--exercise-bg);
   border-left: 4px solid var(--exercise-border);
   padding: 1.25rem 1.5rem;
-  margin: 2rem 0;
+  margin: 1rem;
   border-top-right-radius: 0.75rem;
   border-bottom-right-radius: 0.75rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
@@ -1006,7 +1022,7 @@ ul.marked {
   border-radius: 1.25rem;
   box-shadow: 0 0.5rem 1.875rem rgba(84,109,253,0.15);
   max-width: relative;
-  margin-top: 2rem;
+  margin: 2rem;
   color: #2c2e4a;
   line-height: 1.6;
 }
@@ -1174,7 +1190,7 @@ ul.marked {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
-  margin-top: 1rem;
+  margin: 1rem;
 }
 
 .module-card:hover,
@@ -1445,6 +1461,82 @@ ul.marked {
 .hidden {
   display: none;
   opacity: 0;
+}
+
+
+/* ==========================================================================
+   OVERLAY BILDVERGRÖßERUNG DESIGN
+   ========================================================================== */
+
+  /* Bilder verkleinert in der Übung */
+.information-bild {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  object-fit: contain;
+}
+
+.information-bild:focus,
+.information-bild:hover {
+  outline: none;
+  border-color: var(--primary, #007acc);
+}
+
+/* Overlay Grundstil */
+#image-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  margin: 0;
+  padding: 0;
+}
+
+/* Overlay sichtbar */
+#image-overlay[aria-hidden="false"] {
+  display: flex;
+}
+
+/* Großes Bild im Overlay */
+#overlay-img {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+/* Schließen Button */
+#close-overlay {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+#close-overlay:hover,
+#close-overlay:focus {
+  color: var(--primary, #007acc);
+  outline: none;
 }
 
 /* ==========================================================================
