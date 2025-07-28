@@ -1323,6 +1323,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const toggleBtn = document.getElementById('toggle-notes');
   const notesContent = document.getElementById('notes-content');
 
+  // Zustand laden
+  const savedState = localStorage.getItem("notesExpanded");
+  const isExpanded = savedState === null ? true : savedState === "true";
+
+  // Initial anzeigen/verstecken
+  toggleBtn.setAttribute("aria-expanded", String(isExpanded));
+  if (!isExpanded) {
+    notesContent.setAttribute("hidden", "");
+  }
+
+  // Button-Klick
   toggleBtn.addEventListener('click', () => {
     const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
     toggleBtn.setAttribute('aria-expanded', String(!expanded));
@@ -1331,7 +1342,10 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       notesContent.removeAttribute('hidden');
     }
+
+    localStorage.setItem("notesExpanded", String(!expanded));
   });
+
 });
 
 
