@@ -28,13 +28,16 @@
     <div class="container">
         <aside class="sidebar">
             <nav aria-label="Modulnavigation">
-                <h2>
-                  <span class="with-icon">
-                    <img src="icons/List.svg" alt="Menü Icon" class="type-icon" />
-                    Navigation
-                  </span>
-                </h2>
-            
+              <button
+                id="toggle-sidebar"
+                aria-expanded="true"
+                aria-controls="sidebar-content"
+                class="sidebar-toggle-button"
+                aria-label="Navigation ein- oder ausklappen"
+              >
+                <img src="icons/List.svg" alt="" class="type-icon" />
+              </button>
+              <div id="sidebar-content" role="region" aria-labelledby="toggle-sidebar">
                 <details>
                   <summary>Allgemeine Informationen</summary>
                   <ul>

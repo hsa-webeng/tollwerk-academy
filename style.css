@@ -1397,6 +1397,69 @@ ul.marked {
   border: 1px solid #576FCB;
 }
 
+#toggle-notes[aria-expanded="true"] img {
+  filter: brightness(0) invert(1);
+}
+
+/* ==========================================================================
+   SIDEBAR
+   ========================================================================== */
+
+/* Navigationsbutton (Sidebar) */
+#toggle-sidebar {
+  margin-left: 0.2rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  background-color: white;
+  border: 1px solid #576FCB;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  padding: 0;
+}
+
+#toggle-sidebar img {
+  width: 20px;
+  height: 20px;
+}
+
+/* Wenn aktiv (ausgeklappt) */
+#toggle-sidebar[aria-expanded="true"] {
+  background-color: #576FCB;
+  color: white;
+  border: 1px solid #576FCB;
+}
+
+#toggle-sidebar[aria-expanded="true"] img {
+  filter: brightness(0) invert(1);
+}
+
+/* Wenn eingeklappt */
+#toggle-sidebar[aria-expanded="false"] {
+  background-color: white;
+  color: #576FCB;
+  border: 1px solid #576FCB;
+}
+
+#toggle-sidebar[aria-expanded="false"]:hover {
+  background-color: #f0f4ff;
+}
+
+/* Fokussierung für Tastatur-Nutzer */
+#toggle-sidebar:focus-visible {
+  outline: 2px solid #94b0ff;
+  outline-offset: 2px;
+  transform: translateY(-1px);
+}
+
+#sidebar-content {
+  margin-top: 1rem; /* oder z.B. 1.5rem, je nach gewünschtem Abstand */
+}
+
 /* ==========================================================================
    FEEDBACK & MESSAGES
    ========================================================================== */

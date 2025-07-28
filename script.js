@@ -620,6 +620,31 @@ class EnhancedProgressTracker {
   }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+  const sidebarContent = document.getElementById('sidebar-content');
+
+  if (!toggleSidebarBtn || !sidebarContent) return;
+
+  const isSidebarExpanded = localStorage.getItem('sidebarExpanded') !== 'false';
+
+  toggleSidebarBtn.setAttribute('aria-expanded', String(isSidebarExpanded));
+  if (!isSidebarExpanded) {
+    sidebarContent.setAttribute('hidden', '');
+  }
+
+  toggleSidebarBtn.addEventListener('click', () => {
+    const currentlyExpanded = toggleSidebarBtn.getAttribute('aria-expanded') === 'true';
+    const newExpanded = !currentlyExpanded;
+
+    toggleSidebarBtn.setAttribute('aria-expanded', String(newExpanded));
+    sidebarContent.toggleAttribute('hidden', !newExpanded);
+
+    localStorage.setItem('sidebarExpanded', String(newExpanded));
+  });
+});
+
+
 // ✅ Globale Instanz initialisieren, falls noch nicht vorhanden
 if (!window.progressTracker) {
   window.progressTracker = new EnhancedProgressTracker();
