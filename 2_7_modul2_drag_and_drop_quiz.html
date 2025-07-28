@@ -186,22 +186,20 @@
 
                     <div class="dropzones">
                         <h3>Barriere-Beispiele</h3>
-                        <div class="dropzone" tabindex="0" role="region" aria-label="Fehlende Untertitel"
-                            data-accept="video">Fehlende Untertitel</div>
-                        <div class="dropzone" tabindex="0" role="region" aria-label="Nicht getaggtes Dokument"
-                            data-accept="pdf">Nicht getaggtes Dokument</div>
-                        <div class="dropzone" tabindex="0" role="region"
+                        <div class="dropzone" data-question="dragAndDrop" tabindex="0" role="region"
+                            aria-label="Fehlende Untertitel" data-accept="video">Fehlende Untertitel</div>
+                        <div class="dropzone" data-question="dragAndDrop" tabindex="0" role="region"
+                            aria-label="Nicht getaggtes Dokument" data-accept="pdf">Nicht getaggtes Dokument</div>
+                        <div class="dropzone" data-question="dragAndDrop" tabindex="0" role="region"
                             aria-label="Schaltflächen nicht programmatisch beschriftet" data-accept="app">Schaltflächen
                             nicht programmatisch beschriftet</div>
-                        <div class="dropzone" tabindex="0" role="region" aria-label="Keine Sprachausgabe"
-                            data-accept="terminal">Keine Sprachausgabe</div>
-                        <div class="dropzone" tabindex="0" role="region"
+                        <div class="dropzone" data-question="dragAndDrop" tabindex="0" role="region"
+                            aria-label="Keine Sprachausgabe" data-accept="terminal">Keine Sprachausgabe</div>
+                        <div class="dropzone" data-question="dragAndDrop" tabindex="0" role="region"
                             aria-label="Zu geringe Farbkontraste von Texten" data-accept="website">Zu geringe
                             Farbkontraste von Texten</div>
                     </div>
                 </div>
-                <div id="drop-feedback" aria-live="polite"></div>
-
                 <button id="validate-button" class="button-primary">Antworten überprüfen</button>
                 <p id="feedback" role="status" aria-live="polite"></p>
             </section>
@@ -215,15 +213,9 @@
 
         <aside class="notes" aria-label="Notizenbereich">
             <div class="notes-header">
-                <button
-                id="toggle-notes"
-                aria-expanded="true"
-                aria-controls="notes-content"
-                role="heading"
-                aria-level="3"
-                class="notes-toggle-button"
-                >
-                <img src="inhalte/Icons/notes_schwarz.svg" alt="Notizen Icon" class="notes-icon">
+                <button id="toggle-notes" aria-expanded="true" aria-controls="notes-content" role="heading"
+                    aria-level="3" class="notes-toggle-button">
+                    <img src="inhalte/Icons/notes_schwarz.svg" alt="Notizen Icon" class="notes-icon">
                 </button>
                 <h3 id="notes-title" class="notes-title">Notizen</h3>
             </div>
