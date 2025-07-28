@@ -692,16 +692,6 @@ a.disabled:hover::before {
   opacity: 0.7;
 }
 
-.modulbild {
-  width: 100%;
-  max-width: none; /* oder z.B. 100% des Containers */
-  height: auto;
-  border-radius: 10px;
-  display: block;
-  object-fit: contain;
-  margin: 1rem;
-}
-
 .information-bild {
   width: 100%;
   max-width: 350px;
@@ -709,6 +699,24 @@ a.disabled:hover::before {
   border-radius: 10px;
   display: block;
   object-fit: contain;
+}
+
+/* Modul- oder Thumbnailbilder separat behandeln */
+.modulbild {
+  width: 100%;
+  max-width: none;        /* kein hartes Limit */
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  object-fit: cover;      /* oder ganz weglassen */
+}
+
+#audio-content .modulbild {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  object-fit: cover; /* oder weglassen, falls es nicht gebraucht wird */
+  border-radius: 10px;
 }
 
 .image-row {
@@ -1649,11 +1657,11 @@ ul.marked {
 }
 
 /* Headings spacing */
-h2+p {
+h1+p {
   margin-top: 0.1rem;
 }
 
-h2:has(+p) {
+h1:has(+p) {
   margin-bottom: 0;
 }
 
