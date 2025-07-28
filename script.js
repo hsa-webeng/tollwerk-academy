@@ -6,6 +6,7 @@ function resetProgressOnReload() {
   if (performance.navigation.type === 1) {
     // Clear all progress data
     localStorage.removeItem('moduleProgress');
+    localStorage.removeItem('completedExercises');
     console.log('Progress reset on page reload');
   }
 }
@@ -72,10 +73,6 @@ document.addEventListener('DOMContentLoaded', function () {
 // Module configuration - defines what exercises are required for each module
 const MODULE_CONFIG = {
   'modul1': {
-    exercises: [
-      '1_6_modul1_lueckentext.html',
-      '1_7_modul1_quiz.html'
-    ],
     contentPages: [
       '1_0_modul1_inhaltsverzeichnis.html',
       '1_1_modul1_allgemeine_definition.html',
@@ -84,22 +81,27 @@ const MODULE_CONFIG = {
       '1_4_modul1_bezug_zur_nachhaltigkeit.html',
       '1_5_modul1_teste_dein_wissen.html'
     ],
+    exercises: [
+      '1_6_modul1_lueckentext.html',
+      '1_7_modul1_quiz.html',
+      '1_8_modul1_testergebnis.html'
+    ],
     requiredPercentage: 80,
     nextModule: 'modul2'
   },
   'modul2': {
-    exercises: [
-
-      '2_5_modul2_quiz.html',
-      '2_6_modul2_lueckentext.html',
-      '2_7_modul2_drag_and_drop_quiz.html'
-    ],
     contentPages: [
       '2_0_modul2_inhaltsverzeichnis.html',
       '2_1_modul2_barrieren_reflexion.html',
       '2_2_modul2_barrieren_sind_ueberall.html',
       '2_3_modul2_digitale_medien.html',
-      '2_4_modul2_teste_dein_wissen.html',
+      '2_4_modul2_teste_dein_wissen.html'
+    ],
+    exercises: [
+      '2_5_modul2_quiz.html',
+      '2_6_modul2_lueckentext.html',
+      '2_7_modul2_drag_and_drop_quiz.html',
+      '2_8_modul2_testergebnis.html'
     ],
     requiredPercentage: 80,
     nextModule: 'modul3'
@@ -697,7 +699,7 @@ class QuizEvaluator {
       this.quizForm.addEventListener("submit", (e) => this.handleQuizSubmit(e));
       this.updateProgressDisplay();
 
-          // Button-Zustand beim Laden prüfen und setzen
+      // Button-Zustand beim Laden prüfen und setzen
       this.updateNextButtonState();
     }
   }
@@ -728,13 +730,22 @@ class QuizEvaluator {
     const answers = this.collectAnswers(formData);
     const results = this.evaluateAnswers(answers);
 
-    this.displayFeedback(results);
-    this.saveCompletionStatusAndNavigation();
+    // 1. Speichern und globales Objekt aktualisieren
+    this.saveCompletionStatusAndNavigation(results.score);
 
-    // Update module progress after completion
+    // 2. Fortschritt markieren (optional, falls benötigt)
     if (results.score >= 80) {
       new EnhancedProgressTracker().markPageAsCompleted(window.location.pathname, results.score);
     }
+
+    // 3. Button-Zustand nach Auswertung aktualisieren (vor Feedback!)
+    this.updateNextButtonState(results.score);
+    if (typeof setWeiterButtonStateForCurrentPage === "function") {
+      setWeiterButtonStateForCurrentPage();
+    }
+
+    // 4. Feedback anzeigen (jetzt erst, damit Observer nach Score-Update feuert)
+    this.displayFeedback(results);
   }
 
   collectAnswers(formData) {
@@ -875,25 +886,19 @@ class QuizEvaluator {
     }
   }
 
-  saveCompletionStatusAndNavigation() {
-  const currentPage = window.location.pathname.split("/").pop();
-  const formData = new FormData(this.quizForm);
-  const answers = this.collectAnswers(formData);
-  const correctAnswers = this.getCorrectAnswers();
-  const score = this.calculateScore(answers, correctAnswers);
+  saveCompletionStatusAndNavigation(score) {
+    const currentPage = window.location.pathname.split("/").pop();
 
-  const scorePercentage = Math.round(score);
-
-  if (scorePercentage >= 80) {
-    this.completedExercises[currentPage] = {
-      completed: true,
-      timestamp: new Date().toISOString(),
-      type: 'quiz',
-      score: scorePercentage
-    };
-    localStorage.setItem('completedExercises', JSON.stringify(this.completedExercises));
-  }
-     this.updateNextButtonState(scorePercentage);
+    if (score >= 80) {
+      this.completedExercises[currentPage] = {
+        completed: true,
+        timestamp: new Date().toISOString(),
+        type: 'quiz',
+        score: score
+      };
+      localStorage.setItem('completedExercises', JSON.stringify(this.completedExercises));
+      window.completedExercises = this.completedExercises;
+    }
   }
 
   updateNextButtonState(scorePercentage = null) {
@@ -903,24 +908,24 @@ class QuizEvaluator {
       const stored = this.completedExercises[currentPage];
       scorePercentage = stored && stored.score ? stored.score : 0;
     }
-  // Weiter-Link aktivieren/deaktivieren
-  const nextLink = document.getElementById("next-link");
-  if (nextLink) {
-    if (scorePercentage >= 80) {
-      nextLink.classList.remove("disabled");
-      nextLink.removeAttribute("aria-disabled");
-      nextLink.style.pointerEvents = "auto";
-      nextLink.style.opacity = "1";
-      nextLink.title = `Weiter (${scorePercentage}% erreicht)`;
-    } else {
-      nextLink.classList.add("disabled");
-      nextLink.setAttribute("aria-disabled", "true");
-      nextLink.style.pointerEvents = "none";
-      nextLink.style.opacity = "0.5";
-      nextLink.title = `Mindestens 80% erforderlich (aktuell: ${scorePercentage}%)`;
+    // Weiter-Link aktivieren/deaktivieren
+    const nextLink = document.getElementById("next-link");
+    if (nextLink) {
+      if (scorePercentage >= 80) {
+        nextLink.classList.remove("disabled");
+        nextLink.removeAttribute("aria-disabled");
+        nextLink.style.pointerEvents = "auto";
+        nextLink.style.opacity = "1";
+        nextLink.title = `Weiter (${scorePercentage}% erreicht)`;
+      } else {
+        nextLink.classList.add("disabled");
+        nextLink.setAttribute("aria-disabled", "true");
+        nextLink.style.pointerEvents = "none";
+        nextLink.style.opacity = "0.5";
+        nextLink.title = `Mindestens 80% erforderlich (aktuell: ${scorePercentage}%)`;
+      }
     }
   }
-}
 }
 
 // Fill-in-the-blanks Evaluation System
@@ -950,6 +955,10 @@ class FillInTheBlanksEvaluator {
     // Fortschritt markieren (bleibt)
     if (results.score >= 80 && typeof EnhancedProgressTracker !== 'undefined') {
       new EnhancedProgressTracker().markPageAsCompleted(window.location.pathname, results.score);
+    }
+    // Button-Zustand nach Auswertung aktualisieren!
+    if (typeof setWeiterButtonStateForCurrentPage === "function") {
+      setWeiterButtonStateForCurrentPage();
     }
   }
 
@@ -1011,7 +1020,7 @@ class FillInTheBlanksEvaluator {
 
   saveCompletionStatus(results) {
     const { score, allFilled } = results;
-    const currentPage = window.location.pathname;
+    const currentPage = window.location.pathname.split('/').pop();
 
     const richtig = Array.from(this.selects).filter(select => select.style.borderColor === 'rgb(46, 204, 113)').length;
     const gesamt = this.selects.length;
@@ -1037,6 +1046,7 @@ class FillInTheBlanksEvaluator {
     }
 
     localStorage.setItem('completedExercises', JSON.stringify(this.completedExercises));
+    window.completedExercises = this.completedExercises;
   }
 }
 
@@ -1162,6 +1172,12 @@ document.addEventListener("DOMContentLoaded", () => {
       score: score
     };
     localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
+    window.completedExercises = completedExercises;
+
+    // Button-Zustand nach Auswertung aktualisieren!
+    if (typeof setWeiterButtonStateForCurrentPage === "function") {
+      setWeiterButtonStateForCurrentPage();
+    }
   });
 });
 
@@ -1290,14 +1306,22 @@ document.addEventListener("DOMContentLoaded", () => {
     nextButton.addEventListener("click", () => {
       const currentPage = window.location.pathname.split("/").pop();
 
-      // Mark current page as completed (as content)
-      completedExercises[currentPage] = {
-        completed: true,
-        pageType: "content"
-      };
+      // Nur "normale" Content-Seiten als abgeschlossen markieren!
+      // NICHT für Quiz, Lückentext, Drag&Drop oder Testergebnis-Seiten!
+      if (
+        !PAGE_TYPES.quiz.includes(currentPage) &&
+        !PAGE_TYPES.fillInTheBlanks.includes(currentPage) &&
+        !PAGE_TYPES.dragAndDrop.includes(currentPage) &&
+        !currentPage.includes('testergebnis')
+      ) {
+        // Mark current page as completed (as content)
+        completedExercises[currentPage] = {
+          completed: true,
+          pageType: "content"
+        };
 
-      localStorage.setItem("completedExercises", JSON.stringify(completedExercises));
-
+        localStorage.setItem("completedExercises", JSON.stringify(completedExercises));
+      }
       // Optional: sofort visuelles Update in Navigation (nützlich falls SPA oder Soft-Reload)
       if (typeof enhancedProgress !== "undefined") {
         enhancedProgress.highlightCompletedExercises();
@@ -1367,7 +1391,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const feedbackEl = document.getElementById('feedback');
   if (feedbackEl) {
     new MutationObserver(() => {
-      setTimeout(setWeiterButtonStateForCurrentPage, 50);
+      setTimeout(setWeiterButtonStateForCurrentPage, 150);
     }).observe(feedbackEl, { childList: true, subtree: true });
   }
 });
