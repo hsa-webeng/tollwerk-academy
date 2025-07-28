@@ -1,5 +1,15 @@
 // GLOBAL VARIABLES AND CONFIGURATION
 
+window.pageMappings = {
+  '1_6_modul1_lueckentext.html': 5,
+  '1_7_modul1_quiz.html': 1,
+  '1_8_modul1_testergebnis.html': 0,
+  '2_6_modul2_lueckentext.html': 5,
+  '2_5_modul2_quiz.html': 4,
+  '2_7_modul2_drag_and_drop_quiz.html': 5,
+  '2_8_modul2_testergebnis.html': 0
+};
+
 // Reset progress on page reload (for prototyping)
 function resetProgressOnReload() {
   // Check if this is a page reload (not a navigation)
@@ -79,12 +89,12 @@ const MODULE_CONFIG = {
       '1_2_modul1_gesetzliche_definition.html',
       '1_3_modul1_soziale_praktische_aspekte.html',
       '1_4_modul1_bezug_zur_nachhaltigkeit.html',
-      '1_5_modul1_teste_dein_wissen.html'
+      '1_5_modul1_teste_dein_wissen.html',
+      '1_8_modul1_testergebnis.html'
     ],
     exercises: [
       '1_6_modul1_lueckentext.html',
-      '1_7_modul1_quiz.html',
-      '1_8_modul1_testergebnis.html'
+      '1_7_modul1_quiz.html'
     ],
     requiredPercentage: 80,
     nextModule: 'modul2'
@@ -95,13 +105,13 @@ const MODULE_CONFIG = {
       '2_1_modul2_barrieren_reflexion.html',
       '2_2_modul2_barrieren_sind_ueberall.html',
       '2_3_modul2_digitale_medien.html',
-      '2_4_modul2_teste_dein_wissen.html'
+      '2_4_modul2_teste_dein_wissen.html',
+      '2_8_modul2_testergebnis.html'
     ],
     exercises: [
       '2_5_modul2_quiz.html',
       '2_6_modul2_lueckentext.html',
-      '2_7_modul2_drag_and_drop_quiz.html',
-      '2_8_modul2_testergebnis.html'
+      '2_7_modul2_drag_and_drop_quiz.html'
     ],
     requiredPercentage: 80,
     nextModule: 'modul3'
@@ -698,9 +708,6 @@ class QuizEvaluator {
     if (this.quizForm) {
       this.quizForm.addEventListener("submit", (e) => this.handleQuizSubmit(e));
       this.updateProgressDisplay();
-
-      // Button-Zustand beim Laden prüfen und setzen
-      this.updateNextButtonState();
     }
   }
 
@@ -739,7 +746,6 @@ class QuizEvaluator {
     }
 
     // 3. Button-Zustand nach Auswertung aktualisieren (vor Feedback!)
-    this.updateNextButtonState(results.score);
     if (typeof setWeiterButtonStateForCurrentPage === "function") {
       setWeiterButtonStateForCurrentPage();
     }
@@ -791,6 +797,44 @@ class QuizEvaluator {
     let allCorrect = true;
     let feedback = [];
 
+    // Drag & Drop Spezialfall erkennen
+    const isDragAndDrop = Object.keys(correctAnswers).length === 1 && correctAnswers.dragAndDrop;
+
+    if (isDragAndDrop) {
+      const userAnswer = answers['dragAndDrop'] || [];
+      const correct = correctAnswers['dragAndDrop'] || [];
+      const sortedUser = [...userAnswer].sort().join('');
+      const sortedCorrect = [...correct].sort().join('');
+      let feedbackMsg = '';
+
+      if (userAnswer.length === 0) {
+        allCorrect = false;
+        feedbackMsg = `Bitte ordne alle Elemente zu.`;
+      } else if (sortedUser === sortedCorrect) {
+        feedbackMsg = `✅ Alle Zuordnungen korrekt!`;
+      } else {
+        allCorrect = false;
+        // Zähle richtige Zuordnungen an der richtigen Stelle
+        let correctCount = 0;
+        correct.forEach((item, idx) => {
+          if (userAnswer[idx] === item) correctCount++;
+        });
+        feedbackMsg = `🔁 Du hast ${correctCount} von ${correct.length} richtig zugeordnet.`;
+      }
+
+      // Score: Anteil der richtigen Zuordnungen an der richtigen Stelle
+      const score = correct.length > 0
+        ? Math.round((userAnswer.filter((item, idx) => item === correct[idx]).length / correct.length) * 100)
+        : 0;
+      console.log("Lückentext evaluateAnswers:", { correctCount, score });
+      return {
+        allCorrect,
+        feedback: feedbackMsg,
+        score
+      };
+    }
+
+    // Standard-Quiz/Lückentext-Auswertung
     Object.keys(answers).forEach(questionName => {
       const userAnswer = answers[questionName];
       const correct = correctAnswers[questionName];
@@ -889,42 +933,25 @@ class QuizEvaluator {
   saveCompletionStatusAndNavigation(score) {
     const currentPage = window.location.pathname.split("/").pop();
 
-    if (score >= 80) {
-      this.completedExercises[currentPage] = {
-        completed: true,
-        timestamp: new Date().toISOString(),
-        type: 'quiz',
-        score: score
-      };
-      localStorage.setItem('completedExercises', JSON.stringify(this.completedExercises));
-      window.completedExercises = this.completedExercises;
+    // Berechne richtig/gesamt für die aktuelle Seite
+    let richtig = 0;
+    let gesamt = 1;
+    const pageMappings = window.pageMappings || {};
+    if (pageMappings[currentPage]) {
+      gesamt = pageMappings[currentPage];
+      richtig = Math.round((score / 100) * gesamt);
     }
-  }
 
-  updateNextButtonState(scorePercentage = null) {
-    // Falls kein scorePercentage übergeben, dann aus localStorage laden
-    if (scorePercentage === null) {
-      const currentPage = window.location.pathname.split("/").pop();
-      const stored = this.completedExercises[currentPage];
-      scorePercentage = stored && stored.score ? stored.score : 0;
-    }
-    // Weiter-Link aktivieren/deaktivieren
-    const nextLink = document.getElementById("next-link");
-    if (nextLink) {
-      if (scorePercentage >= 80) {
-        nextLink.classList.remove("disabled");
-        nextLink.removeAttribute("aria-disabled");
-        nextLink.style.pointerEvents = "auto";
-        nextLink.style.opacity = "1";
-        nextLink.title = `Weiter (${scorePercentage}% erreicht)`;
-      } else {
-        nextLink.classList.add("disabled");
-        nextLink.setAttribute("aria-disabled", "true");
-        nextLink.style.pointerEvents = "none";
-        nextLink.style.opacity = "0.5";
-        nextLink.title = `Mindestens 80% erforderlich (aktuell: ${scorePercentage}%)`;
-      }
-    }
+    completedExercises[currentPage] = {
+      completed: score >= 80,
+      timestamp: new Date().toISOString(),
+      type: 'quiz',
+      score: score,
+      richtig: richtig,
+      gesamt: gesamt
+    };
+    localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
+    window.completedExercises = completedExercises;
   }
 }
 
@@ -935,7 +962,6 @@ class FillInTheBlanksEvaluator {
     this.feedbackElement = document.getElementById('feedback');
     this.selects = document.querySelectorAll('section.fill-in-the-blanks select[data-solution]');
     this.nextLink = document.querySelector('.nav-buttons a.button-secondary:last-of-type');
-    this.completedExercises = JSON.parse(localStorage.getItem('completedExercises')) || {};
 
     this.initialize();
   }
@@ -1016,26 +1042,35 @@ class FillInTheBlanksEvaluator {
       this.feedbackElement.textContent = "🔁 Nicht ganz richtig. Versuche es noch einmal.\n\n" + feedback + "\n\nPunktzahl: " + score + "%";
       this.feedbackElement.style.color = "#e74c3c";
     }
+
+    // Fokussiere die erste unbeantwortete Lücke
+    for (let i = 0; i < this.selects.length; i++) {
+      if (!this.selects[i].value) {
+        this.selects[i].focus();
+        break;
+      }
+    }
   }
 
   saveCompletionStatus(results) {
-    const { score, allFilled } = results;
+    const { score, allFilled, correctCount } = results;
+    console.log("Lückentext saveCompletionStatus:", { score, allFilled, correctCount });
     const currentPage = window.location.pathname.split('/').pop();
 
-    const richtig = Array.from(this.selects).filter(select => select.style.borderColor === 'rgb(46, 204, 113)').length;
+    const richtig = correctCount;
     const gesamt = this.selects.length;
 
     if (score >= 80 && allFilled) {
-      this.completedExercises[currentPage] = {
+      completedExercises[currentPage] = {
         completed: true,
         timestamp: new Date().toISOString(),
         type: 'fill-in-the-blanks',
         score,
-        richtig, correctCount,
+        richtig,
         gesamt
       };
     } else {
-      this.completedExercises[currentPage] = {
+      completedExercises[currentPage] = {
         completed: false,
         timestamp: new Date().toISOString(),
         type: 'fill-in-the-blanks',
@@ -1045,8 +1080,8 @@ class FillInTheBlanksEvaluator {
       };
     }
 
-    localStorage.setItem('completedExercises', JSON.stringify(this.completedExercises));
-    window.completedExercises = this.completedExercises;
+    localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
+    window.completedExercises = completedExercises;
   }
 }
 
@@ -1059,10 +1094,8 @@ function getDragAnswers() {
   const dragAnswers = {};
 
   document.querySelectorAll('.dropzone').forEach(zone => {
-    const question = zone.dataset.question;
+    const question = zone.dataset.question || 'dragAndDrop';
     const droppedId = zone.dataset.droppedId;
-
-    if (!question) return;
 
     if (!dragAnswers[question]) {
       dragAnswers[question] = [];
@@ -1077,9 +1110,12 @@ function getDragAnswers() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Nur auf der Drag & Drop-Seite aktivieren!
+  if (!window.location.pathname.includes('drag_and_drop_quiz')) return;
+
   const draggables = document.querySelectorAll(".draggable");
   const dropzones = document.querySelectorAll(".dropzone");
-  const feedback = document.getElementById("drop-feedback");
+  const feedback = document.getElementById("feedback");
   const validateButton = document.getElementById("validate-button");
 
   draggables.forEach(draggable => {
@@ -1151,22 +1187,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const score = Math.round((correctCount / total) * 100);
 
     // Feedback anzeigen
-    const feedback = document.getElementById("drop-feedback");
-    feedback.textContent =
-      score === 100
-        ? "✅ Alle Zuordnungen korrekt!"
-        : `Du hast ${correctCount} von ${total} richtig zugeordnet (${score}%).`;
-    feedback.style.color = score >= 80 ? "#2ecc71" : "#e74c3c";
-
-    // Fortschritt markieren
-    if (typeof progressManager !== "undefined" && progressManager !== null) {
-      progressManager.markCurrentPageComplete?.();
+    const feedback = document.getElementById("feedback");
+    if (feedback) {
+      if (score === 100) {
+        feedback.textContent = `✅ Alle Zuordnungen korrekt!\n\nPunktzahl: ${score}%`;
+        feedback.style.color = "#2ecc71";
+      } else {
+        feedback.textContent = `🔁 Du hast ${correctCount} von ${total} richtig zugeordnet.\n\nPunktzahl: ${score}%`;
+        feedback.style.color = score >= 80 ? "#2ecc71" : "#e74c3c";
+      }
+      feedback.style.fontWeight = "bold";
+      feedback.style.marginTop = "1rem";
     }
 
     // Ergebnis in localStorage speichern
-    const completedExercises = JSON.parse(localStorage.getItem('completedExercises')) || {};
     completedExercises['2_7_modul2_drag_and_drop_quiz.html'] = {
-      completed: true,
+      completed: score >= 80,
       richtig: correctCount,
       gesamt: total,
       score: score
@@ -1332,7 +1368,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // SEVENTH DOMCONTENT LOADED EVENT
-// Results Page Logic
+// Next Button State Management
 
 document.addEventListener('DOMContentLoaded', () => {
   const completedExercises = JSON.parse(localStorage.getItem('completedExercises')) || {};
@@ -1342,7 +1378,7 @@ document.addEventListener('DOMContentLoaded', () => {
     '1_7_modul1_quiz.html': 1,
     '1_8_modul1_testergebnis.html': 0,
     '2_6_modul2_lueckentext.html': 5,
-    '2_5_modul2_quiz.html': 1,
+    '2_5_modul2_quiz.html': 4,
     '2_7_modul2_drag_and_drop_quiz.html': 5,
     '2_8_modul2_testergebnis.html': 0
   };
@@ -1369,7 +1405,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const prozent = counts.gesamt > 0 ? (counts.richtig / counts.gesamt) * 100 : 0;
-
+    console.log("Weiter-Button-Check", { current, result, counts, prozent });
     if (prozent >= 80) {
       weiter.removeAttribute('aria-disabled');
       weiter.classList.remove('disabled');
@@ -1391,7 +1427,64 @@ document.addEventListener('DOMContentLoaded', () => {
   const feedbackEl = document.getElementById('feedback');
   if (feedbackEl) {
     new MutationObserver(() => {
-      setTimeout(setWeiterButtonStateForCurrentPage, 150);
+      setTimeout(setWeiterButtonStateForCurrentPage, 50);
     }).observe(feedbackEl, { childList: true, subtree: true });
+  }
+});
+
+// EIGHTH DOMCONTENT LOADED EVENT
+
+//Write Into Results Page
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Prüfe, ob wir auf einer Testergebnis-Seite sind
+  const page = window.location.pathname.split('/').pop();
+  if (!page.endsWith('testergebnis.html')) return;
+
+  // Modul anhand des Dateinamens erkennen
+  let modul = null;
+  if (page.startsWith('1_')) modul = 'modul1';
+  if (page.startsWith('2_')) modul = 'modul2';
+  if (!modul) return;
+
+  const completedExercises = JSON.parse(localStorage.getItem('completedExercises')) || {};
+  const config = MODULE_CONFIG[modul];
+  if (!config) return;
+
+  // Hilfsfunktion für Anzeige
+  function setErgebnis(idPrefix, result, label) {
+    const richtigEl = document.getElementById(`${idPrefix}-richtig`);
+    const gesamtEl = document.getElementById(`${idPrefix}-gesamt`);
+    const feedbackEl = document.getElementById(`${idPrefix}-feedback`);
+    if (richtigEl) richtigEl.textContent = result?.richtig ?? 0;
+    if (gesamtEl) gesamtEl.textContent = result?.gesamt ?? 0;
+    if (feedbackEl) {
+      feedbackEl.textContent =
+        result?.completed
+          ? (result.score === 100
+            ? `Super, alle ${label} korrekt!`
+            : `Du hast ${result.richtig ?? 0} von ${result.gesamt ?? 0} ${label} richtig.`)
+          : "Noch kein vollständiges Ergebnis vorhanden.";
+    }
+  }
+
+  // Ergebnisse für alle Übungen anzeigen
+  config.exercises.forEach(pageName => {
+    const result = completedExercises[pageName] || {};
+    if (pageName.includes('drag_and_drop')) {
+      setErgebnis('dragdrop', result, 'Zuordnungen');
+    } else if (pageName.includes('lueckentext')) {
+      setErgebnis('luecke', result, 'Lücken');
+    } else if (pageName.includes('quiz')) {
+      setErgebnis('quiz', result, 'Fragen');
+    }
+  });
+
+  // Gesamtbewertung: Wert aus EnhancedProgressTracker übernehmen!
+  const modulFortschrittData = JSON.parse(localStorage.getItem('modulFortschrittData') || '{}');
+  const percent = modulFortschrittData.percent ?? 0;
+  const gesamtFeedback = document.getElementById('gesamt-feedback');
+  if (gesamtFeedback) {
+    gesamtFeedback.textContent = `Ihr Gesamtergebnis: ${percent}% von ${modul.replace('modul', 'Modul ')} geschafft!`;
   }
 });
