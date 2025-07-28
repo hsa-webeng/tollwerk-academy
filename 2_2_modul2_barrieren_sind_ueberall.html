@@ -34,7 +34,7 @@
                   </span>
                 </h2>
             
-                <details open>
+                <details>
                   <summary>Allgemeine Informationen</summary>
                   <ul>
                     <li><a href="index.html">Kurseinführung</a></li>
@@ -44,7 +44,7 @@
             
                 <h3>Grundlagensensibilisierung</h3>
             
-                <details open>
+                <details>
                   <summary>Modul 1: Barrierefreiheit</summary>
                   <ul>
                     <li><a href="1_0_modul1_inhaltsverzeichnis.html">1.0 Inhaltsverzeichnis</a></li>
@@ -59,7 +59,7 @@
                   </ul>
                 </details>
             
-                <details>
+                <details open>
                   <summary>Modul 2: Barrieren</summary>
                   <ul>
                     <li><a href="2_0_modul2_inhaltsverzeichnis.html">2.0 Inhaltsverzeichnis</a></li>
@@ -216,20 +216,20 @@
                             <p>Zwei Fotos: eins mit Treppe, eins mit Rampe.</p>
                             <p><strong>Frage:</strong> Welche Variante ist für mehr Menschen nutzbar?</p>
                             <div class="image-row">
-                                <div class="image-container">
-                                  <img src="images/barrieren_überall.jpg" alt="Bild einer Treppe (schlechte Barrierefreiheit)" class="information-bild">
-                                </div>
-                                <div class="image-container">
-                                  <img src="images/barrieren_überall2.jpg" alt="Bild einer Rampe" class="information-bild">
-                                </div>
-                            </div>
+                              <div class="image-container">
+                                <img src="images/barrieren_überall.jpg" alt="Bild einer Treppe (schlechte Barrierefreiheit)" class="information-bild">
+                              </div>
+                              <div class="image-container">
+                                <img src="images/barrieren_überall2.jpg" alt="Bild einer Rampe" class="information-bild">
+                              </div>
                           </div>
-                          
-                          <!-- Overlay -->
-                          <div id="image-overlay" role="dialog" aria-modal="true" aria-hidden="true" tabindex="-1">
-                            <button id="close-overlay" aria-label="Bild schließen">×</button>
-                            <img id="overlay-img" src="" alt="" />
-                          </div>
+                        </div>
+                        
+                        <!-- Overlay -->
+                        <div id="image-overlay" role="dialog" aria-modal="true" aria-hidden="true" tabindex="-1">
+                          <button id="close-overlay" aria-label="Bild schließen">×</button>
+                          <img id="overlay-img" src="" alt="" />
+                        </div>
 
                         <h3>Gebrauchsgegenstände</h3>
                         <p>Alltägliche Dinge wie Haushaltsgeräte, technische Apparate oder Selbstbedienungsterminals
@@ -338,25 +338,10 @@
             </section>
         </main>
 
-        <aside class="notes" aria-label="Notizenbereich">
-            <div class="notes-header">
-                <button
-                id="toggle-notes"
-                aria-expanded="true"
-                aria-controls="notes-content"
-                role="heading"
-                aria-level="3"
-                class="notes-toggle-button"
-                >
-                <img src="inhalte/Icons/notes_schwarz.svg" alt="Notizen Icon" class="notes-icon">
-                </button>
-                <h3 id="notes-title" class="notes-title">Notizen</h3>
-            </div>
-
-            <div id="notes-content" role="region" aria-labelledby="toggle-notes">
-                <button id="add-note">Neue Notiz erstellen</button>
-                <div id="notes-container"></div>
-            </div>
+        <aside class="notes">
+            <h3>Notizen</h3>
+            <button id="add-note">Neue Notiz erstellen</button>
+            <div id="notes-container"></div>
         </aside>
     </div>
     <script src="script.js"></script>
