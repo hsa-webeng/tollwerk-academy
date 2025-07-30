@@ -1376,14 +1376,6 @@ ul.marked {
   height: 32px;
 }
 
-.notes-toggle-button:not(.disabled),
-.notes-toggle-button:focus-visible:not(.disabled) {
-  background-color: #4f6bdb;
-  color: white;
-  outline: none;
-  transform: translateY(-0.125rem);
-}
-
 /* Wenn eingeklappt – Button als kleine Box */
 #toggle-notes[aria-expanded="true"] {
   background-color: #576FCB; /* Blau */
@@ -1399,6 +1391,10 @@ ul.marked {
 
 #toggle-notes[aria-expanded="true"] img {
   filter: brightness(0) invert(1);
+}
+
+#toggle-notes[aria-expanded="false"]:hover {
+  background-color: #f0f4ff;
 }
 
 /* ==========================================================================
@@ -1449,15 +1445,8 @@ ul.marked {
   background-color: #f0f4ff;
 }
 
-/* Fokussierung für Tastatur-Nutzer */
-#toggle-sidebar:focus-visible {
-  outline: 2px solid #94b0ff;
-  outline-offset: 2px;
-  transform: translateY(-1px);
-}
-
 #sidebar-content {
-  margin-top: 1rem; /* oder z.B. 1.5rem, je nach gewünschtem Abstand */
+  margin-top: 1rem;
 }
 
 /* ==========================================================================
