@@ -25,7 +25,7 @@
     </header>
 
     <div class="container">
-        <aside class="sidebar">
+        <div class="sidebar">
             <nav aria-label="Modulnavigation">
               <button
                 id="toggle-sidebar"
@@ -36,7 +36,7 @@
               >
                 <img src="icons/List.svg" alt="" class="type-icon" />
               </button>
-              <div id="sidebar-content" role="region" aria-labelledby="toggle-sidebar">
+              <div id="sidebar-content" aria-labelledby="toggle-sidebar">
                 <details>
                   <summary>Allgemeine Informationen</summary>
                   <ul>
@@ -364,15 +364,13 @@
                 aria-expanded="true"
                 aria-controls="notes-content"
                 role="heading"
-                aria-level="3"
                 class="notes-toggle-button"
                 >
                 <img src="inhalte/Icons/notes_schwarz.svg" alt="Notizen Icon" class="notes-icon">
                 </button>
-                <h3 id="notes-title" class="notes-title">Notizen</h3>
             </div>
 
-            <div id="notes-content" role="region" aria-labelledby="toggle-notes">
+            <div id="notes-content" aria-labelledby="toggle-notes">
                 <button id="add-note">Neue Notiz erstellen</button>
                 <div id="notes-container"></div>
             </div>
