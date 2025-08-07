@@ -157,6 +157,15 @@ header {
   font-size: 1.1rem;
 }
 
+.visually-hidden {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 /* ==========================================================================
    Foldable Sections
    ========================================================================== */
@@ -943,20 +952,12 @@ a.disabled:hover::before {
   font-size: 1.05rem;
 }
 
-.information-text h3 {
+.information-text h2 {
   position: relative;
   font-size: 1.25rem;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
   color: #000;
-  padding-left: 1.5rem;
-}
-
-.information-text h3::before {
-  content: "#";
-  position: absolute;
-  left: 0; top: 0;
-  color: var(--primary);
 }
 
 .information-text p {

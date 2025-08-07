@@ -27,6 +27,7 @@
     <div class="container">
         <div class="sidebar">
             <nav aria-label="Modulnavigation">
+              <h2 class="visually-hidden">Navigation</h2>
               <button
                 id="toggle-sidebar"
                 aria-expanded="true"
@@ -190,7 +191,7 @@
                             wirkungsvoll.
                         </p>
 
-                        <h3>Websites, Web- und native Apps</h3>
+                        <h2>Websites, Web- und native Apps</h2>
                         <p>
                             Webseiten und Apps sind heute zentrale Zugangswege zu Informationen, Dienstleistungen und
                             Produkten. Nicht nur das öffentliche Internet, sondern auch unternehmensinterne Plattformen
@@ -214,7 +215,7 @@
                             (z.B. bei Verletzungen oder Stromausfall von Eingabegeräten).
                         </div>
 
-                        <h3>Digitale Kommunikation: E-Mail, Messenger, Social Media</h3>
+                        <h2>Digitale Kommunikation: E-Mail, Messenger, Social Media</h2>
                         <p>
                             Digitale Kommunikation ist ein Grundpfeiler moderner Gesellschaft – doch auch hier gibt es
                             Hürden:
@@ -231,7 +232,7 @@
                             wahrnehmbar und zugänglich sind.
                         </p>
 
-                        <h3>Unterhaltung: Videos, Audio, Spiele</h3>
+                        <h2>Unterhaltung: Videos, Audio, Spiele</h2>
                         <p>
                             Barrierefreiheit betrifft auch die digitale Freizeitgestaltung:
                         </p>
@@ -253,7 +254,7 @@
                             Sprachenlernen ist der Verzicht auf Untertitel eine Hürde.
                         </div>
 
-                        <h3>Dokumente: Office-Dateien, PDF & Co.</h3>
+                        <h2>Dokumente: Office-Dateien, PDF & Co.</h2>
                         <p>
                             Digitale Dokumente wie Word-, Excel- oder PDF-Dateien sind häufig genutzte Formate – und
                             häufig
@@ -279,7 +280,7 @@
                             mit Screenreader – unzugänglich.
                         </div>
 
-                        <h3>Betriebssysteme & Desktop-Anwendungen</h3>
+                        <h2>Betriebssysteme & Desktop-Anwendungen</h2>
                         <p>
                             Auch die digitale Arbeitsumgebung selbst kann Barrieren enthalten. Betriebssysteme und
                             Desktop-Anwendungen sollten mit assistiven Technologien kompatibel sein und grundlegende
@@ -295,7 +296,7 @@
                             gar nicht erst bedienen.
                         </p>
 
-                        <h3>Selbstbedienungs-Terminals</h3>
+                        <h2>Selbstbedienungs-Terminals</h2>
                         <p>
                             Ticketautomaten, Check-in-Terminals oder Info-Kioske – sie alle sind digitale Geräte, mit
                             denen
@@ -319,7 +320,7 @@
                             Barrierefreiheit.
                         </div>
 
-                        <h3>ITK-Services: Informationstechnologie & Kommunikation</h3>
+                        <h2>ITK-Services: Informationstechnologie & Kommunikation</h2>
                         <p>
                             ITK-Dienste – wie Videokonferenzsysteme, Support-Portale oder interne Tools – müssen
                             ebenfalls
@@ -333,7 +334,7 @@
                             <li>Wird auf unterschiedliche Nutzungsbedarfe Rücksicht genommen?</li>
                         </ul>
 
-                        <h3>Fazit</h3>
+                        <h2>Fazit</h2>
                         <p>
                             Barrieren in digitalen Medien sind kein Spezialproblem – sie betreffen zentrale
                             Lebensbereiche
@@ -348,12 +349,40 @@
                         </p>
                     </div>
                 </div>
-
+                <form class="quiz-multiple" id="zwischenquiz-digitalemedien" data-correct-answer="D" data-next-button="next-button-2">
+                  <fieldset>
+                    <legend id="quiz-heading">Welche Aussage über digitale Barrierefreiheit ist korrekt?</legend>
+                
+                    <label class="quiz-option">
+                      <input type="radio" name="frage1" value="A" required />
+                      A) Nur Websites im öffentlichen Internet müssen barrierefrei gestaltet sein.
+                    </label>
+                
+                    <label class="quiz-option">
+                      <input type="radio" name="frage1" value="B" />
+                      B) Barrierefreiheit ist nur für blinde Menschen relevant.
+                    </label>
+                
+                    <label class="quiz-option">
+                      <input type="radio" name="frage1" value="C" />
+                      C) Untertitel in Videos sind ausschließlich für gehörlose Personen notwendig.
+                    </label>
+                
+                    <label class="quiz-option">
+                      <input type="radio" name="frage1" value="D" />
+                      D) Barrierefreiheit betrifft viele digitale Lebensbereiche – von Kommunikation bis Unterhaltung.
+                    </label>
+                  </fieldset>
+                
+                  <p id="feedback-digitalemedien" class="feedback" aria-live="polite"></p>
+                  <button type="submit">Antwort absenden</button>
+                </form>
                 <div class="nav-buttons">
                     <a href="2_2_modul2_barrieren_sind_ueberall.html" class="button-secondary">&larr; Zurück</a>
-                    <a href="2_4_modul2_teste_dein_wissen.html" class="next-button button-secondary">Weiter &rarr;</a>
+                    <a href="2_4_modul2_teste_dein_wissen.html" id="next-button-2" class="next-button button-secondary disabled" 
+                    aria-disabled="true">Weiter &rarr;</a>
                 </div>
-
+              
             </section>
         </main>
 
