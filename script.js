@@ -1580,3 +1580,46 @@ document.addEventListener('DOMContentLoaded', () => {
     gesamtFeedback.textContent = `Ihr Gesamtergebnis: ${percent}% von ${modul.replace('modul', 'Modul ')} geschafft!`;
   }
 });
+
+// Zwischenquizz Logik
+
+document.addEventListener("DOMContentLoaded", () => {
+  const quizzes = document.querySelectorAll("form.quiz-multiple");
+
+  quizzes.forEach((quizForm) => {
+    const correctAnswer = quizForm.dataset.correctAnswer;
+    const nextButtonId = quizForm.dataset.nextButton;
+    const feedback = quizForm.querySelector(".feedback");
+    const nextButton = document.getElementById(nextButtonId);
+
+    quizForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const selected = quizForm.querySelector("input[type='radio']:checked");
+      if (!selected) return;
+
+      const userAnswer = selected.value;
+
+      // Feedback anzeigen
+      if (userAnswer === correctAnswer) {
+        feedback.textContent = "✅ Richtig!";
+        feedback.style.color = "green";
+      } else {
+        feedback.textContent = `❌ Nicht ganz. Die richtige Antwort ist ${correctAnswer}.`;
+        feedback.style.color = "red";
+      }
+
+      // Eingaben sperren & Button deaktivieren
+      quizForm.querySelectorAll("input").forEach((input) => (input.disabled = true));
+      quizForm.querySelector("button").disabled = true;
+
+      // Weiter-Button aktivieren
+      if (nextButton) {
+        nextButton.classList.remove("disabled");
+        nextButton.setAttribute("aria-disabled", "false");
+        nextButton.style.pointerEvents = "auto";
+        nextButton.style.opacity = "1";
+      }
+    });
+  });
+});

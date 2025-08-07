@@ -27,15 +27,16 @@
   <div class="container">
       <div class="sidebar">
           <nav aria-label="Modulnavigation">
+            <h2 class="visually-hidden">Navigation</h2>
             <button
               id="toggle-sidebar"
               aria-expanded="true"
               aria-controls="sidebar-content"
               class="sidebar-toggle-button"
-              aria-label="Navigation ein- oder ausklappen"
-            >
+              aria-label="Navigation ein- oder ausklappen">
               <img src="icons/List.svg" alt="" class="type-icon" />
             </button>
+            <h2 class="visually-hidden">Modulnavigation</h2>
             <div id="sidebar-content" aria-labelledby="toggle-sidebar">
               <details>
                 <summary>Allgemeine Informationen</summary>
@@ -201,14 +202,14 @@
               Barrierefreiheit ist ein zentraler Bestandteil inklusiver Gesellschaften und betrifft viele
               Lebensbereiche:
             </p>
-            <h3>Gebäude und öffentliche Plätze</h3>
+            <h2>Gebäude und öffentliche Plätze</h2>
             <p>
               Der Zugang zu öffentlichen und privaten Gebäuden muss ohne Hindernisse möglich sein. Dazu
               gehören beispielsweise stufenlose Eingänge, Aufzüge, breite Türen, taktile Leitsysteme und gut
               lesbare Beschilderungen. Auch öffentliche Plätze wie Parks oder Fußgängerzonen sollten für alle
               zugänglich gestaltet sein.
             </p>
-            <h3>Arbeitsstätten und Wohnungen</h3>
+            <h2>Arbeitsstätten und Wohnungen</h2>
             <p>
               Barrierefreie Arbeitsplätze ermöglichen Menschen mit Behinderung die gleichberechtigte Teilhabe
               am Berufsleben. Dazu zählen ergonomische Arbeitsplätze, höhenverstellbare Möbel oder visuelle
@@ -216,19 +217,19 @@
               dass sie ohne Barrieren nutzbar sind – etwa durch schwellenlose Zugänge, rutschfeste Böden und
               geeignete Sanitäreinrichtungen.
             </p>
-            <h3>Verkehrsmittel</h3>
+            <h2>Verkehrsmittel</h2>
             <p>
               Ob Bus, Bahn, Flugzeug oder Auto – alle Verkehrsmittel müssen für Menschen mit
               Einschränkungen zugänglich sein. Dazu gehören unter anderem barrierefreie Haltestellen,
               akustische und visuelle Fahrgastinformationen, Rampen und Aufzüge sowie spezielle Sitzplätze.
             </p>
-            <h3>Gebrauchsgegenstände</h3>
+            <h2>Gebrauchsgegenstände</h2>
             <p>
               Alltagsgegenstände wie Haushaltsgeräte, Werkzeuge oder digitale Endgeräte sollten intuitiv
               bedienbar und für alle Nutzergruppen nutzbar sein. Dies kann durch einfache Bedienoberflächen,
               sprachgesteuerte Systeme oder kontrastreiche Darstellungen erreicht werden.
             </p>
-            <h3>Informations- und Kommunikationsmittel</h3>
+            <h2>Informations- und Kommunikationsmittel</h2>
             <p>
               Zugang zu Informationen ist ein Grundrecht. Webseiten, Apps, Druckmedien und andere
               Kommunikationsmittel sollten so gestaltet sein, dass sie von Menschen mit unterschiedlichen
@@ -241,42 +242,42 @@
 
           </div>
         </div>
-        <form class="quiz-multiple" aria-labelledby="quiz-heading" id="quiz-form">
+        <form class="quiz-multiple zwischenquiz" id="zwischenquiz-1" data-correct-answer="D" data-next-button="next-button-1">
           <fieldset>
-            <legend>Welche Aussage über Barrierefreiheit ist laut Text korrekt?</legend>
-
+            <legend id="quiz-heading">Welche Aussage über Barrierefreiheit ist laut Text korrekt?</legend>
+        
             <label class="quiz-option">
               <input type="radio" name="question1" value="A" required />
               A) Barrierefreiheit betrifft nur bauliche Maßnahmen wie Rampen und Aufzüge.
             </label>
-
+        
             <label class="quiz-option">
               <input type="radio" name="question1" value="B" />
               B) Barrierefreiheit ist vor allem für Menschen mit Sehbehinderungen wichtig.
             </label>
-
+        
             <label class="quiz-option">
               <input type="radio" name="question1" value="C" />
               C) Barrierefreiheit erleichtert ausschließlich das Leben von Menschen mit dauerhaften Behinderungen.
             </label>
-
+        
             <label class="quiz-option">
               <input type="radio" name="question1" value="D" />
               D) Barrierefreiheit ist ein Qualitätsmerkmal, das allen Menschen zugutekommt.
             </label>
           </fieldset>
-
-          <p id="feedback" style="margin-top: 1rem;"></p>
+        
+          <p id="feedback-1" class="feedback" aria-live="polite"></p>
           <button type="submit">Antwort absenden</button>
         </form>
-
-        <p id="feedback" aria-live="polite" class="feedback"></p>
 
         <div class="nav-buttons">
 
           <a href="1_0_modul1_inhaltsverzeichnis.html" class="button-secondary">&larr; Zurück</a>
 
-          <a href="1_2_modul1_gesetzliche_definition.html" class="next-button button-secondary">Weiter &rarr;</a>
+          <a href="1_2_modul1_gesetzliche_definition.html" id="next-button-1" class="next-button button-secondary disabled" 
+          aria-disabled="true"> Weiter &rarr;
+          </a>
         </div>
 
       </section>
