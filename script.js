@@ -620,6 +620,31 @@ class EnhancedProgressTracker {
   }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+  const sidebarContent = document.getElementById('sidebar-content');
+
+  if (!toggleSidebarBtn || !sidebarContent) return;
+
+  const isSidebarExpanded = localStorage.getItem('sidebarExpanded') !== 'false';
+
+  toggleSidebarBtn.setAttribute('aria-expanded', String(isSidebarExpanded));
+  if (!isSidebarExpanded) {
+    sidebarContent.setAttribute('hidden', '');
+  }
+
+  toggleSidebarBtn.addEventListener('click', () => {
+    const currentlyExpanded = toggleSidebarBtn.getAttribute('aria-expanded') === 'true';
+    const newExpanded = !currentlyExpanded;
+
+    toggleSidebarBtn.setAttribute('aria-expanded', String(newExpanded));
+    sidebarContent.toggleAttribute('hidden', !newExpanded);
+
+    localStorage.setItem('sidebarExpanded', String(newExpanded));
+  });
+});
+
+
 // ✅ Globale Instanz initialisieren, falls noch nicht vorhanden
 if (!window.progressTracker) {
   window.progressTracker = new EnhancedProgressTracker();
@@ -1277,10 +1302,42 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem(storageKey, JSON.stringify(notes));
   }
 
+    // Funktion: Notiz-Labels aktualisieren (Nummerierung anpassen)
+    function updateNoteLabels() {
+      const notes = notesContainer.querySelectorAll(".note");
+      notes.forEach((note, index) => {
+        const label = note.querySelector(".note-label");
+        if (label) {
+          const newNumber = index + 1;
+          label.textContent = `Notiz ${newNumber}`;
+          label.id = `note-label-${newNumber}`;
+
+          const textarea = note.querySelector("textarea");
+          if (textarea) {
+            textarea.setAttribute("aria-labelledby", label.id);
+          }
+
+          const deleteButton = note.querySelector(".delete-note");
+          if (deleteButton) {
+            deleteButton.setAttribute("aria-label", `Notiz ${newNumber} löschen`);
+          }
+        }
+      });
+    }
+
   // Neue Notiz erstellen
   function createNote(content = "") {
     const note = document.createElement("div");
     note.className = "note";
+
+    // Notiznummer berechnen
+    const noteNumber = notesContainer.querySelectorAll(".note").length + 1;
+
+    // Überschrift als Label für die Notiz
+    const label = document.createElement("h4");
+    label.textContent = `Notiz ${noteNumber}`;
+    label.className = "note-label";
+    label.id = `note-label-${noteNumber}`;
 
     const deleteButton = document.createElement("button");
     deleteButton.className = "delete-note";
@@ -1288,15 +1345,34 @@ document.addEventListener("DOMContentLoaded", function () {
     deleteButton.title = "Notiz löschen";
 
     deleteButton.addEventListener("click", () => {
+      const allNotes = Array.from(notesContainer.querySelectorAll(".note"));
+      const index = allNotes.indexOf(note);
+
+      // Notiz löschen
       notesContainer.removeChild(note);
       saveNotes();
+
+      updateNoteLabels();
+
+      // Fokus setzen
+      const remainingNotes = notesContainer.querySelectorAll(".note");
+      if (remainingNotes.length > 0) {
+        const newFocusNote = remainingNotes[Math.max(0, index - 1)];
+        const textarea = newFocusNote.querySelector("textarea");
+        if (textarea) textarea.focus();
+      } else {
+        const addNoteBtn = document.getElementById("add-note");
+        if (addNoteBtn) addNoteBtn.focus();
+      }
     });
 
     const textarea = document.createElement("textarea");
     textarea.placeholder = "Deine Notiz...";
     textarea.value = content;
+    textarea.setAttribute("aria-labelledby", label.id);
     textarea.addEventListener("input", saveNotes);
 
+    note.appendChild(label);
     note.appendChild(deleteButton);
     note.appendChild(textarea);
     notesContainer.appendChild(note);
@@ -1319,10 +1395,23 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initial laden
   loadNotes();
 
+  updateNoteLabels();
+
   // Einklapp-Button und Bereich
   const toggleBtn = document.getElementById('toggle-notes');
   const notesContent = document.getElementById('notes-content');
 
+  // Zustand laden
+  const savedState = localStorage.getItem("notesExpanded");
+  const isExpanded = savedState === null ? true : savedState === "true";
+
+  // Initial anzeigen/verstecken
+  toggleBtn.setAttribute("aria-expanded", String(isExpanded));
+  if (!isExpanded) {
+    notesContent.setAttribute("hidden", "");
+  }
+
+  // Button-Klick
   toggleBtn.addEventListener('click', () => {
     const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
     toggleBtn.setAttribute('aria-expanded', String(!expanded));
@@ -1331,7 +1420,10 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       notesContent.removeAttribute('hidden');
     }
+
+    localStorage.setItem("notesExpanded", String(!expanded));
   });
+
 });
 
 

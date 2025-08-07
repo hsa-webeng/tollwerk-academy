@@ -25,24 +25,27 @@
   </header>
 
   <div class="container">
-    <aside class="sidebar">
-      <nav aria-label="Modulnavigation">
-        <h2>
-          <span class="with-icon">
-            <img src="icons/List.svg" alt="Menü Icon" class="type-icon" />
-            Navigation
-          </span>
-        </h2>
-    
-        <details open>
-          <summary>Allgemeine Informationen</summary>
-          <ul>
-            <li><a href="index.html" aria-current="page">Kurseinführung</a></li>
-            <li><a href="hinweise.html">Hinweise</a></li>
-          </ul>
-        </details>
-    
-        <h3>Grundlagensensibilisierung</h3>
+        <div class="sidebar">
+            <nav aria-label="Modulnavigation">
+              <button
+                id="toggle-sidebar"
+                aria-expanded="true"
+                aria-controls="sidebar-content"
+                class="sidebar-toggle-button"
+                aria-label="Navigation ein- oder ausklappen"
+              >
+                <img src="icons/List.svg" alt="" class="type-icon" />
+              </button>
+              <div id="sidebar-content" aria-labelledby="toggle-sidebar">
+                <details>
+                  <summary>Allgemeine Informationen</summary>
+                  <ul>
+                    <li><a href="index.html">Kurseinführung</a></li>
+                    <li><a href="hinweise.html">Hinweise</a></li>
+                  </ul>
+                </details>
+            
+                <h3>Grundlagensensibilisierung</h3>
     
         <details>
           <summary>Modul 1: Barrierefreiheit</summary>
@@ -129,7 +132,7 @@
           </ul>
         </details>
       </nav>
-    </aside>
+    </div>
 
     <main class="content">
       <section>
@@ -370,9 +373,9 @@
         </ul>
         <h2>Was Sie noch interessieren könnte:</h2>
         <ul>
-          <li><a href="#">Barrierefreie Webentwicklung</a></li>
-          <li><a href="#">Inklusive Designprinzipien</a></li>
-          <li><a href="#">Barrierefreie Dokumente erstellen</a></li>
+          <li><a href="#">-> Barrierefreie Webentwicklung</a></li>
+          <li><a href="#">-> Inklusive Designprinzipien</a></li>
+          <li><a href="#">-> Barrierefreie Dokumente erstellen</a></li>
         </ul>
           <div class="nav-buttons">
             <a href="hinweise.html" class="next-button button-secondary">Weiter zu Hinweise &rarr;</a>
